@@ -45,18 +45,11 @@ public class Constants {
     public static class ElevatorConstants {
 
         public static final int ELEVATOR_MOTOR_ID = 21;
-        public static final int ELEVATOR_POT_ID = 22;
-        public static final int ELEVATOR_STAGE_1_LIMIT_ID = 23;
-        public static final int ELEVATOR_STAGE_2_LIMIT_ID = 24;
-        public static final int ELEVATOR_STAGE_3_LIMIT_ID = 25;
-        public static final int ELEVATOR_STAGE_4_LIMIT_ID = 26;
+        public static final int ELEVATOR_POT_ID = 0;
+        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 8;
+        public static final int ELEVATOR_TOP_LIMIT_ID = 9;
 
         public static final PIDController ELEVATOR_PID = new PIDController(0, 0, 0);
-
-        public static final double STAGE_1_POS = 4;
-        public static final double STAGE_2_POS = 8;
-        public static final double STAGE_3_POS = 12;
-        public static final double STAGE_4_POS = 157;
 
         public static final double ELEVATOR_POS_TOLERANCE = 2;
         public static final double ELEVATOR_MOTOR_VELOCITY_TOLERANCE = 0.2;
@@ -64,8 +57,8 @@ public class Constants {
 
     public static class IntakeConstants {
 
-        public static final int INTAKE_MOTOR_ID = 31;
-        public static final int INTAKE_SENSOR_ID = 32;
+        public static final int INTAKE_MOTOR_ID = 22;
+        public static final int INTAKE_SENSOR_ID = 1;
         // public static final int INTAKE_SENSOR2_ID = 33;
 
         public static final double INTAKE_MOTOR_SPEED = 0.5;
@@ -77,15 +70,14 @@ public class Constants {
     }
 
     public static class ElbowConstants {
-        public static final int ELBOW_MOTOR_ID = 41;
-        public static final int ELBOW_ENCODER_ID = 52;
+        public static final int ELBOW_MOTOR_ID = 23;
+        public static final int ELBOW_ENCODER_ID = 0;
 
         public static final PIDController ELBOW_PID = new PIDController(0, 0, 0);
     }
 
     public static class WristConstants {
-        public static final int WRIST_MOTOR_ID = 42;
-        public static final int WRIST_ENCODER_ID = 51;
+        public static final int WRIST_MOTOR_ID = 24;
 
         public static final PIDController WRIST_PID = new PIDController(0, 0, 0);
     }

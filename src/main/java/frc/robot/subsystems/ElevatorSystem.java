@@ -18,8 +18,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   private static SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
   private static AnalogInput pot = new AnalogInput(ElevatorConstants.ELEVATOR_POT_ID);
-  private static DigitalInput bottomLimit = new DigitalInput(ElevatorConstants.ELEVATOR_STAGE_1_LIMIT_ID);
-  private static DigitalInput topLimit = new DigitalInput(ElevatorConstants.ELEVATOR_STAGE_4_LIMIT_ID);
+  private static DigitalInput bottomLimit = new DigitalInput(ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID);
+  private static DigitalInput topLimit = new DigitalInput(ElevatorConstants.ELEVATOR_TOP_LIMIT_ID);
   private static PIDController PID = ElevatorConstants.ELEVATOR_PID;
 
   /** Creates a new ElevatorSystem. */
