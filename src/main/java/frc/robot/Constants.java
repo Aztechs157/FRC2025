@@ -62,5 +62,32 @@ public class Constants {
         public static final double ELEVATOR_MOTOR_VELOCITY_TOLERANCE = 0.2;
     }
 
+    public static class IntakeConstants {
+
+        public static final int INTAKE_MOTOR_ID = 31;
+        public static final int INTAKE_SENSOR_ID = 32;
+        // public static final int INTAKE_SENSOR2_ID = 33;
+
+        public static final double INTAKE_MOTOR_SPEED = 0.5;
+        public static final double PLACE_MOTOR_SPEED = 0.5;
+        public static final double EJECT_MOTOR_SPEED = 0.5;
+
+        public static final double PLACE_TIME = 0.5;
+        public static final double EJECT_TIME = 0.5;
+    }
+
+    public static class ElbowConstants {
+        public static final int ELBOW_MOTOR_ID = 41;
+        public static final int ELBOW_ENCODER_ID = 52;
+
+        public static final PIDController ELBOW_PID = new PIDController(0, 0, 0);
+    }
+
+    public static class WristConstants {
+        public static final int WRIST_MOTOR_ID = 42;
+        public static final int WRIST_ENCODER_ID = 51;
+
+        public static final PIDController WRIST_PID = new PIDController(0, 0, 0);
+    }
 }
 

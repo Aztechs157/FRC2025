@@ -1,0 +1,23 @@
+﻿Element,Side,ID,X,Y,Z,Z-Rotation,X-Rotation
+Left Coral Station,Red,1,657.37,25.8,55.25,126,0
+Right Coral Station,Red,2,657.37,291.2,55.25,234,0
+Processor,Red,3,455.15,317.15,47.88,270,0
+Blue Barge,Red,4,365.2,241.64,70.73,0,30
+Red Barge,Red,5,365.2,75.39,70.73,0,30
+Close Left Reef,Red,6,530.49,130.17,8.75,300,0
+Close Center Reef,Red,7,546.87,158.5,8.75,0,0
+Close Right Reef,Red,8,530.49,186.83,8.75,60,0
+Far Right Reef,Red,9,497.77,186.83,8.75,120,0
+Far Center Reef,Red,10,481.39,158.5,8.75,180,0
+Far Left Reef,Red,11,497.77,130.17,8.75,240,0
+Right Coral Station,Blue,12,33.51,25.8,55.25,54,0
+Left Coral Station,Blue,13,33.51,291.2,55.25,306,0
+Blue Barge,Blue,14,325.68,241.64,70.73,180,30
+Red Barge,Blue,15,325.68,75.39,70.73,180,30
+Processor,Blue,16,235.73,-0.15,47.88,90,0
+Close Right Reef,Blue,17,160.39,130.17,8.75,240,0
+Close Center Reef,Blue,18,144,158.5,8.75,180,0
+Close Left Reef,Blue,19,160.39,186.83,8.75,120,0
+Far Left Reef,Blue,20,193.1,186.83,8.75,60,0
+Far Center Reef,Blue,21,209.49,158.5,8.75,0,0
+Far Right Reef,Blue,22,193.1,130.17,8.75,300,0
