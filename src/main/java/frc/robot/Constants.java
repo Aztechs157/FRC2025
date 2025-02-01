@@ -1,0 +1,66 @@
+package frc.robot;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+
+public class Constants {
+    public static class ControllerConstants {
+
+        public static final int DRIVER_CONTROLLER_PORT = 0;
+        public static final int OPERATOR_CONTROLLER_PORT = 1;
+
+        // Joystick Deadband
+        public static final double LEFT_X_DEADBAND = 0.1;
+        public static final double LEFT_Y_DEADBAND = 0.1;
+        public static final double RIGHT_X_DEADBAND = 0.1;
+    }
+
+    public class VisionConstants
+    {
+
+        public static final String LEFT_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Left"; // TODO: find proper value
+        public static final Transform3d LEFT_CAMERA_PLACEMENT = new Transform3d(
+                new Translation3d(0.0, 0.0, 0.72), new Rotation3d())
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.51, 0)))
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // TODO: find proper
+                                                                                              // value,
+        // new Rotation3d(0, 0.959931, 2.61799)
+        public static final String RIGHT_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Right"; // TODO: find proper value
+        public static final Transform3d RIGHT_CAMERA_PLACEMENT = new Transform3d(
+                new Translation3d(-0.305816, -0.2276856, 0.5478018), new Rotation3d())
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.959931, 0)))
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0.523599))); // TODO: find proper
+                                                                                             // value,   
+        
+        public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
+    }
+
+    public static class LoggingConstants {
+    
+        public static final boolean DEFAULT_LOGGING_STATE = false;
+    }
+
+    public static class ElevatorConstants {
+
+        public static final int ELEVATOR_MOTOR_ID = 21;
+        public static final int ELEVATOR_POT_ID = 22;
+        public static final int ELEVATOR_STAGE_1_LIMIT_ID = 23;
+        public static final int ELEVATOR_STAGE_2_LIMIT_ID = 24;
+        public static final int ELEVATOR_STAGE_3_LIMIT_ID = 25;
+        public static final int ELEVATOR_STAGE_4_LIMIT_ID = 26;
+
+        public static final PIDController ELEVATOR_PID = new PIDController(0, 0, 0);
+
+        public static final double STAGE_1_POS = 4;
+        public static final double STAGE_2_POS = 8;
+        public static final double STAGE_3_POS = 12;
+        public static final double STAGE_4_POS = 157;
+
+        public static final double ELEVATOR_POS_TOLERANCE = 2;
+        public static final double ELEVATOR_MOTOR_VELOCITY_TOLERANCE = 0.2;
+    }
+
+}
+
