@@ -4,12 +4,17 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -24,6 +29,7 @@ public class JointSystem extends SubsystemBase implements PosUtils {
   public JointSystem(boolean isElbow) {
     motor = isElbow ? new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless) : new SparkMax(WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
     PID = isElbow ? ElbowConstants.ELBOW_PID : WristConstants.WRIST_PID;
+    Shuffleboard.getTab("Sensor values").addDouble(isElbow ? "Elbow Encoder" : "Wrist Encoder", this::getPos);
   }
 
   public void runMotor(double velocity) {
@@ -45,6 +51,14 @@ public class JointSystem extends SubsystemBase implements PosUtils {
 
   public double getNewSpeed(double desiredPos) {
     return PID.calculate(getPos(), desiredPos);
+  }
+
+  public Command elbowManualControl(DoubleSupplier joystickInput) {
+    return runEnd(() -> {runMotor(joystickInput.getAsDouble());}, () -> {runMotor(0);});
+  }
+  
+  public Command wristManualControl(BooleanSupplier buttonInput, boolean goUp) {
+    return runEnd(() -> {if(buttonInput.getAsBoolean()) {runMotor(goUp ? WristConstants.WRIST_MANUAL_CONTROL_SPEED : -WristConstants.WRIST_MANUAL_CONTROL_SPEED);}}, () -> {runMotor(0);});
   }
 
   @Override

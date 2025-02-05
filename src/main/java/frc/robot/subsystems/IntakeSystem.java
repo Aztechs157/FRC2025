@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -16,7 +17,9 @@ public class IntakeSystem extends SubsystemBase {
   private static DigitalInput sensor = new DigitalInput(IntakeConstants.INTAKE_SENSOR_ID);
 
   /** Creates a new IntakeSystem. */
-  public IntakeSystem() {}
+  public IntakeSystem() {
+    Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral);
+  }
 
   public void run(double speed) {
     motor.set(speed);

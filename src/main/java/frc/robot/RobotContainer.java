@@ -7,6 +7,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import java.lang.ModuleLayer.Controller;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -42,6 +43,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController driverController = new CommandXboxController(0);
+    private final CommandXboxController operatorController = new CommandXboxController(1);
     
     public final DriveSystem drivetrain = TunerConstants.createDrivetrain();
     private final ElevatorSystem elevator = new ElevatorSystem();
@@ -83,7 +85,13 @@ public class RobotContainer {
         driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); 
+
+        /* TODO: make these use double suppliers or find some other fix
+        elevator.setDefaultCommand(elevator.elevatorManualControl(operatorController.getLeftY()));
+        elbow.setDefaultCommand(elbow.elbowManualControl(operatorController.getRightY()));
+        wrist.setDefaultCommand(wrist.wristManualControl(operatorController.povUp().getAsBoolean(), true));
+        wrist.setDefaultCommand(wrist.wristManualControl(operatorController.povDown().getAsBoolean(), false)); */     
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

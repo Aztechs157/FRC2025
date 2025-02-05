@@ -80,6 +80,8 @@ public class Constants {
         public static final int WRIST_MOTOR_ID = 24;
 
         public static final PIDController WRIST_PID = new PIDController(0, 0, 0);
+
+        public static final double WRIST_MANUAL_CONTROL_SPEED = 0.25;
     }
 }
 
