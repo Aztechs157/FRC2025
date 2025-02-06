@@ -67,8 +67,9 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.ELEVATOR_POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.ELEVATOR_MOTOR_VELOCITY_TOLERANCE);
   }
 
-  public Command elevatorManualControl(DoubleSupplier joystickInput) {
-    return runEnd(() -> {runMotor(joystickInput.getAsDouble());}, () -> {runMotor(0);});
+  public Command elevatorManualControl(Double joystickInput) {
+    System.out.println("asdfsadf");
+    return runEnd(() -> {runMotor(joystickInput);}, () -> {runMotor(0);});
   }
 
   @Override

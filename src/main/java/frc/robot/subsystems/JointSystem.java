@@ -27,7 +27,12 @@ public class JointSystem extends SubsystemBase implements PosUtils {
 
   /** Creates a new JointSystem. */
   public JointSystem(boolean isElbow) {
-    motor = isElbow ? new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless) : new SparkMax(WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
+    if(isElbow){
+      motor = new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless);
+    }
+    else {
+      motor = new SparkMax(WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
+    }
     PID = isElbow ? ElbowConstants.ELBOW_PID : WristConstants.WRIST_PID;
     Shuffleboard.getTab("Sensor values").addDouble(isElbow ? "Elbow Encoder" : "Wrist Encoder", this::getPos);
   }
@@ -53,8 +58,8 @@ public class JointSystem extends SubsystemBase implements PosUtils {
     return PID.calculate(getPos(), desiredPos);
   }
 
-  public Command elbowManualControl(DoubleSupplier joystickInput) {
-    return runEnd(() -> {runMotor(joystickInput.getAsDouble());}, () -> {runMotor(0);});
+  public Command elbowManualControl(Double joystickInput) {
+    return runEnd(() -> {runMotor(joystickInput);}, () -> {runMotor(0);});
   }
   
   public Command wristManualControl(BooleanSupplier buttonInput, boolean goUp) {

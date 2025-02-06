@@ -22,12 +22,16 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.elbow_commands.elbowDown;
+import frc.robot.commands.elbow_commands.elbowUp;
+import frc.robot.commands.elevator_commands.elevatorDown;
+import frc.robot.commands.elevator_commands.elevatorUp;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.JointSystem;
-import frc.robot.subsystems.VisionSystem;
+// import frc.robot.subsystems.VisionSystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -50,7 +54,23 @@ public class RobotContainer {
     private final IntakeSystem intake = new IntakeSystem();
     private final JointSystem elbow = new JointSystem(true);
     private final JointSystem wrist = new JointSystem(false);
-    public final VisionSystem visionSystem = new VisionSystem();
+
+    public Command elevatorUpCommand() {
+        return new elevatorUp(elevator, 0.25);
+    }
+
+    public Command elevatorDownCommand() {
+        return new elevatorDown(elevator, 0.25);
+    }
+
+    public Command elbowUpCommand() {
+        return new elbowUp(elbow, 0.25);
+    }
+
+    public Command elbowDownCommand() {
+        return new elbowDown(elbow, 0.25);
+    }
+    // public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -87,11 +107,16 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); 
 
-        /* TODO: make these use double suppliers or find some other fix
-        elevator.setDefaultCommand(elevator.elevatorManualControl(operatorController.getLeftY()));
-        elbow.setDefaultCommand(elbow.elbowManualControl(operatorController.getRightY()));
-        wrist.setDefaultCommand(wrist.wristManualControl(operatorController.povUp().getAsBoolean(), true));
-        wrist.setDefaultCommand(wrist.wristManualControl(operatorController.povDown().getAsBoolean(), false)); */     
+        operatorController.povUp().whileTrue(elevatorUpCommand());
+        operatorController.povDown().whileTrue(elevatorDownCommand());
+
+        operatorController.rightBumper().whileTrue(elbowUpCommand());
+        operatorController.leftBumper().whileTrue(elbowDownCommand());
+
+        // elevator.setDefaultCommand(elevator.elevatorManualControl(operatorController.getLeftY()));
+        // elbow.setDefaultCommand(elbow.elbowManualControl(operatorController.getRightY()));
+        // wrist.setDefaultCommand(wrist.wristManualControl(operatorController.povUp().getAsBoolean(), true));
+        // wrist.setDefaultCommand(wrist.wristManualControl(operatorController.povDown().getAsBoolean(), false));        
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
