@@ -26,6 +26,9 @@ public class JointSystem extends SubsystemBase implements PosUtils {
   private static PIDController PID;
 
   /** Creates a new JointSystem. */
+
+  // TODO: Split into two subsystems because it doesn't like defining different motor types
+
   public JointSystem(boolean isElbow) {
     if(isElbow){
       motor = new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless);
