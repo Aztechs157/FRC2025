@@ -32,7 +32,7 @@ public class JointSystem extends SubsystemBase implements PosUtils {
   
   /**
    * Creates a new Joint subsystem, meant for the elbow and wrist as they should have very similar functionality.
-   * @param isElbow - whether or not this joint is the elbow, primarily for choosing the correct PID and displaying the proper name on shuffleboard
+   * @param isElbow whether or not this joint is the elbow, primarily for choosing the correct PID and displaying the proper name on shuffleboard
    */
   public JointSystem(boolean isElbow) {
     if(isElbow){
@@ -47,14 +47,16 @@ public class JointSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Runs the motor at a set velocity 
-   * @param velocity - Velocity is actually a percentage of speed, from -1.0 to 1.0
+   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method</b></p>
+   * @param velocity Velocity is actually a percentage of speed, from -1.0 to 1.0
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
   }
+
   /**
    * Get the current speed of the motor
-   * @return - The speed of the motor, in Rotations per Minute
+   * @return The speed of the motor, in Rotations per Minute
    */
   private double getMotorVelocity() {
     return motor.getEncoder().getVelocity();
@@ -78,17 +80,33 @@ public class JointSystem extends SubsystemBase implements PosUtils {
    */
   public boolean isOscillating(double desiredPos) {
     return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.ELEVATOR_POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.ELEVATOR_MOTOR_VELOCITY_TOLERANCE);
+    //TODO: why is this using the tolerances for the elevator, shouldnt the tolerances be specific to joints? -Katie
   }
 
-
+  /**
+   * uses PID to find the speed to move the joint at to get to the desired position
+   * @param desiredPos the desired position, currently in raw potentiometer units
+   * @return the speed to move the joint
+   */
   public double getNewSpeed(double desiredPos) {
     return PID.calculate(getPos(), desiredPos);
   }
-
+    /**
+   * dangerously moves the elbow based on joystick input
+   * <p><b>WARNING: Ignores limits, can damage robot if not careful</b></p>
+   * @param joystickInput the input from the joystick
+   * @return A command to run the elbow motor
+   */
   public Command elbowManualControl(Double joystickInput) {
     return runEnd(() -> {runMotor(joystickInput);}, () -> {runMotor(0);});
   }
-  
+  /**
+   * dangerously moves the wrist based on button press
+   * <p><b>WARNING: Ignores limits, can damage robot if not careful</b></p>
+   * @param buttonInput The button that this is tied to
+   * @param goUp Whether or not this command goes upwards
+   * @return A command to move the Wrist motor
+   */
   public Command wristManualControl(BooleanSupplier buttonInput, boolean goUp) {
     return runEnd(() -> {if(buttonInput.getAsBoolean()) {runMotor(goUp ? WristConstants.WRIST_MANUAL_CONTROL_SPEED : -WristConstants.WRIST_MANUAL_CONTROL_SPEED);}}, () -> {runMotor(0);});
   }
