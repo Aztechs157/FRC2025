@@ -21,10 +21,18 @@ public class IntakeSystem extends SubsystemBase {
     Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral);
   }
 
+  /**
+   * Runs the intake motor at a set speed percentage 
+   * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
+   */
   public void run(double speed) {
     motor.set(speed);
   }
-
+  
+  /**
+   * Whether the intake sensor believes that the intake is occupied or empty
+   * @return - True if the intake is full, else False
+   */
   public boolean hasCoral() {
     return sensor.get();
   }
