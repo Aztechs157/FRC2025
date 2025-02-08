@@ -30,7 +30,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
     motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
     PID = ElbowConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Elbow Encoder", this::getPos);
-    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elbow Pot", this::getScaledPos);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elbow Encoder", this::getScaledPos);
   }
 
   /**

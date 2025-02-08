@@ -105,11 +105,11 @@ public class Constants {
         public static final double MOTOR_SPEED = 0.5;
         public static final double MANUAL_CONTROL_SPEED = 0.5;
 
-        public static final double LEFT_MAX_POSITION = 0.14;
-        public static final double LEFT_MIN_POSITION = 0.545; // TODO: find these
+        public static final double LEFT_MAX_POSITION = 0.14; // 1385
+        public static final double LEFT_MIN_POSITION = 0.5477; // 5492
 
-        public static final double RIGHT_MAX_POSITION = 0.3085; // TODO: find these
-        public static final double RIGHT_MIN_POSITION = 0.545; // TODO: find these
+        public static final double RIGHT_MAX_POSITION = 0.4813; // 4828
+        public static final double RIGHT_MIN_POSITION = 0.0638; // 0653
     }
 }
 

@@ -30,7 +30,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
     motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
     PID = WristConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos);
-    Shuffleboard.getTab("Sensor values").addDouble("Scaled Wrist Pot", this::getScaledPos);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Wrist Encoder", this::getScaledPos);
   }
 
   /**

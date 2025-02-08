@@ -23,13 +23,13 @@ public class UppiesManualControl extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    uppiesSystem.run(commandValue);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    uppiesSystem.run(commandValue);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
