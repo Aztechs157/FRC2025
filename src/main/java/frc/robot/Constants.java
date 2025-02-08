@@ -42,6 +42,13 @@ public class Constants {
         public static final boolean DEFAULT_LOGGING_STATE = false;
     }
 
+    public static class UppiesConstants {
+        public static final int LEFT_UPPIES_MOTOR_ID = 30;
+        public static final int RIGHT_UPPIES_MOTOR_ID = 31;
+
+        public static final double UPPIES_MOTOR_SPEED = 0.5;
+    }
+
     public static class ElevatorConstants {
 
         public static final int ELEVATOR_MOTOR_ID = 21;
@@ -62,8 +69,8 @@ public class Constants {
         // public static final int INTAKE_SENSOR2_ID = 33;
 
         public static final double INTAKE_MOTOR_SPEED = 0.5;
-        public static final double PLACE_MOTOR_SPEED = 0.5;
-        public static final double EJECT_MOTOR_SPEED = 0.5;
+        public static final double PLACE_MOTOR_SPEED = 0.75;
+        public static final double EJECT_MOTOR_SPEED = 0.75;
 
         public static final double PLACE_TIME = 0.5;
         public static final double EJECT_TIME = 0.5;
