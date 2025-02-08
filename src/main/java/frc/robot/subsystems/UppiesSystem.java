@@ -29,25 +29,25 @@ public class UppiesSystem extends SubsystemBase {
    * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
    */
   public void run(double speed) {
-    if (getScaledPosLeft() >= 0.8 && speed < 0) {
+    if (getScaledPosLeft() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
       motorLeft.set(0);
-    } else if (getScaledPosLeft() >= 0.7 && speed < 0) {
+    } else if (getScaledPosLeft() >= 0.9 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
       motorLeft.set(speed * 0.75);
-    } else if (getScaledPosLeft() <= 0.2 && speed > 0) {
+    } else if (getScaledPosLeft() <= 0.0 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
       motorLeft.set(0);
-    } else if (getScaledPosLeft() <= 0.3 && speed > 0) {
+    } else if (getScaledPosLeft() <= 0.1 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
       motorLeft.set(speed * 0.75);
     } else {
       motorLeft.set(speed);
     }
 
-    if (getScaledPosRight() >= 0.8 && speed < 0) {
+    if (getScaledPosRight() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
       motorRight.set(0);
-    } else if (getScaledPosRight() >= 0.7 && speed < 0) {
+    } else if (getScaledPosRight() >= 0.9 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
       motorRight.set(-speed * 0.75);
-    } else if (getScaledPosRight() <= 0.2 && speed > 0) {
+    } else if (getScaledPosRight() <= 0.0 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
       motorRight.set(0);
-    } else if (getScaledPosRight() <= 0.3 && speed > 0) {
+    } else if (getScaledPosRight() <= 0.10 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
       motorRight.set(-speed * 0.75);
     } else {
       motorRight.set(-speed);
