@@ -24,11 +24,11 @@ public class UppiesSystem extends SubsystemBase {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Right Pos", this::getScaledPosRight);
   }
 
-  /** TODO: update this
+  /** TODO: update this comment
    * Runs the uppies motor at a set speed percentage
    * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
    */
-  public void run(double speed) {
+  public void run(double speed) { // TODO: update this to use PID then generalize it in PosUtils
     if (getScaledPosLeft() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
       motorLeft.set(0);
     } else if (getScaledPosLeft() >= 0.9 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
