@@ -41,7 +41,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   /**
    * Runs the Elevator motor at a set speed percentage 
    * <p><b>WARNING: this ignores limit switches entirely, consider using another method</b></p>
-   * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
+   * @param speed The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
@@ -49,7 +49,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Returns the velocity of the Elevator motor
-   * @return - The current velocity of the elevator motor, in Rotations per Minute
+   * @return The current velocity of the elevator motor, in Rotations per Minute
    */
   public double getMotorVelocity() {
     return motor.getEncoder().getVelocity();
@@ -57,15 +57,15 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Gets the current position of the elevator
-   * @return - The current position of the elevator, in raw potentiometer values.
+   * @return The current position of the elevator, in raw potentiometer values.
    */
   public double getPos() {
     return pot.getValue();
   }
   /**
    * checks if the elevator is at the specified limit switch
-   * @param top - Whether we are checking the top limit switch. If false, will check the bottom limit switch
-   * @return - True if the elevator is at the limit switch, otherwise false
+   * @param top Whether we are checking the top limit switch. If false, will check the bottom limit switch
+   * @return True if the elevator is at the limit switch, otherwise false
    * @see #atTop()
    * @see #atBottom()
    */
@@ -93,8 +93,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * uses PID to find the speed to move the elevator at to get to the desired position
-   * @param desiredPos - the desired position, currently in raw potentiometer units
-   * @return - the speed to move the elevator
+   * @param desiredPos the desired position, currently in raw potentiometer units
+   * @return the speed to move the elevator
    */
   public double getNewSpeed(double desiredPos) {
     return PID.calculate(getPos(), desiredPos);
