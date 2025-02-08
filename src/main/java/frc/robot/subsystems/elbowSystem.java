@@ -4,45 +4,35 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
-
-import com.revrobotics.spark.SparkBase;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.WristConstants;
 import frc.utilities.PosUtils;
 
-public class JointSystem extends SubsystemBase implements PosUtils {
-  private static SparkBase motor;
-  private static PIDController PID;
+public class elbowSystem extends SubsystemBase implements PosUtils {
+  private SparkFlex motor;
+  private static DigitalInput encoderInput = new DigitalInput(ElbowConstants.ELBOW_ENCODER_ID);
+  private static DutyCycleEncoder encoder = new DutyCycleEncoder(encoderInput); 
+  private PIDController PID;
 
   /** Creates a new JointSystem. */
-
-  // TODO: Split into two subsystems because it doesn't like defining different motor types
-  // This should be fine if you change the variables to not be static - Katie
   
   /**
    * Creates a new Joint subsystem, meant for the elbow and wrist as they should have very similar functionality.
-   * @param isElbow whether or not this joint is the elbow, primarily for choosing the correct PID and displaying the proper name on shuffleboard
    */
-  public JointSystem(boolean isElbow) {
-    if(isElbow){
-      motor = new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless);
-    }
-    else {
-      motor = new SparkMax(WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
-    }
-    PID = isElbow ? ElbowConstants.ELBOW_PID : WristConstants.WRIST_PID;
-    Shuffleboard.getTab("Sensor values").addDouble(isElbow ? "Elbow Encoder" : "Wrist Encoder", this::getPos);
+  public elbowSystem() {
+    motor = new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless);
+    PID = ElbowConstants.ELBOW_PID;
+    Shuffleboard.getTab("Sensor values").addDouble("Elbow Encoder", this::getPos);
   }
 
   /**
@@ -67,7 +57,7 @@ public class JointSystem extends SubsystemBase implements PosUtils {
    * @return The current value of the absolute encoder, in Rotations 
    */
   private double getPos() {
-    return motor.getAbsoluteEncoder().getPosition();
+    return encoder.get();
   }
 
   /**
@@ -90,25 +80,6 @@ public class JointSystem extends SubsystemBase implements PosUtils {
    */
   public double getNewSpeed(double desiredPos) {
     return PID.calculate(getPos(), desiredPos);
-  }
-    /**
-   * dangerously moves the elbow based on joystick input
-   * <p><b>WARNING: Ignores limits, can damage robot if not careful</b></p>
-   * @param joystickInput the input from the joystick
-   * @return A command to run the elbow motor
-   */
-  public Command elbowManualControl(Double joystickInput) {
-    return runEnd(() -> {runMotor(joystickInput);}, () -> {runMotor(0);});
-  }
-  /**
-   * dangerously moves the wrist based on button press
-   * <p><b>WARNING: Ignores limits, can damage robot if not careful</b></p>
-   * @param buttonInput The button that this is tied to
-   * @param goUp Whether or not this command goes upwards
-   * @return A command to move the Wrist motor
-   */
-  public Command wristManualControl(BooleanSupplier buttonInput, boolean goUp) {
-    return runEnd(() -> {if(buttonInput.getAsBoolean()) {runMotor(goUp ? WristConstants.WRIST_MANUAL_CONTROL_SPEED : -WristConstants.WRIST_MANUAL_CONTROL_SPEED);}}, () -> {runMotor(0);});
   }
 
   @Override
