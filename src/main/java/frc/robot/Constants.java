@@ -50,6 +50,9 @@ public class Constants {
         public static final int TOP_LIMIT_ID = 9;
         
         public static final PIDController PID = new PIDController(0, 0, 0);
+        public static final double STALL_POWER = 0.057;
+        public static final double MANUAL_CONTROL_SPEED_UP = 0.25;
+        public static final double MANUAL_CONTROL_SPEED_DOWN = 0.157;
 
         public static final double MAX_POSITION = 2650.0; // max is top-most for all systems
         public static final double MIN_POSITION = 625.0; // min is bottom-most for all systems
@@ -100,6 +103,7 @@ public class Constants {
         public static final int RIGHT_MOTOR_ID = 31;
 
         public static final double MOTOR_SPEED = 0.5;
+        public static final double MANUAL_CONTROL_SPEED = 0.5;
 
         public static final double LEFT_MAX_POSITION = 0.14;
         public static final double LEFT_MIN_POSITION = 0.545; // TODO: find these

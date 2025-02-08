@@ -18,6 +18,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ElbowConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.UppiesConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
 import frc.robot.commands.intake_commands.EjectCoral;
@@ -57,39 +61,39 @@ public class RobotContainer {
     private final WristSystem wrist = new WristSystem();
 
     public Command UppiesUpCommand() {
-        return new UppiesManualControl(uppies, 0.5);
+        return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command UppiesDownCommand() {
-        return new UppiesManualControl(uppies, -0.5);
+        return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command ElevatorStallCommand() {
-        return new ElevatorManualControl(elevator, 0.057);
+        return new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER);
     }
 
     public Command ElevatorUpCommand() {
-        return new ElevatorManualControl(elevator, 0.25);
+        return new ElevatorManualControl(elevator, ElevatorConstants.MANUAL_CONTROL_SPEED_UP);
     }
 
     public Command ElevatorDownCommand() {
-        return new ElevatorManualControl(elevator, -0.157); 
+        return new ElevatorManualControl(elevator, -ElevatorConstants.MANUAL_CONTROL_SPEED_DOWN); 
     }
 
     public Command ElbowUpCommand() {
-        return new ElbowManualControl(elbow, 0.25);
+        return new ElbowManualControl(elbow, ElbowConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command ElbowDownCommand() {
-        return new ElbowManualControl(elbow, -0.25);
+        return new ElbowManualControl(elbow, -ElbowConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command WristUpCommand() {
-        return new WristManualControl(wrist, 0.25);
+        return new WristManualControl(wrist, WristConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command WristDownCommand() {
-        return new WristManualControl(wrist, -0.25);
+        return new WristManualControl(wrist, -WristConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command IntakeCommand() {
