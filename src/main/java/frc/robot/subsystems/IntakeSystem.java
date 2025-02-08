@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSystem extends SubsystemBase {
-  private static SparkMax motor = new SparkMax(IntakeConstants.INTAKE_MOTOR_ID, MotorType.kBrushless);
-  private static DigitalInput sensor = new DigitalInput(IntakeConstants.INTAKE_SENSOR_ID);
+  private static SparkMax motor = new SparkMax(IntakeConstants.MOTOR_ID, MotorType.kBrushless);
+  private static DigitalInput sensor = new DigitalInput(IntakeConstants.SENSOR_ID);
 
   /** Creates a new IntakeSystem. */
   public IntakeSystem() {

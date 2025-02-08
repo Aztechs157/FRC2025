@@ -4,23 +4,20 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElbowConstants;
-import frc.robot.Constants.ElevatorConstants;
 import frc.utilities.PosUtils;
 
-public class elbowSystem extends SubsystemBase implements PosUtils {
+public class ElbowSystem extends SubsystemBase implements PosUtils {
   private SparkFlex motor;
-  private static DigitalInput encoderInput = new DigitalInput(ElbowConstants.ELBOW_ENCODER_ID);
+  private static DigitalInput encoderInput = new DigitalInput(ElbowConstants.ENCODER_ID);
   private static DutyCycleEncoder encoder = new DutyCycleEncoder(encoderInput); 
   private PIDController PID;
 
@@ -29,10 +26,11 @@ public class elbowSystem extends SubsystemBase implements PosUtils {
   /**
    * Creates a new Joint subsystem, meant for the elbow and wrist as they should have very similar functionality.
    */
-  public elbowSystem() {
-    motor = new SparkFlex(ElbowConstants.ELBOW_MOTOR_ID, MotorType.kBrushless);
-    PID = ElbowConstants.ELBOW_PID;
+  public ElbowSystem() {
+    motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
+    PID = ElbowConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Elbow Encoder", this::getPos);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elbow Pot", this::getScaledPos);
   }
 
   /**
@@ -60,6 +58,10 @@ public class elbowSystem extends SubsystemBase implements PosUtils {
     return encoder.get();
   }
 
+  public double getScaledPos(){
+    return PosUtils.mapRange(getPos(), ElbowConstants.MIN_POSITION, ElbowConstants.MAX_POSITION, 0.0, 1.0);
+  }
+
   /**
    * Checks if the motor position is within tolerance (as set in Constants) of the desired position, and is moving towards the desired position
    * 
@@ -69,8 +71,7 @@ public class elbowSystem extends SubsystemBase implements PosUtils {
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.ELEVATOR_POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.ELEVATOR_MOTOR_VELOCITY_TOLERANCE);
-    //TODO: why is this using the tolerances for the elevator, shouldnt the tolerances be specific to joints? -Katie
+    return PosUtils.isOscillating(desiredPos, getPos(), ElbowConstants.POS_TOLERANCE, getMotorVelocity(), ElbowConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**

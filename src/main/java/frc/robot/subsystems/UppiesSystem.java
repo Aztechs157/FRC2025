@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.UppiesConstants;
 
 public class UppiesSystem extends SubsystemBase {
-  private static SparkMax motorLeft = new SparkMax(UppiesConstants.LEFT_UPPIES_MOTOR_ID, MotorType.kBrushless);
-  private static SparkMax motorRight = new SparkMax(UppiesConstants.RIGHT_UPPIES_MOTOR_ID, MotorType.kBrushless);
+  private static SparkMax motorLeft = new SparkMax(UppiesConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
+  private static SparkMax motorRight = new SparkMax(UppiesConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
 
   /** Creates a new uppiesSystem. */
   public UppiesSystem() {

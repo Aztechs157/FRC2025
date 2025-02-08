@@ -5,15 +5,15 @@
 package frc.robot.commands.elbow_commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.elbowSystem;
+import frc.robot.subsystems.ElbowSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class elbowManualControl extends Command {
+public class ElbowManualControl extends Command {
 
-  private final elbowSystem elbowSystem;
+  private final ElbowSystem elbowSystem;
   private final double commandValue;
   /** Creates a new elbowUp. */
-  public elbowManualControl(final elbowSystem elbowSystem, double commandValue) {
+  public ElbowManualControl(final ElbowSystem elbowSystem, double commandValue) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elbowSystem);
 

@@ -6,12 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -22,11 +19,11 @@ import frc.utilities.PosUtils;
 
 public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
-  private static SparkMax motor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-  private static AnalogInput pot = new AnalogInput(ElevatorConstants.ELEVATOR_POT_ID);
-  private static DigitalInput bottomLimit = new DigitalInput(ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID);
-  private static DigitalInput topLimit = new DigitalInput(ElevatorConstants.ELEVATOR_TOP_LIMIT_ID);
-  private static PIDController PID = ElevatorConstants.ELEVATOR_PID;
+  private static SparkMax motor = new SparkMax(ElevatorConstants.MOTOR_ID, MotorType.kBrushless);
+  private static AnalogInput pot = new AnalogInput(ElevatorConstants.POT_ID);
+  private static DigitalInput bottomLimit = new DigitalInput(ElevatorConstants.BOTTOM_LIMIT_ID);
+  private static DigitalInput topLimit = new DigitalInput(ElevatorConstants.TOP_LIMIT_ID);
+  private static PIDController PID = ElevatorConstants.PID;
 
   /**
    * Creates a new elevator system with the values provided in Constants.java. Consists of one motor, a potentiometer, and 2 boolean sensors for the top and bottom limits
@@ -34,6 +31,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public ElevatorSystem() {
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop);
   }
@@ -62,6 +60,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   public double getPos() {
     return pot.getValue();
   }
+
+  public double getScaledPos(){
+    return PosUtils.mapRange(getPos(), ElevatorConstants.MIN_POSITION, ElevatorConstants.MAX_POSITION, 0.0, 1.0);
+  }
+
   /**
    * checks if the elevator is at the specified limit switch
    * @param top - Whether we are checking the top limit switch. If false, will check the bottom limit switch
@@ -79,7 +82,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * @see #atLimit(boolean)
    */
   public boolean atBottom() {
-    return bottomLimit.get();
+    return !bottomLimit.get();
   }
 
   /**
@@ -88,7 +91,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * @see #atLimit(boolean)
    */
   public boolean atTop() {
-    return topLimit.get();
+    return !topLimit.get();
   }
 
   /**
@@ -109,7 +112,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.ELEVATOR_POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.ELEVATOR_MOTOR_VELOCITY_TOLERANCE);
+    return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
