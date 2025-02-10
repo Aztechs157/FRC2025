@@ -30,7 +30,17 @@ public interface PosUtils {
     
         return retval;
     }
-
+    
+    /**
+     * Maps a value from one range to another, based on code found <a href="https://reference.arduino.cc/reference/en/language/functions/math/map/#_appendix">here.</a>
+     * Note that while the arduino version uses integers, the calculation is the same for doubles, so the warning about integer math is not applicable here.
+     * @param input The current reading of the value
+     * @param minInput The minimum reading possible for the value, this will be mapped to <code>minOutput</code>
+     * @param maxInput The maximum reading possible for the value, this will be mapped to <code>maxOutput</code>
+     * @param minOutput The minimum value for the new range
+     * @param maxOutput The maximum value for the new range
+     * @return The input value after being properly scaled to fit inside of the new range
+     */
     static double mapRange(double input, double minInput, double maxInput, double minOutput, double maxOutput){
       return (input-minInput)*(maxOutput-minOutput)/(maxInput-minInput) + minOutput;
     }
