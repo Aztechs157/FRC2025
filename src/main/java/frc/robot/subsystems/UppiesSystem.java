@@ -24,9 +24,11 @@ public class UppiesSystem extends SubsystemBase {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Right Pos", this::getScaledPosRight);
   }
 
-  /** TODO: update this comment
-   * Runs the uppies motor at a set speed percentage
-   * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
+  /**
+   * tells the Uppies system to run the motor at a set velocity. Properly follows limits
+   * <p>There is still a chance to overrun limits, sets the speed to 0 after reaching a limit, but does not ensure the motor actually stops. 
+   * Momentum can still carry the motor past it's virtual limits</p>
+   * @param speed The speed to move the motor at, between -1.0 to 1.0 (ie, 1.0 moves the uppies motors with the intent to [TODO check if 1.0 moves the robot up or down wrt climbing])
    */
   public void run(double speed) { // TODO: update this to use PID then generalize it in PosUtils
     if (getScaledPosLeft() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
@@ -55,21 +57,33 @@ public class UppiesSystem extends SubsystemBase {
   }
   
   /**
-   * Gets the uppies pos 
-   * @return - double encoder pos
+   * Gets the position of the left uppies motor absolute encoder
+   * @return - the encoder value, in rotations (from 0.0 to 1.0)
    */
   private double getPosLeft() {
     return motorLeft.getAbsoluteEncoder().getPosition();
   }
 
+  /**
+   * Gets the position of the right uppies motor absolute encoder
+   * @return - the encoder value, in rotations (from 0.0 to 1.0)
+   */
   private double getPosRight() {
     return motorRight.getAbsoluteEncoder().getPosition();
   }
 
+  /**
+   * Gets the position of the right uppies motor absolute encoder, after scaling to the possible range of motion
+   * @return - the encoder value, in percentage of travel distance (from 0.0 to 1.0)
+   */
   public double getScaledPosLeft(){
     return PosUtils.mapRange(getPosLeft(), UppiesConstants.LEFT_MIN_POSITION, UppiesConstants.LEFT_MAX_POSITION, 0.0, 1.0);
   }
 
+/**
+   * Gets the position of the left uppies motor absolute encoder, after scaling to the possible range of motion
+   * @return - the encoder value, in percentage of travel distance (from 0.0 to 1.0)
+   */
   public double getScaledPosRight(){
     return PosUtils.mapRange(getPosRight(), UppiesConstants.RIGHT_MIN_POSITION, UppiesConstants.RIGHT_MAX_POSITION, 0.0, 1.0);
   }

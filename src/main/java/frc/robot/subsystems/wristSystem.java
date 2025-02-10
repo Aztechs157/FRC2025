@@ -58,6 +58,10 @@ public class WristSystem extends SubsystemBase implements PosUtils {
     return motor.getAbsoluteEncoder().getPosition();
   }
 
+  /**
+   * Returns the current position of the Wrist
+   * @return the current value of the encoder, in percentage of total travel
+   */
   public double getScaledPos(){
     return PosUtils.mapRange(getPos(), WristConstants.MIN_POSITION, WristConstants.MAX_POSITION, 0.0, 1.0);
   }

@@ -61,6 +61,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     return pot.getValue();
   }
 
+  /**
+   * Returns the current position of the Elevator
+   * @return the current value of the encoder, in percentage of total travel
+   */
   public double getScaledPos(){
     return PosUtils.mapRange(getPos(), ElevatorConstants.MIN_POSITION, ElevatorConstants.MAX_POSITION, 0.0, 1.0);
   }

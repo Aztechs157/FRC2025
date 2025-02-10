@@ -57,7 +57,10 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
   private double getPos() {
     return encoder.get();
   }
-
+  /**
+   * Returns the current position of the joint
+   * @return the current value of the encoder, in percentage of total travel
+   */
   public double getScaledPos(){
     return PosUtils.mapRange(getPos(), ElbowConstants.MIN_POSITION, ElbowConstants.MAX_POSITION, 0.0, 1.0);
   }
