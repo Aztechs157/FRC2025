@@ -25,10 +25,11 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
-   * tells the Uppies system to run the motor at a set velocity. Properly follows limits
-   * <p>There is still a chance to overrun limits, sets the speed to 0 after reaching a limit, but does not ensure the motor actually stops. 
-   * Momentum can still carry the motor past it's virtual limits</p>
+   * tells the Uppies system to run the motor at a set velocity. Properly follows position limits defined by {@link frc.robot.Constants.UppiesConstants#LIMIT_MARGIN}, 
+   * such that the motors are only not allowed to move past a scaled position of  {@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the bottom limit, or 
+   * 1.0-{@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the top limit
    * @param speed The speed to move the motor at, between -1.0 to 1.0 (ie, 1.0 moves the uppies motors with the intent to [TODO check if 1.0 moves the robot up or down wrt climbing])
+   * @see frc.robot.subsystems.UppiesSystem#getScaledPosLeft()
    */
   public void run(double speed) { // TODO: update this to use PID then generalize it in PosUtils
     if (getScaledPosLeft() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
