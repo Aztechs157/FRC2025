@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.UppiesSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class uppiesManualControl extends Command {
+public class UppiesManualControl extends Command {
 
   private final UppiesSystem uppiesSystem;
   private final double commandValue;
   /** Creates a new elbowUp. */
-  public uppiesManualControl(final UppiesSystem uppiesSystem, double commandValue) {
+  public UppiesManualControl(final UppiesSystem uppiesSystem, double commandValue) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(uppiesSystem);
 
@@ -23,13 +23,13 @@ public class uppiesManualControl extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    uppiesSystem.run(commandValue);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    uppiesSystem.run(commandValue);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

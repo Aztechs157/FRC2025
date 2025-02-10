@@ -6,9 +6,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.lang.ModuleLayer.Controller;
-import java.util.function.DoubleSupplier;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -18,23 +15,25 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.elbow_commands.elbowManualControl;
-import frc.robot.commands.elevator_commands.elevatorDown;
-import frc.robot.commands.elevator_commands.elevatorManualControl;
+import frc.robot.Constants.ElbowConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.UppiesConstants;
+import frc.robot.Constants.WristConstants;
+import frc.robot.commands.elbow_commands.ElbowManualControl;
+import frc.robot.commands.elevator_commands.ElevatorManualControl;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeCoral;
-import frc.robot.commands.uppies_commands.uppiesManualControl;
-import frc.robot.commands.wrist_commands.wristManualControl;
+import frc.robot.commands.uppies_commands.UppiesManualControl;
+import frc.robot.commands.wrist_commands.WristManualControl;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.IntakeSystem;
-import frc.robot.subsystems.elbowSystem;
-import frc.robot.subsystems.wristSystem;
+import frc.robot.subsystems.ElbowSystem;
+import frc.robot.subsystems.WristSystem;
 // import frc.robot.subsystems.VisionSystem;
 import frc.robot.subsystems.UppiesSystem;
 
@@ -58,50 +57,50 @@ public class RobotContainer {
     private final UppiesSystem uppies = new UppiesSystem();
     private final ElevatorSystem elevator = new ElevatorSystem();
     private final IntakeSystem intake = new IntakeSystem();
-    private final elbowSystem elbow = new elbowSystem();
-    private final wristSystem wrist = new wristSystem();
+    private final ElbowSystem elbow = new ElbowSystem();
+    private final WristSystem wrist = new WristSystem();
 
-    public Command uppiesUpCommand() {
-        return new uppiesManualControl(uppies, 0.5);
+    public Command UppiesUpCommand() {
+        return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command uppiesDownCommand() {
-        return new uppiesManualControl(uppies, -0.5);
+    public Command UppiesDownCommand() {
+        return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command elevatorStallCommand() {
-        return new elevatorManualControl(elevator, 0.057);
+    public Command ElevatorStallCommand() {
+        return new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER);
     }
 
-    public Command elevatorUpCommand() {
-        return new elevatorManualControl(elevator, 0.25);
+    public Command ElevatorUpCommand() {
+        return new ElevatorManualControl(elevator, ElevatorConstants.MANUAL_CONTROL_SPEED_UP);
     }
 
-    public Command elevatorDownCommand() {
-        return new elevatorManualControl(elevator, -0.157);
+    public Command ElevatorDownCommand() {
+        return new ElevatorManualControl(elevator, -ElevatorConstants.MANUAL_CONTROL_SPEED_DOWN); 
     }
 
-    public Command elbowUpCommand() {
-        return new elbowManualControl(elbow, 0.25);
+    public Command ElbowUpCommand() {
+        return new ElbowManualControl(elbow, ElbowConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command elbowDownCommand() {
-        return new elbowManualControl(elbow, -0.25);
+    public Command ElbowDownCommand() {
+        return new ElbowManualControl(elbow, -ElbowConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command wristUpCommand() {
-        return new wristManualControl(wrist, 0.25);
+    public Command WristUpCommand() {
+        return new WristManualControl(wrist, WristConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command wristDownCommand() {
-        return new wristManualControl(wrist, -0.25);
+    public Command WristDownCommand() {
+        return new WristManualControl(wrist, -WristConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command intakeCommand() {
+    public Command IntakeCommand() {
         return new IntakeCoral(intake);
     }
 
-    public Command ejectCommand() {
+    public Command EjectCommand() {
         return new EjectCoral(intake);
     }
 
@@ -142,21 +141,21 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); 
 
-        driverController.povUp().whileTrue(uppiesUpCommand());
-        driverController.povDown().whileTrue(uppiesDownCommand());
+        driverController.povUp().whileTrue(UppiesUpCommand());
+        driverController.povDown().whileTrue(UppiesDownCommand());
 
-        operatorController.povUp().and(operatorController.start()).toggleOnTrue(elevatorStallCommand());
-        operatorController.povUp().whileTrue(elevatorUpCommand());
-        operatorController.povDown().whileTrue(elevatorDownCommand());
+        operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
+        operatorController.povUp().whileTrue(ElevatorUpCommand());
+        operatorController.povDown().whileTrue(ElevatorDownCommand());
 
-        operatorController.rightTrigger().whileTrue(elbowUpCommand());
-        operatorController.rightBumper().whileTrue(elbowDownCommand());
+        operatorController.rightTrigger().whileTrue(ElbowUpCommand());
+        operatorController.rightBumper().whileTrue(ElbowDownCommand());
 
-        operatorController.leftTrigger().whileTrue(wristUpCommand());
-        operatorController.leftBumper().whileTrue(wristDownCommand());
+        operatorController.leftTrigger().whileTrue(WristUpCommand());
+        operatorController.leftBumper().whileTrue(WristDownCommand());
 
-        operatorController.a().whileTrue(intakeCommand());
-        operatorController.b().whileTrue(ejectCommand());      
+        operatorController.a().whileTrue(IntakeCommand());
+        operatorController.b().whileTrue(EjectCommand());      
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

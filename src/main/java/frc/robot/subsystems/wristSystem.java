@@ -10,11 +10,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
 import frc.utilities.PosUtils;
 
-public class wristSystem extends SubsystemBase implements PosUtils {
+public class WristSystem extends SubsystemBase implements PosUtils {
   private static SparkMax motor;
   private static PIDController PID;
 
@@ -27,10 +26,11 @@ public class wristSystem extends SubsystemBase implements PosUtils {
    * Creates a new Joint subsystem, meant for the elbow and wrist as they should have very similar functionality.
    * @param isElbow whether or not this joint is the elbow, primarily for choosing the correct PID and displaying the proper name on shuffleboard
    */
-  public wristSystem() {
-    motor = new SparkMax(WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
-    PID = WristConstants.WRIST_PID;
+  public WristSystem() {
+    motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
+    PID = WristConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Wrist Encoder", this::getScaledPos);
   }
 
   /**
@@ -58,6 +58,10 @@ public class wristSystem extends SubsystemBase implements PosUtils {
     return motor.getAbsoluteEncoder().getPosition();
   }
 
+  public double getScaledPos(){
+    return PosUtils.mapRange(getPos(), WristConstants.MIN_POSITION, WristConstants.MAX_POSITION, 0.0, 1.0);
+  }
+
   /**
    * Checks if the motor position is within tolerance (as set in Constants) of the desired position, and is moving towards the desired position
    * 
@@ -67,8 +71,7 @@ public class wristSystem extends SubsystemBase implements PosUtils {
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.ELEVATOR_POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.ELEVATOR_MOTOR_VELOCITY_TOLERANCE);
-    //TODO: why is this using the tolerances for the elevator, shouldnt the tolerances be specific to joints? -Katie
+    return PosUtils.isOscillating(desiredPos, getPos(), WristConstants.POS_TOLERANCE, getMotorVelocity(), WristConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**

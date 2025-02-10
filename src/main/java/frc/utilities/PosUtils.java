@@ -30,5 +30,9 @@ public interface PosUtils {
     
         return retval;
     }
+
+    static double mapRange(double input, double minInput, double maxInput, double minOutput, double maxOutput){
+      return (input-minInput)*(maxOutput-minOutput)/(maxInput-minInput) + minOutput;
+    }
     
 }
