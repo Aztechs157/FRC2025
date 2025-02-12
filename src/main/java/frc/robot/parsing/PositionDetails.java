@@ -39,7 +39,7 @@ public class PositionDetails {
         }
     }
 
-    public PositionDetails() {
+    public PositionDetails() { // TODO bug here parsing int in line 49
         File file = new File(Filesystem.getDeployDirectory().toPath() + JSONPath);
         ObjectMapper objectMapper = new ObjectMapper();
         try {

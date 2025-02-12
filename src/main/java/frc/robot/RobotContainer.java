@@ -53,7 +53,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final PositionDetails positionDetails = new PositionDetails();
+    // private final PositionDetails positionDetails = new PositionDetails();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -109,25 +109,25 @@ public class RobotContainer {
         return new EjectCoral(intake);
     }
 
-    public Command ResetCoralSubsystems() {
-        return new ElevatorGoToExtrema(elevator, positionDetails, false);
-    }
+    // public Command ResetCoralSubsystems() {
+    //     return new ElevatorGoToExtrema(elevator, positionDetails, false);
+    // }
 
-    public Command GoToStage1() {
-        return new ElevatorGoToStage(elevator, positionDetails, 1);
-    }
+    // public Command GoToStage1() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 1);
+    // }
 
-    public Command GoToStage2() {
-        return new ElevatorGoToStage(elevator, positionDetails, 2);
-    }
+    // public Command GoToStage2() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 2);
+    // }
 
-    public Command GoToStage3() {
-        return new ElevatorGoToStage(elevator, positionDetails, 3);
-    }
+    // public Command GoToStage3() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 3);
+    // }
 
-    public Command GoToStage4() {
-        return new ElevatorGoToStage(elevator, positionDetails, 4);
-    }
+    // public Command GoToStage4() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 4);
+    // }
 
     // public final VisionSystem visionSystem = new VisionSystem();
 
@@ -182,8 +182,8 @@ public class RobotContainer {
         operatorController.a().whileTrue(IntakeCommand());
         operatorController.b().whileTrue(EjectCommand());   
         
-        operatorController.y().onTrue(GoToStage2());
-        operatorController.x().onTrue(ResetCoralSubsystems());
+        // operatorController.y().onTrue(GoToStage2());
+        // operatorController.x().onTrue(ResetCoralSubsystems());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
