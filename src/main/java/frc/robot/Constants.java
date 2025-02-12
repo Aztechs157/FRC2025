@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 public class Constants {
     public static class ControllerConstants {
 
+        // Ports for the Joysticks, as set in Driver Station 
         public static final int DRIVER_CONTROLLER_PORT = 0;
         public static final int OPERATOR_CONTROLLER_PORT = 1;
 
@@ -19,7 +20,6 @@ public class Constants {
 
     public class VisionConstants
     {
-
         public static final String LEFT_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Left"; // TODO: find proper value
         public static final Transform3d LEFT_CAMERA_PLACEMENT = new Transform3d(
                 new Translation3d(0.0, 0.0, 0.72), new Rotation3d())
@@ -44,16 +44,26 @@ public class Constants {
 
     public static class ElevatorConstants {
 
+        // IDs/Ports for the sensors/actuators. Motor is a CAN ID, POT (short for potentiometer) uses an analog input port, and the limits use digital I/O ports
         public static final int MOTOR_ID = 21;
         public static final int POT_ID = 0;
         public static final int BOTTOM_LIMIT_ID = 8;
         public static final int TOP_LIMIT_ID = 9;
         
+        // The PID Controller to go to/hold a position, unfinished
         public static final PIDController PID = new PIDController(0, 0, 0);
+
+        // The motor power needed to hold the elevator in place
         public static final double STALL_POWER = 0.057;
+
+        //The power used to move the motor for manual control, ie not in "go to position" mode
         public static final double MANUAL_CONTROL_SPEED_UP = 0.25;
         public static final double MANUAL_CONTROL_SPEED_DOWN = 0.157;
+
+        // The distance, as a fraction of total travel, that we can get to our virtual limits
         public static final double LIMIT_MARGIN = 0.05;
+
+        // The minimum and maximum reading for the encoder without touching the en stops, This defines our virtual limits
         public static final double MAX_POSITION = 2650.0; // max is top-most for all systems
         public static final double MIN_POSITION = 625.0; // min is bottom-most for all systems
         
@@ -63,13 +73,16 @@ public class Constants {
 
     public static class IntakeConstants {
 
+        // IDs/Ports for the sensors/actuators. Motor is a CAN ID, the sensor is a digital I/O
         public static final int MOTOR_ID = 22;
         public static final int SENSOR_ID = 1;
 
+        // The various speeds to run the motors at for the various tasks the intake needs to complete
         public static final double INTAKE_MOTOR_SPEED = 0.5;
         public static final double PLACE_MOTOR_SPEED = 0.75;
         public static final double EJECT_MOTOR_SPEED = 0.75;
-
+        
+        // the time to wait before considering the coral in the intake ejected/placed, in seconds
         public static final double PLACE_TIME = 0.5;
         public static final double EJECT_TIME = 0.5;
     }
