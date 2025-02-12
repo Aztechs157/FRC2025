@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /** Add your docs here. */
 public class PositionDetails {
     private final String JSONPath = "/position_details.json";
+    //TODO make corals initialize to an array with enough digits to fit all of the stages - Katie
     public Stage[] corals;
     public Dictionary<Integer, ReefTag> reefTags = new Hashtable<>();
 
@@ -46,6 +47,7 @@ public class PositionDetails {
             JsonNode json = objectMapper.readTree(file);
             for (Iterator<String> i = json.get("reef").fieldNames(); i.hasNext();) {
                 String currentTag = i.next();
+                // TODO check if "currentTag" starts with "tag", as it is currently trying to read "coral" as a number - Katie
                 int tagID = Integer.parseInt(currentTag.substring(3));
                 reefTags.put(tagID, new ReefTag(json.get("reef").get(currentTag), tagID));
             }
