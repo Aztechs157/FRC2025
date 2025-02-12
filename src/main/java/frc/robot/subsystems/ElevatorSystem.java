@@ -26,7 +26,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static PIDController PID = ElevatorConstants.PID;
 
   /**
-   * Creates a new elevator system with the values provided in Constants.java. Consists of one motor, a potentiometer, and 2 boolean sensors for the top and bottom limits
+   * Creates a new elevator system with the values provided in Constants.java. Consists of one motor, a potentiometer, and 2 boolean sensors for the top and bottom limits.
    * @see frc.robot.Constants.ElevatorConstants
    */
   public ElevatorSystem() {
@@ -37,8 +37,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Runs the Elevator motor at a set speed percentage 
-   * <p><b>WARNING: this ignores limit switches entirely, consider using another method</b></p>
+   * Runs the Elevator motor at a set speed percentage .
+   * <p><b>WARNING: this ignores limit switches entirely, consider using another method.</b></p>
    * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
    */
   public void runMotor(double velocity) {
@@ -46,7 +46,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Returns the velocity of the Elevator motor
+   * Returns the velocity of the Elevator motor.
    * @return - The current velocity of the elevator motor, in Rotations per Minute
    */
   public double getMotorVelocity() {
@@ -54,7 +54,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Gets the current position of the elevator
+   * Gets the current position of the elevator.
    * @return - The current position of the elevator, in raw potentiometer values.
    */
   public double getPos() {
@@ -63,14 +63,14 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Returns the current position of the Elevator
-   * @return the current value of the encoder, in percentage of total travel
+   * @return The current value of the encoder, in percentage of total travel
    */
   public double getScaledPos(){
     return PosUtils.mapRange(getPos(), ElevatorConstants.MIN_POSITION, ElevatorConstants.MAX_POSITION, 0.0, 1.0);
   }
 
   /**
-   * checks if the elevator is at the specified limit switch
+   * Checks if the elevator is at the specified limit switch.
    * @param top - Whether we are checking the top limit switch. If false, will check the bottom limit switch
    * @return - True if the elevator is at the limit switch, otherwise false
    * @see #atTop()
@@ -81,8 +81,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Checks if the elevator is at the bottom limit switch
-   * @return whether or not the bottom limit switch is depressed
+   * Checks if the elevator is at the bottom limit switch.
+   * @return Whether or not the bottom limit switch is depressed
    * @see #atLimit(boolean)
    */
   public boolean atBottom() {
@@ -90,8 +90,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Checks if the elevator is at the top limit switch
-   * @return whether or not the top limit switch is depressed
+   * Checks if the elevator is at the top limit switch.
+   * @return Whether or not the top limit switch is depressed
    * @see #atLimit(boolean)
    */
   public boolean atTop() {
@@ -99,7 +99,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * uses PID to find the speed to move the elevator at to get to the desired position
+   * Uses PID to find the speed to move the elevator at to get to the desired position.
    * @param desiredPos - the desired position, currently in raw potentiometer units
    * @return - the speed to move the elevator
    */
@@ -109,10 +109,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Checks if the motor position is within tolerance of the desired position (currently "{@value frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}", 
-   * as set in {@link frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}), and if the motor is moving towards the desired position
+   * as set in {@link frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}), and if the motor is moving towards the desired position.
    * 
-   * @param desiredPos the desired position of the joint, in Rotations
-   * @return if the motor is within tolerance
+   * @param desiredPos The desired position of the joint, in Rotations
+   * @return If the motor is within tolerance
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
@@ -120,9 +120,9 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * dangerously moves the elevator based on joystick input
-   * <p><b>WARNING: Ignores limit switches</b></p>
-   * @param joystickInput the input from the joystick
+   * Dangerously moves the elevator based on joystick input.
+   * <p><b>WARNING: Ignores limit switches.</b></p>
+   * @param joystickInput The input from the joystick
    * @return A command to run the elevator motor
    */
   public Command elevatorManualControl(Double joystickInput) {

@@ -16,7 +16,7 @@ public class UppiesSystem extends SubsystemBase {
   private static SparkMax motorLeft = new SparkMax(UppiesConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
   private static SparkMax motorRight = new SparkMax(UppiesConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
 
-  /** Creates a new uppiesSystem. */
+  /** Creates a new UppiesSystem. */
   public UppiesSystem() {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Left Pos", this::getPosLeft);
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Right Pos", this::getPosRight);
@@ -25,8 +25,8 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
-   * Runs the left motor at a set velocity 
-   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method</b></p>
+   * Runs the left motor at a set velocity.
+   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method.</b></p>
    * @param velocity Velocity is actually a percentage of speed, from -1.0 to 1.0
    */
   public void runLeftMotor(double velocity) {
@@ -34,8 +34,8 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
-   * Runs the right motor at a set velocity 
-   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method</b></p>
+   * Runs the right motor at a set velocity.
+   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method.</b></p>
    * @param velocity Velocity is actually a percentage of speed, from -1.0 to 1.0
    */
   public void runRightMotor(double velocity) {
@@ -43,10 +43,10 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
-   * tells the Uppies system to run the motor at a set velocity. Properly follows position limits defined by {@link frc.robot.Constants.UppiesConstants#LIMIT_MARGIN}, 
+   * Tells the Uppies system to run the motor at a set velocity. Properly follows position limits defined by {@link frc.robot.Constants.UppiesConstants#LIMIT_MARGIN}, 
    * such that the motors are only not allowed to move past a scaled position of  {@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the bottom limit, or 
-   * 1.0-{@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the top limit
-   * @param speed The speed to move the motor at, between -1.0 to 1.0 (ie, 1.0 moves the uppies motors with the intent to [TODO check if 1.0 moves the robot up or down wrt climbing])
+   * 1.0-{@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the top limit.
+   * @param speed The speed to move the motor at, between -1.0 to 1.0 (ie, 1.0 moves the Uppies motors with the intent to [TODO check if 1.0 moves the robot up or down wrt climbing])
    * @see frc.robot.subsystems.UppiesSystem#getScaledPosLeft()
    */
   public void runWithLimits(double speed) { // TODO: update this to use PID then generalize it in PosUtils
@@ -76,7 +76,7 @@ public class UppiesSystem extends SubsystemBase {
   }
   
   /**
-   * Gets the position of the left uppies motor absolute encoder
+   * Gets the position of the left Uppies motor absolute encoder.
    * @return - the encoder value, in rotations (from 0.0 to 1.0)
    */
   private double getPosLeft() {
@@ -84,7 +84,7 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
-   * Gets the position of the right uppies motor absolute encoder
+   * Gets the position of the right Uppies motor absolute encoder.
    * @return - the encoder value, in rotations (from 0.0 to 1.0)
    */
   private double getPosRight() {
@@ -92,7 +92,7 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
-   * Gets the position of the right uppies motor absolute encoder, after scaling to the possible range of motion
+   * Gets the position of the right Uppies motor absolute encoder, after scaling to the possible range of motion.
    * @return - the encoder value, in percentage of travel distance (from 0.0 to 1.0)
    */
   public double getScaledPosLeft(){
@@ -100,7 +100,7 @@ public class UppiesSystem extends SubsystemBase {
   }
 
 /**
-   * Gets the position of the left uppies motor absolute encoder, after scaling to the possible range of motion
+   * Gets the position of the left Uppies motor absolute encoder, after scaling to the possible range of motion.
    * @return - the encoder value, in percentage of travel distance (from 0.0 to 1.0)
    */
   public double getScaledPosRight(){

@@ -22,7 +22,7 @@ public class IntakeSystem extends SubsystemBase {
   }
 
   /**
-   * Runs the intake motor at a set speed percentage 
+   * Runs the intake motor at a set speed percentage.
    * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
    */
   public void run(double speed) {
@@ -30,7 +30,7 @@ public class IntakeSystem extends SubsystemBase {
   }
   
   /**
-   * Whether the intake sensor believes that the intake is occupied or empty
+   * Whether the intake sensor believes that the intake is occupied or empty.
    * @return - True if the intake is full, else False
    */
   public boolean hasCoral() {
