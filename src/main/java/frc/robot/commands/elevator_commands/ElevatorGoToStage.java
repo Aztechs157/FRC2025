@@ -9,30 +9,28 @@ import frc.robot.parsing.PositionDetails;
 import frc.robot.subsystems.ElevatorSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GoToExtrema extends Command {
+public class ElevatorGoToStage extends Command {
   private final ElevatorSystem elevator;
-  private final PositionDetails positionDetails;
-  private final boolean isTop;
+  private final double position;
 
-  /** Creates a new GoToStage1. */
-  public GoToExtrema(final ElevatorSystem elevator, final PositionDetails positionDetails, final boolean isTop) {
+  /** Creates a new GoToIntermediatePos. */
+  public ElevatorGoToStage(final ElevatorSystem elevator, final PositionDetails positionDetails, final int stage) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.elevator = elevator;
-    this.positionDetails = positionDetails;
-    this.isTop = isTop;
     addRequirements(elevator);
+    position = positionDetails.getElevatorPosAtStage(stage);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.runMotor(elevator.getNewSpeed(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)));
+    elevator.runMotor(elevator.getNewSpeed(position));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.runMotor(elevator.getNewSpeed(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)));
+    elevator.runMotor(elevator.getNewSpeed(position));
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +42,6 @@ public class GoToExtrema extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (elevator.isOscillating(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)) || isTop ? elevator.atBottom() : elevator.atTop());
+    return elevator.isOscillating(position);
   }
 }

@@ -2,44 +2,46 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.elevator_commands;
+package frc.robot.commands.wrist_commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ElevatorSystem;
+import frc.robot.parsing.PositionDetails;
+import frc.robot.subsystems.WristSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorDown extends Command {
+public class WristGoToStage extends Command {
+  private final WristSystem wrist;
+  private final double position;
 
-  private final ElevatorSystem elevatorSystem;
-  private final double commandValue;
-  /** Creates a new elevatorDown. */
-  public ElevatorDown(final ElevatorSystem elevatorSystem, double commandValue) {
+  /** Creates a new WristGoToStage. */
+  public WristGoToStage(final WristSystem wrist, final PositionDetails positionDetails, final int stage) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevatorSystem);
-
-    this.elevatorSystem = elevatorSystem;
-    this.commandValue = commandValue;
+    this.wrist = wrist;
+    addRequirements(wrist);
+    position = positionDetails.getWristPosAtStage(stage);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    wrist.runMotor(wrist.getNewSpeed(position));
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevatorSystem.runMotor(-commandValue);
+    wrist.runMotor(wrist.getNewSpeed(position));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSystem.runMotor(0);
+    wrist.runMotor(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return wrist.isOscillating(position);
   }
 }
