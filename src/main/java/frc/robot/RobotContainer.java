@@ -23,12 +23,15 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
+import frc.robot.commands.elevator_commands.ElevatorGoToStage;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
+import frc.robot.commands.elevator_commands.ElevatorGoToExtrema;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeCoral;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.wrist_commands.WristManualControl;
 import frc.robot.generated.TunerConstants;
+import frc.robot.parsing.PositionDetails;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.IntakeSystem;
@@ -49,6 +52,8 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
+
+    // private final PositionDetails positionDetails = new PositionDetails();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -104,6 +109,26 @@ public class RobotContainer {
         return new EjectCoral(intake);
     }
 
+    // public Command ResetCoralSubsystems() {
+    //     return new ElevatorGoToExtrema(elevator, positionDetails, false);
+    // }
+
+    // public Command GoToStage1() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 1);
+    // }
+
+    // public Command GoToStage2() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 2);
+    // }
+
+    // public Command GoToStage3() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 3);
+    // }
+
+    // public Command GoToStage4() {
+    //     return new ElevatorGoToStage(elevator, positionDetails, 4);
+    // }
+
     // public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
@@ -155,7 +180,10 @@ public class RobotContainer {
         operatorController.leftBumper().whileTrue(WristDownCommand());
 
         operatorController.a().whileTrue(IntakeCommand());
-        operatorController.b().whileTrue(EjectCommand());      
+        operatorController.b().whileTrue(EjectCommand());   
+        
+        // operatorController.y().onTrue(GoToStage2());
+        // operatorController.x().onTrue(ResetCoralSubsystems());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

@@ -25,35 +25,53 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   /**
+   * Runs the left motor at a set velocity 
+   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method</b></p>
+   * @param velocity Velocity is actually a percentage of speed, from -1.0 to 1.0
+   */
+  public void runLeftMotor(double velocity) {
+    motorLeft.set(velocity);
+  }
+
+  /**
+   * Runs the right motor at a set velocity 
+   * <p><b>WARNING: this ignores limits entirely and can damage the robot, consider using another method</b></p>
+   * @param velocity Velocity is actually a percentage of speed, from -1.0 to 1.0
+   */
+  public void runRightMotor(double velocity) {
+    motorRight.set(velocity);
+  }
+
+  /**
    * tells the Uppies system to run the motor at a set velocity. Properly follows position limits defined by {@link frc.robot.Constants.UppiesConstants#LIMIT_MARGIN}, 
    * such that the motors are only not allowed to move past a scaled position of  {@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the bottom limit, or 
    * 1.0-{@value frc.robot.Constants.ElevatorConstants#LIMIT_MARGIN} for the top limit
    * @param speed The speed to move the motor at, between -1.0 to 1.0 (ie, 1.0 moves the uppies motors with the intent to [TODO check if 1.0 moves the robot up or down wrt climbing])
    * @see frc.robot.subsystems.UppiesSystem#getScaledPosLeft()
    */
-  public void run(double speed) { // TODO: update this to use PID then generalize it in PosUtils
+  public void runWithLimits(double speed) { // TODO: update this to use PID then generalize it in PosUtils
     if (getScaledPosLeft() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
-      motorLeft.set(0);
+      runLeftMotor(0);
     } else if (getScaledPosLeft() >= 0.9 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
-      motorLeft.set(speed * 0.75);
+      runLeftMotor(speed * 0.75);
     } else if (getScaledPosLeft() <= 0.0 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
-      motorLeft.set(0);
+      runLeftMotor(0);
     } else if (getScaledPosLeft() <= 0.1 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
-      motorLeft.set(speed * 0.75);
+      runLeftMotor(speed * 0.75);
     } else {
-      motorLeft.set(speed);
+      runLeftMotor(speed);
     }
 
     if (getScaledPosRight() >= 1.0 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
-      motorRight.set(0);
+      runRightMotor(0);
     } else if (getScaledPosRight() >= 0.9 - UppiesConstants.LIMIT_MARGIN && speed < 0) {
-      motorRight.set(-speed * 0.75);
+      runRightMotor(-speed * 0.75);
     } else if (getScaledPosRight() <= 0.0 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
-      motorRight.set(0);
-    } else if (getScaledPosRight() <= 0.10 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
-      motorRight.set(-speed * 0.75);
+      runRightMotor(0);
+    } else if (getScaledPosRight() <= 0.1 + UppiesConstants.LIMIT_MARGIN && speed > 0) {
+      runRightMotor(-speed * 0.75);
     } else {
-      motorRight.set(-speed);
+      runRightMotor(-speed);
     }
   }
   

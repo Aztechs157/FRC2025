@@ -123,11 +123,11 @@ public class Constants {
         public static final double MANUAL_CONTROL_SPEED = 0.5;
         public static final double LIMIT_MARGIN = 0.05;
 
-        public static final double LEFT_MAX_POSITION = 0.1385; // 1385
-        public static final double LEFT_MIN_POSITION = 0.5492; // 5492
+        public static final double LEFT_MAX_POSITION = 0.3228;
+        public static final double LEFT_MIN_POSITION = 0.7053;
 
-        public static final double RIGHT_MAX_POSITION = 0.4828; // 4828
-        public static final double RIGHT_MIN_POSITION = 0.0653; // 0653
+        public static final double RIGHT_MAX_POSITION = 0.4828;
+        public static final double RIGHT_MIN_POSITION = 0.0653;
     }
 }
 
