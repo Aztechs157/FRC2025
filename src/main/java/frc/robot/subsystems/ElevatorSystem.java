@@ -34,6 +34,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop);
+    //Shuffleboard.getTab("Sensor values").addDouble("Desired Position", this::getNewSpeed);
   }
 
   /**

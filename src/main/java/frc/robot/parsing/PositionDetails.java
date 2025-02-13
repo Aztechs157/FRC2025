@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PositionDetails {
     private final String JSONPath = "/position_details.json";
     //TODO make corals initialize to an array with enough digits to fit all of the stages - Katie
-    public Stage[] corals;
+    public Stage[] corals = new Stage[5];
     public Dictionary<Integer, ReefTag> reefTags = new Hashtable<>();
 
     public class Stage {
@@ -43,19 +43,28 @@ public class PositionDetails {
     public PositionDetails() { // TODO bug here parsing int in line 49
         File file = new File(Filesystem.getDeployDirectory().toPath() + JSONPath);
         ObjectMapper objectMapper = new ObjectMapper();
+
         try {
+
             JsonNode json = objectMapper.readTree(file);
+
             for (Iterator<String> i = json.get("reef").fieldNames(); i.hasNext();) {
                 String currentTag = i.next();
+                
                 // TODO check if "currentTag" starts with "tag", as it is currently trying to read "coral" as a number - Katie
-                int tagID = Integer.parseInt(currentTag.substring(3));
-                reefTags.put(tagID, new ReefTag(json.get("reef").get(currentTag), tagID));
+                if (currentTag.substring(0,3) == "tag"){
+                    int tagID = Integer.parseInt(currentTag.substring(3));
+                    reefTags.put(tagID, new ReefTag(json.get("reef").get(currentTag), tagID));
+                }
             }
+
             List<Stage> coralList = new ArrayList<Stage>(4);
             for(int i = 1; i <= 4; i++) {
                 coralList.add(new Stage(json.get("reef").get("coral").get("stage" + i)));
             }
+
             coralList.toArray(corals);
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

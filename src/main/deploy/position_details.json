@@ -5,8 +5,8 @@
                 "verticalPos": 0.46,
                 "systemPositions": {
                     "elevator": 0,
-                    "elbow": 0,
-                    "wrist": 0
+                    "elbow": 0.773,
+                    "wrist": 0.325
                 },
                 "horizontalOffsets": {
                     "left": -0.301625,
@@ -16,9 +16,9 @@
             "stage2": {
                 "verticalPos": 0.81,
                 "systemPositions": {
-                    "elevator": 0,
-                    "elbow": 0,
-                    "wrist": 0
+                    "elevator": 0.159,
+                    "elbow": 0.847,
+                    "wrist": 0.196
                 },
                 "horizontalOffsets": {
                     "left": -0.1651,
@@ -28,9 +28,9 @@
             "stage3": {
                 "verticalPos": 1.21,
                 "systemPositions": {
-                    "elevator": 0,
-                    "elbow": 0,
-                    "wrist": 0
+                    "elevator": 0.464,
+                    "elbow": 0.847,
+                    "wrist": 0.196
                 },
                 "horizontalOffsets": {
                     "left": -0.1651,
@@ -40,9 +40,9 @@
             "stage4": {
                 "verticalPos": 1.83,
                 "systemPositions": {
-                    "elevator": 0,
-                    "elbow": 0,
-                    "wrist": 0
+                    "elevator": 1,
+                    "elbow": 0.815,
+                    "wrist": 0.157
                 },
                 "horizontalOffsets": {
                     "left": -0.1651,
@@ -110,9 +110,9 @@
     "coralStation": {
         "verticalPos": 0.95,
         "algaeSystemPositions": {
-            "elevator": 0,
-            "elbow": 0,
-            "wrist": 0
+            "elevator": 0.055,
+            "elbow": 0.875,
+            "wrist": 0.586
         },
         "tag1": {
             "side": "left",

@@ -32,6 +32,7 @@ import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.wrist_commands.WristManualControl;
 import frc.robot.generated.TunerConstants;
 import frc.robot.parsing.PositionDetails;
+import frc.robot.parsing.PositionDetails.Stage;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.IntakeSystem;
@@ -109,27 +110,27 @@ public class RobotContainer {
         return new EjectCoral(intake);
     }
 
-    // public Command ResetCoralSubsystems() {
-    //     return new ElevatorGoToExtrema(elevator, positionDetails, false);
-    // }
+     public Command ResetCoralSubsystems() {
+         return new ElevatorGoToExtrema(elevator, new PositionDetails(), false);
+     }
 
-    // public Command GoToStage1() {
-    //     return new ElevatorGoToStage(elevator, positionDetails, 1);
-    // }
+     public Command GoToStage1() {
+         return new ElevatorGoToStage(elevator, new PositionDetails(), 1);
+     }
 
-    // public Command GoToStage2() {
-    //     return new ElevatorGoToStage(elevator, positionDetails, 2);
-    // }
+     public Command GoToStage2() {
+         return new ElevatorGoToStage(elevator, new PositionDetails(), 2);
+     }
 
-    // public Command GoToStage3() {
-    //     return new ElevatorGoToStage(elevator, positionDetails, 3);
-    // }
+     public Command GoToStage3() {
+         return new ElevatorGoToStage(elevator, new PositionDetails(), 3);
+     }
 
-    // public Command GoToStage4() {
-    //     return new ElevatorGoToStage(elevator, positionDetails, 4);
-    // }
+     public Command GoToStage4() {
+         return new ElevatorGoToStage(elevator, new PositionDetails(), 4);
+     }
 
-    // public final VisionSystem visionSystem = new VisionSystem();
+     //public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -182,8 +183,8 @@ public class RobotContainer {
         operatorController.a().whileTrue(IntakeCommand());
         operatorController.b().whileTrue(EjectCommand());   
         
-        // operatorController.y().onTrue(GoToStage2());
-        // operatorController.x().onTrue(ResetCoralSubsystems());
+        operatorController.y().onTrue(GoToStage2());
+        operatorController.x().onTrue(ResetCoralSubsystems());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
