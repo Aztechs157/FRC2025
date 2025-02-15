@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -27,6 +28,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static DigitalInput bottomLimit = new DigitalInput(ElevatorConstants.BOTTOM_LIMIT_ID);
   private static DigitalInput topLimit = new DigitalInput(ElevatorConstants.TOP_LIMIT_ID);
   private static PIDController PID = ElevatorConstants.PID;
+  private static SlewRateLimiter slew = new SlewRateLimiter(ElevatorConstants.SLEW_RATE_LIMIT_UP,
+      ElevatorConstants.SLEW_RATE_LIMIT_DOWN, 0);
 
   /**
    * Creates a new elevator system with the values provided in Constants.java.
@@ -39,12 +42,15 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 0);
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
-        .withPosition(1, 0).withSize(2, 1);
+        .withWidget(BuiltInWidgets.kTextView).withPosition(1, 0).withSize(2, 1);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot 2", this::getScaledPos)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(9, 3);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 0);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
+    Shuffleboard.getTab("Sensor values").addDouble("Elevator Motor Velocity", this::getMotorVelocity)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(9, 0);
   }
 
   /**
@@ -59,6 +65,20 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
+  }
+
+  public double runWithLimits(double speed) {
+    if (getScaledPos() >= 1.0 - ElevatorConstants.LIMIT_MARGIN && speed < 0) {
+      return 0;
+    } else if (getScaledPos() >= 0.9 - ElevatorConstants.LIMIT_MARGIN && speed < 0) {
+      return speed * 0.75;
+    } else if (getScaledPos() <= 0.0 + ElevatorConstants.LIMIT_MARGIN && speed > 0) {
+      return 0;
+    } else if (getScaledPos() <= 0.1 + ElevatorConstants.LIMIT_MARGIN && speed > 0) {
+      return speed * 0.75;
+    } else {
+      return speed;
+    }
   }
 
   /**
@@ -125,12 +145,16 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * Uses PID to find the speed to move the elevator at to get to the desired
    * position.
    * 
-   * @param desiredPos - the desired position, currently in raw potentiometer
-   *                   units
+   * @param desiredPos - the desired position in scaled potentiometer units
    * @return - the speed to move the elevator
    */
   public double getNewSpeed(double desiredPos) {
-    return PID.calculate(getScaledPos(), desiredPos);
+    return slew.calculate(PID.calculate(getScaledPos(), desiredPos));
+  }
+
+  public void reset() {
+    slew.reset(0);
+    PID.reset();
   }
 
   /**

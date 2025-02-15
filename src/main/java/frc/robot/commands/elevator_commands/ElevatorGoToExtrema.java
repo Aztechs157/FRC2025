@@ -15,7 +15,8 @@ public class ElevatorGoToExtrema extends Command {
   private final boolean isTop;
 
   /** Creates a new GoToStage1. */
-  public ElevatorGoToExtrema(final ElevatorSystem elevator, final PositionDetails positionDetails, final boolean isTop) {
+  public ElevatorGoToExtrema(final ElevatorSystem elevator, final PositionDetails positionDetails,
+      final boolean isTop) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.elevator = elevator;
     this.positionDetails = positionDetails;
@@ -26,13 +27,13 @@ public class ElevatorGoToExtrema extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.runMotor(elevator.getNewSpeed(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.runMotor(elevator.getNewSpeed(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)));
+    elevator.runMotor(elevator
+        .getNewSpeed(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)));
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +45,8 @@ public class ElevatorGoToExtrema extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (elevator.isOscillating(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4)) || isTop ? elevator.atBottom() : elevator.atTop());
+    return (elevator
+        .isOscillating(isTop ? positionDetails.getElevatorPosAtStage(1) : positionDetails.getElevatorPosAtStage(4))
+        || isTop ? elevator.atBottom() : elevator.atTop());
   }
 }

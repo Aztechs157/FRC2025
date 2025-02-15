@@ -93,6 +93,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    *      double)
    */
   public boolean isOscillating(double desiredPos) {
+    System.out.println("Elbow | Goal: " + desiredPos + ", Curt: " + getScaledPos() + ", Vel: " + getMotorVelocity());
     return PosUtils.isOscillating(desiredPos, getScaledPos(), ElbowConstants.POS_TOLERANCE, getMotorVelocity(),
         ElbowConstants.MOTOR_VELOCITY_TOLERANCE);
   }
@@ -106,6 +107,10 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    */
   public double getNewSpeed(double desiredPos) {
     return PID.calculate(getScaledPos(), desiredPos);
+  }
+
+  public void reset() {
+    PID.reset();
   }
 
   @Override

@@ -4,7 +4,6 @@
 
 package frc.robot.commands.elevator_commands;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.parsing.PositionDetails;
 import frc.robot.subsystems.ElevatorSystem;
@@ -25,7 +24,7 @@ public class ElevatorGoToStage extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.runMotor(elevator.getNewSpeed(position));
+    elevator.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

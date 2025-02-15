@@ -45,7 +45,8 @@ import frc.robot.subsystems.UppiesSystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
+                                                                                      // max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -60,7 +61,7 @@ public class RobotContainer {
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
-    
+
     public final DriveSystem drivetrain = TunerConstants.createDrivetrain();
     private final UppiesSystem uppies = new UppiesSystem();
     private final ElevatorSystem elevator = new ElevatorSystem();
@@ -85,7 +86,7 @@ public class RobotContainer {
     }
 
     public Command ElevatorDownCommand() {
-        return new ElevatorManualControl(elevator, -ElevatorConstants.MANUAL_CONTROL_SPEED_DOWN); 
+        return new ElevatorManualControl(elevator, -ElevatorConstants.MANUAL_CONTROL_SPEED_DOWN);
     }
 
     public Command ElbowUpCommand() {
@@ -112,33 +113,36 @@ public class RobotContainer {
         return new EjectCoral(intake);
     }
 
-     public Command ResetCoralSubsystems() {
-         return new ElevatorGoToExtrema(elevator, positionDetails, false);
-     }
+    public Command ResetCoralSubsystems() {
+        return new ElevatorGoToExtrema(elevator, positionDetails, false);
+    }
 
-     public Command GoToStage1() {
-         return new ElevatorGoToStage(elevator, positionDetails, 1);
-     }
+    public Command GoToStage1() {
+        return new ElevatorGoToStage(elevator, positionDetails, 1);
+    }
 
-     public Command GoToStage2() {
-         return new ElevatorGoToStage(elevator, positionDetails, 2)
-         .alongWith(new ElbowGoToStage(elbow, positionDetails, 2))
-         .alongWith(new WristGoToStage(wrist, positionDetails, 2))
-         .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER));
-     }
+    public Command GoToStage2() {
+        return (new ElevatorGoToStage(elevator, positionDetails, 2)
+                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
+                .alongWith(new ElbowGoToStage(elbow, positionDetails, 2))
+                .alongWith(new WristGoToStage(wrist, positionDetails, 2));
+    }
 
-     public Command GoToStage3() {
-         return new ElevatorGoToStage(elevator, positionDetails, 3)
-         .alongWith(new ElbowGoToStage(elbow, positionDetails, 3))
-         .alongWith(new WristGoToStage(wrist, positionDetails, 3))
-         .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER));
-     }
+    public Command GoToStage3() {
+        return (new ElevatorGoToStage(elevator, positionDetails, 3)
+                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
+                .alongWith(new ElbowGoToStage(elbow, positionDetails, 3))
+                .alongWith(new WristGoToStage(wrist, positionDetails, 3));
+    }
 
-     public Command GoToStage4() {
-         return new ElevatorGoToStage(elevator, positionDetails, 4);
-     }
+    public Command GoToStage4() {
+        return (new ElevatorGoToStage(elevator, positionDetails, 4)
+                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
+                .alongWith(new ElbowGoToStage(elbow, positionDetails, 4))
+                .alongWith(new WristGoToStage(wrist, positionDetails, 4));
+    }
 
-     //public final VisionSystem visionSystem = new VisionSystem();
+    // public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -152,18 +156,21 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(), ControllerConstants.LEFT_Y_DEADBAND) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(), ControllerConstants.LEFT_X_DEADBAND) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(), ControllerConstants.RIGHT_X_DEADBAND) * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+                // Drivetrain will execute this command periodically
+                drivetrain.applyRequest(() -> drive
+                        .withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(),
+                                ControllerConstants.LEFT_Y_DEADBAND) * MaxSpeed) // Drive forward with negative Y
+                                                                                 // (forward)
+                        .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(),
+                                ControllerConstants.LEFT_X_DEADBAND) * MaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(),
+                                ControllerConstants.RIGHT_X_DEADBAND) * MaxAngularRate) // Drive counterclockwise with
+                                                                                        // negative X (left)
+                ));
 
         driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        driverController.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
-        ));
+        driverController.b().whileTrue(drivetrain.applyRequest(() -> point
+                .withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -173,7 +180,7 @@ public class RobotContainer {
         driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric())); 
+        driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         driverController.povUp().whileTrue(UppiesUpCommand());
         driverController.povDown().whileTrue(UppiesDownCommand());
@@ -189,10 +196,11 @@ public class RobotContainer {
         operatorController.leftBumper().whileTrue(WristDownCommand());
 
         operatorController.a().whileTrue(IntakeCommand());
-        operatorController.b().whileTrue(EjectCommand());   
-        
+        operatorController.b().whileTrue(EjectCommand());
+
         operatorController.y().onTrue(GoToStage2());
-        operatorController.x().onTrue(ResetCoralSubsystems());
+        operatorController.x().onTrue(GoToStage3());
+        operatorController.start().onTrue(GoToStage4());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

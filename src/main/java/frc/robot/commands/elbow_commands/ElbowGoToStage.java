@@ -24,7 +24,7 @@ public class ElbowGoToStage extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elbow.runMotor(elbow.getNewSpeed(position));
+    elbow.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,6 +38,9 @@ public class ElbowGoToStage extends Command {
   @Override
   public void end(boolean interrupted) {
     elbow.runMotor(0);
+    if (interrupted) {
+      System.out.println("Elbow interupted");
+    }
   }
 
   // Returns true when the command should end.

@@ -40,7 +40,7 @@
             "stage4": {
                 "verticalPos": 1.83,
                 "systemPositions": {
-                    "elevator": 1,
+                    "elevator": 0.95,
                     "elbow": 0.815,
                     "wrist": 0.157
                 },
