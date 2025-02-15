@@ -34,7 +34,6 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop);
-    //Shuffleboard.getTab("Sensor values").addDouble("Desired Position", this::getNewSpeed);
   }
 
   /**
@@ -105,7 +104,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * @return - the speed to move the elevator
    */
   public double getNewSpeed(double desiredPos) {
-    return PID.calculate(getPos(), desiredPos);
+    return PID.calculate(getScaledPos(), desiredPos);
   }
 
   /**
@@ -117,7 +116,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getPos(), ElevatorConstants.POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+    return PosUtils.isOscillating(desiredPos, getScaledPos(), ElevatorConstants.POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**

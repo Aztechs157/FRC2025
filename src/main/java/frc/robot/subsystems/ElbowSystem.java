@@ -74,7 +74,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getPos(), ElbowConstants.POS_TOLERANCE, getMotorVelocity(), ElbowConstants.MOTOR_VELOCITY_TOLERANCE);
+    return PosUtils.isOscillating(desiredPos, getScaledPos(), ElbowConstants.POS_TOLERANCE, getMotorVelocity(), ElbowConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
@@ -83,7 +83,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    * @return The speed to move the joint
    */
   public double getNewSpeed(double desiredPos) {
-    return PID.calculate(getPos(), desiredPos);
+    return PID.calculate(getScaledPos(), desiredPos);
   }
 
   @Override

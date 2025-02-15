@@ -22,6 +22,7 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.elbow_commands.ElbowGoToStage;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
 import frc.robot.commands.elevator_commands.ElevatorGoToStage;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
@@ -29,6 +30,7 @@ import frc.robot.commands.elevator_commands.ElevatorGoToExtrema;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeCoral;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
+import frc.robot.commands.wrist_commands.WristGoToStage;
 import frc.robot.commands.wrist_commands.WristManualControl;
 import frc.robot.generated.TunerConstants;
 import frc.robot.parsing.PositionDetails;
@@ -54,7 +56,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    // private final PositionDetails positionDetails = new PositionDetails();
+    private final PositionDetails positionDetails = new PositionDetails();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -111,23 +113,29 @@ public class RobotContainer {
     }
 
      public Command ResetCoralSubsystems() {
-         return new ElevatorGoToExtrema(elevator, new PositionDetails(), false);
+         return new ElevatorGoToExtrema(elevator, positionDetails, false);
      }
 
      public Command GoToStage1() {
-         return new ElevatorGoToStage(elevator, new PositionDetails(), 1);
+         return new ElevatorGoToStage(elevator, positionDetails, 1);
      }
 
      public Command GoToStage2() {
-         return new ElevatorGoToStage(elevator, new PositionDetails(), 2);
+         return new ElevatorGoToStage(elevator, positionDetails, 2)
+         .alongWith(new ElbowGoToStage(elbow, positionDetails, 2))
+         .alongWith(new WristGoToStage(wrist, positionDetails, 2))
+         .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER));
      }
 
      public Command GoToStage3() {
-         return new ElevatorGoToStage(elevator, new PositionDetails(), 3);
+         return new ElevatorGoToStage(elevator, positionDetails, 3)
+         .alongWith(new ElbowGoToStage(elbow, positionDetails, 3))
+         .alongWith(new WristGoToStage(wrist, positionDetails, 3))
+         .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER));
      }
 
      public Command GoToStage4() {
-         return new ElevatorGoToStage(elevator, new PositionDetails(), 4);
+         return new ElevatorGoToStage(elevator, positionDetails, 4);
      }
 
      //public final VisionSystem visionSystem = new VisionSystem();

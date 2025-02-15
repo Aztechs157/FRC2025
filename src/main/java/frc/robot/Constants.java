@@ -50,7 +50,7 @@ public class Constants {
         public static final int BOTTOM_LIMIT_ID = 8;
         public static final int TOP_LIMIT_ID = 9;
         
-        static final double p = 0.0, i = 0.0, d = 0.0;
+        static final double p = 1.57, i = 0.5, d = 0.00001;
 
         /** PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d as {@value #d}. */
         public static final PIDController PID = new PIDController(p, i, d);
@@ -66,9 +66,9 @@ public class Constants {
 
         // max is top-most for all systems, min is bottom-most for all systems
         /** Position limits, in raw encoder units. In this case, rotations. This defines our virtual limits. */
-        public static final double MAX_POSITION = 2650.0, MIN_POSITION = 625.0;
+        public static final double MAX_POSITION = 2643.0, MIN_POSITION = 625.0;
         
-        public static final double POS_TOLERANCE = 2;
+        public static final double POS_TOLERANCE = 0.02;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
     }
 
@@ -90,7 +90,7 @@ public class Constants {
         public static final int MOTOR_ID = 23;
         public static final int ENCODER_ID = 0;
 
-        static final double p = 0.0, i = 0.0, d = 0.0;
+        static final double p = 2.0, i = 0.0, d = 0.0001;
 
         /** PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d as {@value #d}. */
         public static final PIDController PID = new PIDController(p, i, d);
@@ -106,7 +106,7 @@ public class Constants {
 
 
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
-        public static final double POS_TOLERANCE = 2;
+        public static final double POS_TOLERANCE = 0.02;
     }
 
     public static class WristConstants {
@@ -114,7 +114,7 @@ public class Constants {
         public static final int MOTOR_ID = 24;
 
         
-        static final double p = 0.0, i = 0.0, d = 0.0;
+        static final double p = 1.0, i = 0.0, d = 0.0001;
 
         
         /** PID controller for the wrist, with p as {@value #p}, i as {@value #i}, and d as {@value #d}. */
@@ -131,7 +131,7 @@ public class Constants {
 
 
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
-        public static final double POS_TOLERANCE = 2;
+        public static final double POS_TOLERANCE = 0.02;
     }
 
     public static class UppiesConstants {

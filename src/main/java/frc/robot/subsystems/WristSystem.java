@@ -75,7 +75,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getPos(), WristConstants.POS_TOLERANCE, getMotorVelocity(), WristConstants.MOTOR_VELOCITY_TOLERANCE);
+    return PosUtils.isOscillating(desiredPos, getScaledPos(), WristConstants.POS_TOLERANCE, getMotorVelocity(), WristConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
@@ -84,7 +84,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    * @return The speed to move the joint
    */
   public double getNewSpeed(double desiredPos) {
-    return PID.calculate(getPos(), desiredPos);
+    return PID.calculate(getScaledPos(), desiredPos);
   }
 
   @Override
