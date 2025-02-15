@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
@@ -18,19 +19,23 @@ public class IntakeSystem extends SubsystemBase {
 
   /** Creates a new IntakeSystem. */
   public IntakeSystem() {
-    Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral);
+    Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral)
+        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 0);
   }
 
   /**
    * Runs the intake motor at a set speed percentage.
-   * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
+   * 
+   * @param speed - The speed percentage to run the motor at (IE, values from -1.0
+   *              to 1.0)
    */
   public void run(double speed) {
     motor.set(speed);
   }
-  
+
   /**
    * Whether the intake sensor believes that the intake is occupied or empty.
+   * 
    * @return - True if the intake is full, else False
    */
   public boolean hasCoral() {

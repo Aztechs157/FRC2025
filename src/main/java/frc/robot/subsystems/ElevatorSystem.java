@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import com.revrobotics.spark.SparkMax;
@@ -11,6 +13,7 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,20 +29,33 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static PIDController PID = ElevatorConstants.PID;
 
   /**
-   * Creates a new elevator system with the values provided in Constants.java. Consists of one motor, a potentiometer, and 2 boolean sensors for the top and bottom limits.
+   * Creates a new elevator system with the values provided in Constants.java.
+   * Consists of one motor, a potentiometer, and 2 boolean sensors for the top and
+   * bottom limits.
+   * 
    * @see frc.robot.Constants.ElevatorConstants
    */
   public ElevatorSystem() {
-    Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos);
-    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos);
-    Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom);
-    Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop);
+    Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
+        .withPosition(0, 0);
+    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos)
+        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
+        .withPosition(1, 0).withSize(2, 1);
+    Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom)
+        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 0);
+    Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop)
+        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
   }
 
   /**
    * Runs the Elevator motor at a set speed percentage .
-   * <p><b>WARNING: this ignores limit switches entirely, consider using another method.</b></p>
-   * @param speed - The speed percentage to run the motor at (IE, values from -1.0 to 1.0)
+   * <p>
+   * <b>WARNING: this ignores limit switches entirely, consider using another
+   * method.</b>
+   * </p>
+   * 
+   * @param speed - The speed percentage to run the motor at (IE, values from -1.0
+   *              to 1.0)
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
@@ -47,6 +63,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Returns the velocity of the Elevator motor.
+   * 
    * @return - The current velocity of the elevator motor, in Rotations per Minute
    */
   public double getMotorVelocity() {
@@ -55,6 +72,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Gets the current position of the elevator.
+   * 
    * @return - The current position of the elevator, in raw potentiometer values.
    */
   public double getPos() {
@@ -63,25 +81,29 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Returns the current position of the Elevator
+   * 
    * @return The current value of the encoder, in percentage of total travel
    */
-  public double getScaledPos(){
+  public double getScaledPos() {
     return PosUtils.mapRange(getPos(), ElevatorConstants.MIN_POSITION, ElevatorConstants.MAX_POSITION, 0.0, 1.0);
   }
 
   /**
    * Checks if the elevator is at the specified limit switch.
-   * @param top - Whether we are checking the top limit switch. If false, will check the bottom limit switch
+   * 
+   * @param top - Whether we are checking the top limit switch. If false, will
+   *            check the bottom limit switch
    * @return - True if the elevator is at the limit switch, otherwise false
    * @see #atTop()
    * @see #atBottom()
    */
   public boolean atLimit(boolean top) {
-    return top? atTop() : atBottom();
+    return top ? atTop() : atBottom();
   }
 
   /**
    * Checks if the elevator is at the bottom limit switch.
+   * 
    * @return Whether or not the bottom limit switch is depressed
    * @see #atLimit(boolean)
    */
@@ -91,6 +113,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   /**
    * Checks if the elevator is at the top limit switch.
+   * 
    * @return Whether or not the top limit switch is depressed
    * @see #atLimit(boolean)
    */
@@ -99,8 +122,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Uses PID to find the speed to move the elevator at to get to the desired position.
-   * @param desiredPos - the desired position, currently in raw potentiometer units
+   * Uses PID to find the speed to move the elevator at to get to the desired
+   * position.
+   * 
+   * @param desiredPos - the desired position, currently in raw potentiometer
+   *                   units
    * @return - the speed to move the elevator
    */
   public double getNewSpeed(double desiredPos) {
@@ -108,26 +134,39 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Checks if the motor position is within tolerance of the desired position (currently "{@value frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}", 
-   * as set in {@link frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}), and if the motor is moving towards the desired position.
+   * Checks if the motor position is within tolerance of the desired position
+   * (currently
+   * "{@value frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}",
+   * as set in
+   * {@link frc.robot.Constants.ElevatorConstants#ELEVATOR_POS_TOLERANCE}), and if
+   * the motor is moving towards the desired position.
    * 
    * @param desiredPos The desired position of the joint, in Rotations
    * @return If the motor is within tolerance
-   * @see frc.utilities.PosUtils#isOscillating(double, double, double, double, double)
+   * @see frc.utilities.PosUtils#isOscillating(double, double, double, double,
+   *      double)
    */
   public boolean isOscillating(double desiredPos) {
-    return PosUtils.isOscillating(desiredPos, getScaledPos(), ElevatorConstants.POS_TOLERANCE, getMotorVelocity(), ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+    return PosUtils.isOscillating(desiredPos, getScaledPos(), ElevatorConstants.POS_TOLERANCE, getMotorVelocity(),
+        ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
    * Dangerously moves the elevator based on joystick input.
-   * <p><b>WARNING: Ignores limit switches.</b></p>
+   * <p>
+   * <b>WARNING: Ignores limit switches.</b>
+   * </p>
+   * 
    * @param joystickInput The input from the joystick
    * @return A command to run the elevator motor
    */
   public Command elevatorManualControl(Double joystickInput) {
     System.out.println("asdfsadf");
-    return runEnd(() -> {runMotor(joystickInput);}, () -> {runMotor(0);});
+    return runEnd(() -> {
+      runMotor(joystickInput);
+    }, () -> {
+      runMotor(0);
+    });
   }
 
   @Override

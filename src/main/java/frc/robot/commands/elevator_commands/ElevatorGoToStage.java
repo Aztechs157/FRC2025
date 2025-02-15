@@ -31,7 +31,7 @@ public class ElevatorGoToStage extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("elevator: " + elevator.getNewSpeed(position));
+    // System.out.println("elevator: " + elevator.getNewSpeed(position));
     elevator.runMotor(elevator.getNewSpeed(position));
   }
 

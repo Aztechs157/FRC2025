@@ -4,6 +4,8 @@
 
 package frc.utilities;
 
+import com.revrobotics.spark.SparkBase;
+
 /** Add your docs here. */
 public interface PosUtils {
 
@@ -43,6 +45,20 @@ public interface PosUtils {
      */
     static double mapRange(double input, double minInput, double maxInput, double minOutput, double maxOutput){
       return (input-minInput)*(maxOutput-minOutput)/(maxInput-minInput) + minOutput;
+    }
+
+    static double runWithLimits(double speed, double currentPos, double limitMargin) {
+      if (limitMargin >= 1.0 - limitMargin && speed < 0) {
+        return 0;
+      } else if (limitMargin >= 0.9 - limitMargin && speed < 0) {
+        return speed * 0.75;
+      } else if (limitMargin <= 0.0 + limitMargin && speed > 0) {
+        return 0;
+      } else if (limitMargin <= 0.1 + limitMargin && speed > 0) {
+        return speed * 0.75;
+      } else {
+        return speed;
+      }
     }
     
 }
