@@ -54,9 +54,9 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Motor Velocity", this::getMotorVelocity)
         .withWidget(BuiltInWidgets.kGraph).withPosition(9, 0);
 
-    Shuffleboard.getTab("test").add(ElevatorConstants.newPID).withWidget(BuiltInWidgets.kPIDController);
+    Shuffleboard.getTab("test").add(ElevatorConstants.NEW_PID).withWidget(BuiltInWidgets.kPIDController);
 
-    ElevatorConstants.newPID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+    ElevatorConstants.NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
@@ -78,11 +78,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   public void setClosedLoopGoal(double goal){
-    ElevatorConstants.newPID.setGoal(goal);
+    ElevatorConstants.NEW_PID.setGoal(goal);
   }
 
   public void runClosedLoop() {
-    runMotorVolts(ElevatorConstants.newPID.calculate(getScaledPos())+ElevatorConstants.feedforward.calculate(ElevatorConstants.newPID.getSetpoint().velocity));
+    runMotorVolts(ElevatorConstants.NEW_PID.calculate(getScaledPos())+ElevatorConstants.FEEDFORWARD.calculate(ElevatorConstants.NEW_PID.getSetpoint().velocity));
   }
 
   public double runWithLimits(double speed) {
@@ -176,7 +176,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   public void reset2(){
-    ElevatorConstants.newPID.reset(getScaledPos());
+    ElevatorConstants.NEW_PID.reset(getScaledPos());
   }
 
   /**
