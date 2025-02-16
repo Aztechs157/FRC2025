@@ -74,7 +74,7 @@ public class Constants {
          * as {@value #d}.
          */
         public static final PIDController PID = new PIDController(p, i, d);
-        public static ProfiledPIDController NEW_PID = new ProfiledPIDController(p2, i2, d2, new TrapezoidProfile.Constraints(i, i));
+        public static ProfiledPIDController NEW_PID = new ProfiledPIDController(p2, i2, d2, new TrapezoidProfile.Constraints(maxAccel, maxAccel));
         public static ElevatorFeedforward FEEDFORWARD = new ElevatorFeedforward(s, g, v, a);
 
         public static final double SLEW_RATE_LIMIT_UP = 1.57;
