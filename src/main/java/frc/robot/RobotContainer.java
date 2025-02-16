@@ -26,6 +26,7 @@ import frc.robot.commands.elbow_commands.ElbowGoToStage;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
 import frc.robot.commands.elevator_commands.ElevatorGoToStage;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
+import frc.robot.commands.elevator_commands.ElevatorClosedLoopControl;
 import frc.robot.commands.elevator_commands.ElevatorGoToExtrema;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeCoral;

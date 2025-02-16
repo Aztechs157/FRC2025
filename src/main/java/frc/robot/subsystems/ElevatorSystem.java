@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -30,6 +31,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static PIDController PID = ElevatorConstants.PID;
   private static SlewRateLimiter slew = new SlewRateLimiter(ElevatorConstants.SLEW_RATE_LIMIT_UP,
       ElevatorConstants.SLEW_RATE_LIMIT_DOWN, 0);
+  
 
   /**
    * Creates a new elevator system with the values provided in Constants.java.
@@ -51,6 +53,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Motor Velocity", this::getMotorVelocity)
         .withWidget(BuiltInWidgets.kGraph).withPosition(9, 0);
+
+    Shuffleboard.getTab("test").add(ElevatorConstants.newPID).withWidget(BuiltInWidgets.kPIDController);
+
+    ElevatorConstants.newPID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
@@ -65,6 +71,18 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
+  }
+
+  public void runMotorVolts(double volts) {
+    motor.setVoltage(volts);
+  }
+
+  public void setClosedLoopGoal(double goal){
+    ElevatorConstants.newPID.setGoal(goal);
+  }
+
+  public void runClosedLoop() {
+    runMotorVolts(ElevatorConstants.newPID.calculate(getScaledPos())+ElevatorConstants.feedforward.calculate(ElevatorConstants.newPID.getSetpoint().velocity));
   }
 
   public double runWithLimits(double speed) {
@@ -155,6 +173,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   public void reset() {
     slew.reset(0);
     PID.reset();
+  }
+
+  public void reset2(){
+    ElevatorConstants.newPID.reset(getScaledPos());
   }
 
   /**
