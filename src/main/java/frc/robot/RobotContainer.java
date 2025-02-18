@@ -29,6 +29,7 @@ import frc.robot.commands.elevator_commands.ElevatorManualControl;
 import frc.robot.commands.elevator_commands.ElevatorClosedLoopControl;
 import frc.robot.commands.elevator_commands.ElevatorGoToExtrema;
 import frc.robot.commands.intake_commands.EjectCoral;
+import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.wrist_commands.WristGoToStage;
@@ -106,8 +107,12 @@ public class RobotContainer {
         return new WristManualControl(wrist, -WristConstants.MANUAL_CONTROL_SPEED);
     }
 
-    public Command IntakeCommand() {
+    public Command IntakeCoralCommand() {
         return new IntakeCoral(intake);
+    }
+
+    public Command IntakeAlgaeCommand() {
+        return new IntakeAlgae(intake);
     }
 
     public Command EjectCommand() {
@@ -119,7 +124,10 @@ public class RobotContainer {
     }
 
     public Command GoToStage1() {
-        return new ElevatorGoToStage(elevator, positionDetails, 1);
+        return (new ElevatorGoToStage(elevator, positionDetails, 1)
+                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
+                .alongWith(new ElbowGoToStage(elbow, positionDetails, 1))
+                .alongWith(new WristGoToStage(wrist, positionDetails, 1));
     }
 
     public Command GoToStage2() {
@@ -169,9 +177,12 @@ public class RobotContainer {
                                                                                         // negative X (left)
                 ));
 
-        driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        driverController.b().whileTrue(drivetrain.applyRequest(() -> point
-                .withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
+        driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
+        // Rotates Drive Pods without actaully moving drive motor, might be useful for
+        // testing but not sure of any other practical application
+        // driverController.a().whileTrue(drivetrain.applyRequest(() -> point
+        // .withModuleDirection(new Rotation2d(-driverController.getLeftY(),
+        // -driverController.getLeftX()))));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -196,12 +207,14 @@ public class RobotContainer {
         operatorController.leftTrigger().whileTrue(WristUpCommand());
         operatorController.leftBumper().whileTrue(WristDownCommand());
 
-        operatorController.a().whileTrue(IntakeCommand());
-        operatorController.b().whileTrue(EjectCommand());
+        driverController.leftBumper().whileTrue(IntakeCoralCommand());
+        driverController.leftTrigger().whileTrue(IntakeAlgaeCommand());
+        driverController.rightBumper().whileTrue(EjectCommand());
 
-        operatorController.y().onTrue(GoToStage2());
-        operatorController.x().onTrue(GoToStage3());
-        operatorController.start().onTrue(GoToStage4());
+        operatorController.a().onTrue(GoToStage1());
+        operatorController.x().onTrue(GoToStage2());
+        operatorController.b().onTrue(GoToStage3());
+        operatorController.y().onTrue(GoToStage4());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
