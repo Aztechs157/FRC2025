@@ -11,6 +11,7 @@ import frc.robot.subsystems.IntakeSystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeAlgae extends Command {
   private final IntakeSystem intakeSystem;
+  private int holdCounter = 0;
 
   /** Creates a new IntakeAlgae. */
   public IntakeAlgae(final IntakeSystem intakeSystem) {
@@ -22,6 +23,7 @@ public class IntakeAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    holdCounter = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +45,11 @@ public class IntakeAlgae extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intakeSystem.getMotorCurrent() > IntakeConstants.ALGAE_HELD_CURRENT;
+    if (intakeSystem.getMotorCurrent() > IntakeConstants.ALGAE_HELD_CURRENT) {
+      holdCounter++;
+    } else {
+      holdCounter = 0;
+    }
+    return holdCounter >= IntakeConstants.ALGAE_HOLD_COUNTER;
   }
 }
