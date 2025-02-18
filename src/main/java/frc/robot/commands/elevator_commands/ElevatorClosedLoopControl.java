@@ -7,6 +7,7 @@ package frc.robot.commands.elevator_commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.parsing.PositionDetails;
+import frc.robot.parsing.PositionDetails.Position;
 import frc.robot.subsystems.ElevatorSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -15,11 +16,11 @@ public class ElevatorClosedLoopControl extends Command {
   private final ElevatorSystem elevator;
   private final double position;
   /** Creates a new ElevatorClosedLoopControl. */
-  public ElevatorClosedLoopControl (final ElevatorSystem elevator, final PositionDetails positionDetails, final int stage) {
+  public ElevatorClosedLoopControl (final ElevatorSystem elevator, final PositionDetails positionDetails, final Position pos) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.elevator = elevator;
     addRequirements(elevator);
-    position = positionDetails.getElevatorPosAtStage(stage);
+    position = positionDetails.getElevatorPos(pos);
   }
 
   // Called when the command is initially scheduled.
