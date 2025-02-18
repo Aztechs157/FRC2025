@@ -9,11 +9,11 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeCoral extends Command {
+public class IntakeAlgae extends Command {
   private final IntakeSystem intakeSystem;
 
-  /** Creates a new IntakeCoral. */
-  public IntakeCoral(final IntakeSystem intakeSystem) {
+  /** Creates a new IntakeAlgae. */
+  public IntakeAlgae(final IntakeSystem intakeSystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeSystem = intakeSystem;
     addRequirements(intakeSystem);
@@ -22,23 +22,27 @@ public class IntakeCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeSystem.run(IntakeConstants.INTAKE_MOTOR_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    intakeSystem.run(IntakeConstants.INTAKE_ALGAE_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSystem.run(0);
+    if (interrupted) {
+      intakeSystem.run(0);
+    } else {
+      intakeSystem.run(IntakeConstants.ALGAE_HOLDING_SPEED);
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intakeSystem.hasCoral();
+    return intakeSystem.getMotorCurrent() > IntakeConstants.ALGAE_HELD_CURRENT;
   }
 }

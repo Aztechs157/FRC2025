@@ -94,12 +94,14 @@ public class Constants {
         // a digital I/O
         public static final int MOTOR_ID = 22;
         public static final int SENSOR_ID = 1;
+        public static final double INTAKE_ALGAE_SPEED = 0.25, ALGAE_HOLDING_SPEED = 0.1;
+        public static final double ALGAE_HELD_CURRENT = 20;
 
         /**
          * The speed, as a percentage of total power, to run the intake motor at for the
          * specified action.
          */
-        public static final double INTAKE_MOTOR_SPEED = 0.5, PLACE_MOTOR_SPEED = 0.75, EJECT_MOTOR_SPEED = 0.75;
+        public static final double INTAKE_MOTOR_SPEED = 1, PLACE_MOTOR_SPEED = 0.75, EJECT_MOTOR_SPEED = 0.75;
 
         /** The time to wait before considering the action done, in seconds. */
         public static final double PLACE_TIME = 0.5, EJECT_TIME = 0.5;

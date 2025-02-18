@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -14,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSystem extends SubsystemBase {
-  private static SparkMax motor = new SparkMax(IntakeConstants.MOTOR_ID, MotorType.kBrushless);
+  // private static SparkMax motor = new SparkMax(IntakeConstants.MOTOR_ID,
+  // MotorType.kBrushless);
+  final TalonFX motor = new TalonFX(IntakeConstants.MOTOR_ID);
   private static DigitalInput sensor = new DigitalInput(IntakeConstants.SENSOR_ID);
 
   /** Creates a new IntakeSystem. */
@@ -39,7 +43,11 @@ public class IntakeSystem extends SubsystemBase {
    * @return - True if the intake is full, else False
    */
   public boolean hasCoral() {
-    return sensor.get();
+    return !sensor.get();
+  }
+
+  public double getMotorCurrent() {
+    return motor.getStatorCurrent().getValue().in(Units.Amps);
   }
 
   @Override
