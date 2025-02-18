@@ -26,23 +26,28 @@ public class ReefTag {
 
     /**
      * Get elevator position for the algae
+     * 
      * @return a double representing the elevator position
      */
     public double getElevatorPosAtAlgae() {
-        return algaeVerticalPos;
+        return elevatorPos;
     }
+
     /**
      * Get elbow position for the algae
+     * 
      * @return a double representing the elbow position
      */
     public double getElbowPosAtAlgae() {
-        return algaeVerticalPos;
+        return elbowPos;
     }
+
     /**
      * Get wrist position for the algae
+     * 
      * @return a double representing the wrist position
      */
     public double getWristPosAtAlgae() {
-        return algaeVerticalPos;
+        return wristPos;
     }
 }

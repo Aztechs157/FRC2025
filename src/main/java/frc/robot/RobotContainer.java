@@ -22,20 +22,24 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.elbow_commands.ElbowGoToPosition;
 import frc.robot.commands.elbow_commands.ElbowGoToStage;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
 import frc.robot.commands.elevator_commands.ElevatorGoToStage;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
 import frc.robot.commands.elevator_commands.ElevatorClosedLoopControl;
 import frc.robot.commands.elevator_commands.ElevatorGoToExtrema;
+import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
+import frc.robot.commands.wrist_commands.WristGoToPosition;
 import frc.robot.commands.wrist_commands.WristGoToStage;
 import frc.robot.commands.wrist_commands.WristManualControl;
 import frc.robot.generated.TunerConstants;
 import frc.robot.parsing.PositionDetails;
+import frc.robot.parsing.PositionDetails.Position;
 import frc.robot.parsing.PositionDetails.Stage;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
@@ -123,32 +127,39 @@ public class RobotContainer {
         return new ElevatorGoToExtrema(elevator, positionDetails, false);
     }
 
-    public Command GoToStage1() {
-        return (new ElevatorGoToStage(elevator, positionDetails, 1)
+    public Command GoToPositionCommand(Position pos) {
+        return (new ElevatorGoToPosition(elevator, positionDetails, pos)
                 .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
-                .alongWith(new ElbowGoToStage(elbow, positionDetails, 1))
-                .alongWith(new WristGoToStage(wrist, positionDetails, 1));
+                .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
+                .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
+    }
+
+    public Command GoToStage1() {
+        return GoToPositionCommand(Position.STAGE1);
     }
 
     public Command GoToStage2() {
-        return (new ElevatorGoToStage(elevator, positionDetails, 2)
-                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
-                .alongWith(new ElbowGoToStage(elbow, positionDetails, 2))
-                .alongWith(new WristGoToStage(wrist, positionDetails, 2));
+        return GoToPositionCommand(Position.STAGE2);
     }
 
     public Command GoToStage3() {
-        return (new ElevatorGoToStage(elevator, positionDetails, 3)
-                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
-                .alongWith(new ElbowGoToStage(elbow, positionDetails, 3))
-                .alongWith(new WristGoToStage(wrist, positionDetails, 3));
+        return GoToPositionCommand(Position.STAGE3);
     }
 
     public Command GoToStage4() {
-        return (new ElevatorGoToStage(elevator, positionDetails, 4)
-                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
-                .alongWith(new ElbowGoToStage(elbow, positionDetails, 4))
-                .alongWith(new WristGoToStage(wrist, positionDetails, 4));
+        return GoToPositionCommand(Position.STAGE4);
+    }
+
+    public Command GoToCoralStationStage() {
+        return GoToPositionCommand(Position.CORALSTATION);
+    }
+
+    public Command GoToAlgaeStageLow() {
+        return GoToPositionCommand(Position.ALGAE1);
+    }
+
+    public Command GoToAlgaeStageHigh() {
+        return GoToPositionCommand(Position.ALGAE2);
     }
 
     // public final VisionSystem visionSystem = new VisionSystem();
@@ -208,8 +219,11 @@ public class RobotContainer {
         operatorController.leftBumper().whileTrue(WristDownCommand());
 
         driverController.leftBumper().whileTrue(IntakeCoralCommand());
-        driverController.leftTrigger().whileTrue(IntakeAlgaeCommand());
+        driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
         driverController.rightBumper().whileTrue(EjectCommand());
+        driverController.a().onTrue(GoToCoralStationStage());
+        driverController.x().onTrue(GoToAlgaeStageLow());
+        driverController.y().onTrue(GoToAlgaeStageHigh());
 
         operatorController.a().onTrue(GoToStage1());
         operatorController.x().onTrue(GoToStage2());

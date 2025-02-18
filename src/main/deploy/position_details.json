@@ -54,27 +54,27 @@
         "tag6": {
             "face": "closeLeftFace",
             "algaeVerticalPos": 0.965,
-            "algaeSystemPositions": {
-                        "elevator": 0,
-                        "elbow": 0,
-                        "wrist": 0
+            "systemPositions": {
+                        "elevator": 0.32,
+                        "elbow": 0.85,
+                        "wrist": 0.18
             }
         },
 
         "tag7": {
             "face": "closeCenterFace",
             "algaeVerticalPos": 0.965,
-            "algaeSystemPositions": {
-                        "elevator": 0,
-                        "elbow": 0,
-                        "wrist": 0
+            "systemPositions": {
+                        "elevator": 0.58,
+                        "elbow": 0.85,
+                        "wrist": 0.18
             }
         },
 
         "tag9": {
             "face": "farRightFace",
             "algaeVerticalPos": 1.365,
-            "algaeSystemPositions": {
+            "systemPositions": {
                         "elevator": 0,
                         "elbow": 0,
                         "wrist": 0
@@ -84,7 +84,7 @@
         "tag10": {
             "face": "farCenterFace",
             "algaeVerticalPos": 0.965,
-            "algaeSystemPositions": {
+            "systemPositions": {
                         "elevator": 0,
                         "elbow": 0,
                         "wrist": 0
@@ -94,7 +94,7 @@
         "tag11": {
             "face": "farLeftFace",
             "algaeVerticalPos": 1.365,
-            "algaeSystemPositions": {
+            "systemPositions": {
                         "elevator": 0,
                         "elbow": 0,
                         "wrist": 0
@@ -109,10 +109,14 @@
 
     "coralStation": {
         "verticalPos": 0.95,
-        "algaeSystemPositions": {
+        "horizontalOffsets": {
+                    "left": 0,
+                    "right": 0 
+                },
+        "systemPositions": {
             "elevator": 0.055,
-            "elbow": 0.875,
-            "wrist": 0.586
+            "elbow": 0.99,
+            "wrist": 0.44
         },
         "tag1": {
             "side": "left",
