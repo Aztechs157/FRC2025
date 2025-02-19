@@ -4,13 +4,14 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Value;
+import static edu.wpi.first.units.Units.Value; // TODO: what is this!!!???
 
 import java.util.Map;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +21,9 @@ import frc.utilities.PosUtils;
 public class UppiesSystem extends SubsystemBase {
   private static SparkMax motorLeft = new SparkMax(UppiesConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
   private static SparkMax motorRight = new SparkMax(UppiesConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
+  private static SparkMax motorLock = new SparkMax(UppiesConstants.LOCK_MOTOR_ID, MotorType.kBrushless);
+  private static DigitalInput lockSensor = new DigitalInput(UppiesConstants.LOCK_SENSOR_ID);
+  private static DigitalInput cageSensor = new DigitalInput(UppiesConstants.CAGE_SENSOR_ID);
 
   /** Creates a new UppiesSystem. */
   public UppiesSystem() {
@@ -33,6 +37,12 @@ public class UppiesSystem extends SubsystemBase {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Right Pos", this::getScaledPosRight)
         .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
         .withPosition(1, 4).withSize(2, 1);
+      Shuffleboard.getTab("Sensor values").addDouble("Uppies Lock Motor Current", this::getLockMotorCurrent)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(12, 0);
+      Shuffleboard.getTab("Sensor values").addBoolean("Lock Sensor", this::cageLocked)
+        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 4);
+      Shuffleboard.getTab("Sensor values").addBoolean("Cage Sensor", this::hasCage)
+        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 3);
   }
 
   /**
@@ -121,6 +131,22 @@ public class UppiesSystem extends SubsystemBase {
   public double getScaledPosRight() {
     return PosUtils.mapRange(getPosRight(), UppiesConstants.RIGHT_MIN_POSITION, UppiesConstants.RIGHT_MAX_POSITION, 0.0,
         1.0);
+  }
+
+  public void runLockMotor(double velocity) {
+    motorLock.set(velocity);
+  }
+
+  public double getLockMotorCurrent() {
+    return motorLock.getOutputCurrent();
+  }
+
+  public boolean cageLocked() {
+    return lockSensor.get();
+  }
+
+  public boolean hasCage() {
+    return cageSensor.get();
   }
 
   @Override

@@ -9,13 +9,10 @@ public class Constants {
     public static class ControllerConstants {
 
         // Ports for the Joysticks, as set in Driver Station
-        public static final int DRIVER_CONTROLLER_PORT = 0;
-        public static final int OPERATOR_CONTROLLER_PORT = 1;
+        public static final int DRIVER_CONTROLLER_PORT = 0, OPERATOR_CONTROLLER_PORT = 1;
 
         // Joystick Deadband
-        public static final double LEFT_X_DEADBAND = 0.1;
-        public static final double LEFT_Y_DEADBAND = 0.1;
-        public static final double RIGHT_X_DEADBAND = 0.1;
+        public static final double LEFT_X_DEADBAND = 0.1, LEFT_Y_DEADBAND = 0.1, RIGHT_X_DEADBAND = 0.1;
     }
 
     public class VisionConstants {
@@ -48,8 +45,7 @@ public class Constants {
         // ports
         public static final int MOTOR_ID = 21;
         public static final int POT_ID = 0;
-        public static final int BOTTOM_LIMIT_ID = 8;
-        public static final int TOP_LIMIT_ID = 9;
+        public static final int BOTTOM_LIMIT_ID = 8, TOP_LIMIT_ID = 9;
 
         static final double p = 5, i = 0.0, d = 0.5;
 
@@ -174,8 +170,8 @@ public class Constants {
 
     public static class UppiesConstants {
         // IDs/Ports for the sensors/actuators. The motors uses a CAN ID
-        public static final int LEFT_MOTOR_ID = 30;
-        public static final int RIGHT_MOTOR_ID = 31;
+        public static final int LEFT_MOTOR_ID = 30, RIGHT_MOTOR_ID = 31, LOCK_MOTOR_ID = 32;
+        public static final int LOCK_SENSOR_ID = 2, CAGE_SENSOR_ID = 3;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MOTOR_SPEED = 0.5, MANUAL_CONTROL_SPEED = 0.5;
@@ -197,5 +193,9 @@ public class Constants {
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
         public static final double RIGHT_MAX_POSITION = 0.4828, RIGHT_MIN_POSITION = 0.0653;
+
+        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.05; // TODO: find proper values
+
+        public static final double LOCK_TIME = 0.5; // TODO: find proper value
     }
 }
