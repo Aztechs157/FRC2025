@@ -4,42 +4,54 @@
 
 package frc.robot.commands.uppies_commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.UppiesSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class UppiesManualControl extends Command {
+public class UppiesLevellingTest extends Command {
   private final UppiesSystem uppiesSystem;
-  private final double commandValue;
+  private final Timer timer = new Timer();
+  private double startPosLeft;
+  private double startPosRight;
 
-  /** Creates a new elbowUp. */
-  public UppiesManualControl(final UppiesSystem uppiesSystem, double commandValue) {
+  /** Creates a new TempCommand. */
+  public UppiesLevellingTest(final UppiesSystem uppiesSystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(uppiesSystem);
 
     this.uppiesSystem = uppiesSystem;
-    this.commandValue = commandValue;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+
+    startPosLeft = uppiesSystem.getPosLeft();
+    startPosRight = uppiesSystem.getPosRight();
+
+    uppiesSystem.runRightMotor(0.5);
+    uppiesSystem.runRightMotor(0.5);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    uppiesSystem.runWithLimits(commandValue);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     uppiesSystem.runWithLimits(0);
+
+    System.out.println("Left Delta: " + (uppiesSystem.getPosLeft() - startPosLeft));
+    System.out.println("Right Delta: " + (startPosRight - uppiesSystem.getPosRight()));
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(0.25);
   }
 }

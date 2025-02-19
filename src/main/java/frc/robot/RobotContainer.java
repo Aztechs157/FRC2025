@@ -32,6 +32,7 @@ import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
+import frc.robot.commands.uppies_commands.UppiesLevellingTest;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.wrist_commands.WristGoToPosition;
 import frc.robot.commands.wrist_commands.WristGoToStage;
@@ -228,6 +229,8 @@ public class RobotContainer {
         operatorController.x().onTrue(GoToStage2());
         operatorController.b().onTrue(GoToStage3());
         operatorController.y().onTrue(GoToStage4());
+
+        driverController.povRight().onTrue(new UppiesLevellingTest(uppies));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

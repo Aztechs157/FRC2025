@@ -96,7 +96,7 @@ public class UppiesSystem extends SubsystemBase {
    * 
    * @return - the encoder value, in rotations (from 0.0 to 1.0)
    */
-  private double getPosLeft() {
+  public double getPosLeft() {
     return motorLeft.getAbsoluteEncoder().getPosition();
   }
 
@@ -105,7 +105,7 @@ public class UppiesSystem extends SubsystemBase {
    * 
    * @return - the encoder value, in rotations (from 0.0 to 1.0)
    */
-  private double getPosRight() {
+  public double getPosRight() {
     return motorRight.getAbsoluteEncoder().getPosition();
   }
 
