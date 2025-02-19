@@ -16,9 +16,9 @@ public class Constants {
         public static final int OPERATOR_CONTROLLER_PORT = 1;
 
         // Joystick Deadband
-        public static final double LEFT_X_DEADBAND = 0.1;
-        public static final double LEFT_Y_DEADBAND = 0.1;
-        public static final double RIGHT_X_DEADBAND = 0.1;
+        public static final double LEFT_X_DEADBAND = 0.05;
+        public static final double LEFT_Y_DEADBAND = 0.05;
+        public static final double RIGHT_X_DEADBAND = 0.05;
     }
 
     public class VisionConstants {
@@ -56,25 +56,35 @@ public class Constants {
 
         static final double p = 5, i = 0.0, d = 0.5;
 
-        // TODO: find proper values for this. sysid can help, or look here https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-elevator.html
-        // maxAccel and maxVel are fairly self explanatory, should be in percentage of travel/s(^2 for accel). start small, increase later
-        static final double maxAccel=0.03, maxVel=0.03;
-        // s, g, v, and a are harder to find. these are the best candidates for sysID tuning, but manual tuning should go as follows
-        // s is unclear, it is meant to represent friction in the system. it is possible to leave at 0 until sysID is solved
-        // g is the voltage needed to counteract gravity. it should be as large as it can without causing any motion in the elevator
+        // TODO: find proper values for this. sysid can help, or look here
+        // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-elevator.html
+        // maxAccel and maxVel are fairly self explanatory, should be in percentage of
+        // travel/s(^2 for accel). start small, increase later
+        static final double maxAccel = 1, maxVel = 0.7;
+        // s, g, v, and a are harder to find. these are the best candidates for sysID
+        // tuning, but manual tuning should go as follows
+        // s is unclear, it is meant to represent friction in the system. it is possible
+        // to leave at 0 until sysID is solved
+        // g is the voltage needed to counteract gravity. it should be as large as it
+        // can without causing any motion in the elevator
         // v is the velocity feedforward, increase approx until overshoot stops.
-        // a is the final value, increase until actual motion follows setpoint at slow speed.
-        // after all these are tuned for slow speeds, increase speed and use PID for any fine tuning adjustments
-        static final double s=0, g=0, v=0, a=0;
-        // these are standard PID values, but they are much less active in control then standard PID, the feedforward should be doing 80+% of the work. tune these last
-        static final double p2 = 0, i2=0, d2= 0;
+        // a is the final value, increase until actual motion follows setpoint at slow
+        // speed.
+        // after all these are tuned for slow speeds, increase speed and use PID for any
+        // fine tuning adjustments
+        static final double s = 0, g = 0.5, v = 10, a = 0.7;
+        // these are standard PID values, but they are much less active in control then
+        // standard PID, the feedforward should be doing 80+% of the work. tune these
+        // last
+        static final double p2 = 0, i2 = 0, d2 = 0;
 
         /**
          * PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d
          * as {@value #d}.
          */
         public static final PIDController PID = new PIDController(p, i, d);
-        public static ProfiledPIDController NEW_PID = new ProfiledPIDController(p2, i2, d2, new TrapezoidProfile.Constraints(maxAccel, maxAccel));
+        public static ProfiledPIDController NEW_PID = new ProfiledPIDController(p2, i2, d2,
+                new TrapezoidProfile.Constraints(maxAccel, maxAccel));
         public static ElevatorFeedforward FEEDFORWARD = new ElevatorFeedforward(s, g, v, a);
 
         public static final double SLEW_RATE_LIMIT_UP = 1.57;

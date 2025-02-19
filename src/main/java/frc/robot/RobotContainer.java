@@ -128,7 +128,7 @@ public class RobotContainer {
     }
 
     public Command GoToPositionCommand(Position pos) {
-        return (new ElevatorGoToPosition(elevator, positionDetails, pos)
+        return (new ElevatorClosedLoopControl(elevator, positionDetails, pos)
                 .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
                 .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
