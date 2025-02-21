@@ -71,12 +71,12 @@ public class Constants {
         // a is the final value, increase until actual motion follows setpoint at slow
         // speed.
         // after all these are tuned for slow speeds, increase speed and use PID for any
-        // fine tuning adjustments
-        static final double s = 0, g = 0.5, v = 10, a = 0.7;
+        // fine tuning adjustments s = 0, g = 0.5, v = 10, a = 0.7;
+        static final double s = 0, g = 0.9, v = 9, a = 0.7;
         // these are standard PID values, but they are much less active in control then
         // standard PID, the feedforward should be doing 80+% of the work. tune these
         // last
-        static final double p2 = 0, i2 = 0, d2 = 0;
+        static final double p2 = 1, i2 = 0, d2 = 0;
 
         /**
          * PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d
@@ -112,7 +112,7 @@ public class Constants {
          */
         public static final double MAX_POSITION = 2634, MIN_POSITION = 616;
 
-        public static final double POS_TOLERANCE = 0.02;
+        public static final double POS_TOLERANCE = 0.01;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
     }
 
