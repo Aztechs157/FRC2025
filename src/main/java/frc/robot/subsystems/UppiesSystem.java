@@ -37,11 +37,11 @@ public class UppiesSystem extends SubsystemBase {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Right Pos", this::getScaledPosRight)
         .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
         .withPosition(1, 4).withSize(2, 1);
-      Shuffleboard.getTab("Sensor values").addDouble("Uppies Lock Motor Current", this::getLockMotorCurrent)
+    Shuffleboard.getTab("Sensor values").addDouble("Uppies Lock Motor Current", this::getLockMotorCurrent)
         .withWidget(BuiltInWidgets.kGraph).withPosition(12, 0);
-      Shuffleboard.getTab("Sensor values").addBoolean("Lock Sensor", this::cageLocked)
+    Shuffleboard.getTab("Sensor values").addBoolean("Lock Sensor", this::cageLocked)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 4);
-      Shuffleboard.getTab("Sensor values").addBoolean("Cage Sensor", this::hasCage)
+    Shuffleboard.getTab("Sensor values").addBoolean("Cage Sensor", this::hasCage)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 3);
   }
 
