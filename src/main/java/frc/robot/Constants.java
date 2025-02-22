@@ -175,21 +175,21 @@ public class Constants {
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MOTOR_SPEED = 0.75, MANUAL_CONTROL_SPEED = 0.75, STALL_SPEED = 0.25;
-        public static final double MOTOR_DESYNC_RATIO = 0.825; // to be applied to the left motor to sync it up with
-                                                               // the
-                                                               // right
+        public static final double MOTOR_DESYNC_RATIO = 0.9; // to be applied to the left motor to sync it up with
+                                                             // the
+                                                             // right
 
         /**
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.00;
+        public static final double LIMIT_MARGIN = 0.05;
 
         /**
          * Position limits, in raw encoder units, for the left Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double LEFT_MAX_POSITION = 0.3228, LEFT_MIN_POSITION = 0.7053;
+        public static final double LEFT_MAX_POSITION = 0.3128, LEFT_MIN_POSITION = 0.6953;
 
         /**
          * Position limits, in raw encoder units, for the right Uppies motor. In this
@@ -197,7 +197,7 @@ public class Constants {
          */
         public static final double RIGHT_MAX_POSITION = 0.4828, RIGHT_MIN_POSITION = 0.0653;
 
-        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.01; // TODO: find proper values
+        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.025; // TODO: find proper values
 
         public static final double LOCK_TIME = 0.5; // TODO: find proper value
     }

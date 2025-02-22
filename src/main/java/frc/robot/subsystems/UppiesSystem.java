@@ -135,7 +135,7 @@ public class UppiesSystem extends SubsystemBase {
         1.0);
   }
 
-  public boolean atLowPosition(double position) {
+  public boolean atPosition(double position) {
     boolean reachedRight = false;
     boolean reachedLeft = false;
     if ((getScaledPosRight() - UppiesConstants.LIMIT_MARGIN) <= position) {

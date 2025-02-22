@@ -43,6 +43,6 @@ public class UppiesToPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return uppiesSystem.atLowPosition(0);
+    return uppiesSystem.atPosition(position);
   }
 }
