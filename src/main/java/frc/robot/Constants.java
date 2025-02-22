@@ -189,15 +189,15 @@ public class Constants {
          * Position limits, in raw encoder units, for the left Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double LEFT_MAX_POSITION = 0.3228, LEFT_MIN_POSITION = 0.7053; // difference is 0.3825
+        public static final double LEFT_MAX_POSITION = 0.3228, LEFT_MIN_POSITION = 0.7053;
 
         /**
          * Position limits, in raw encoder units, for the right Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double RIGHT_MAX_POSITION = 0.4828, RIGHT_MIN_POSITION = 0.0653; // difference is 0.4175
+        public static final double RIGHT_MAX_POSITION = 0.4828, RIGHT_MIN_POSITION = 0.0653;
 
-        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.025; // TODO: find proper values
+        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.01; // TODO: find proper values
 
         public static final double LOCK_TIME = 0.5; // TODO: find proper value
     }

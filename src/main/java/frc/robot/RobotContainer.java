@@ -33,8 +33,8 @@ import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
-import frc.robot.commands.uppies_commands.CageLock;
-import frc.robot.commands.uppies_commands.UnstallCageLock;
+import frc.robot.commands.uppies_commands.Lockies;
+import frc.robot.commands.uppies_commands.UnstallLockies;
 import frc.robot.commands.uppies_commands.UppiesLevellingTest;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.uppies_commands.UppiesToPosition;
@@ -92,13 +92,13 @@ public class RobotContainer {
     }
 
     public Command UppiesWithLock() {
-        return new CageLock(uppies)
+        return new UnstallLockies(uppies).andThen(new Lockies(uppies))
                 .andThen(new UppiesToPosition(uppies, UppiesConstants.MANUAL_CONTROL_SPEED, 0))
                 .andThen(new UppiesManualControl(uppies, UppiesConstants.STALL_SPEED));
     }
 
     public Command UnstallUppies() {
-        return new UnstallCageLock(uppies);
+        return new UnstallLockies(uppies);
     }
 
     public Command ElevatorStallCommand() {
