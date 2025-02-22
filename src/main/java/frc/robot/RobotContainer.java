@@ -53,6 +53,7 @@ import frc.robot.subsystems.ElbowSystem;
 import frc.robot.subsystems.WristSystem;
 // import frc.robot.subsystems.VisionSystem;
 import frc.robot.subsystems.UppiesSystem;
+import frc.robot.subsystems.VisionSystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -170,7 +171,9 @@ public class RobotContainer {
     }
 
     public Command GoToCoralStationStage() {
-        return GoToPositionCommand(Position.CORALSTATION);
+        return new ElevatorClosedLoopControl(elevator, positionDetails, Position.CORALSTATION)
+                .alongWith(new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION))
+                .alongWith(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION));
     }
 
     public Command GoToAlgaeStageLow() {
@@ -181,7 +184,7 @@ public class RobotContainer {
         return GoToPositionCommand(Position.ALGAE2);
     }
 
-    // public final VisionSystem visionSystem = new VisionSystem();
+    public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
 
@@ -225,7 +228,7 @@ public class RobotContainer {
         driverController.povUp().whileTrue(UppiesUpCommand());
         driverController.povDown().whileTrue(UppiesDownCommand());
 
-        driverController.leftBumper().whileTrue(IntakeCoralCommand());
+        driverController.leftBumper().toggleOnTrue(IntakeCoralCommand());
         driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
         driverController.rightBumper().whileTrue(EjectCommand());
 
