@@ -174,13 +174,16 @@ public class Constants {
         public static final int LOCK_SENSOR_ID = 2, CAGE_SENSOR_ID = 3;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
-        public static final double MOTOR_SPEED = 0.5, MANUAL_CONTROL_SPEED = 0.5;
+        public static final double MOTOR_SPEED = 0.75, MANUAL_CONTROL_SPEED = 0.75, STALL_SPEED = 0.25;
+        public static final double MOTOR_DESYNC_RATIO = 0.825; // to be applied to the left motor to sync it up with
+                                                               // the
+                                                               // right
 
         /**
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.05;
+        public static final double LIMIT_MARGIN = 0.00;
 
         /**
          * Position limits, in raw encoder units, for the left Uppies motor. In this
@@ -194,7 +197,7 @@ public class Constants {
          */
         public static final double RIGHT_MAX_POSITION = 0.4828, RIGHT_MIN_POSITION = 0.0653; // difference is 0.4175
 
-        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.05; // TODO: find proper values
+        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.025; // TODO: find proper values
 
         public static final double LOCK_TIME = 0.5; // TODO: find proper value
     }

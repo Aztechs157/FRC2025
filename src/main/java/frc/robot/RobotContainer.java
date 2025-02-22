@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -32,8 +33,11 @@ import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
+import frc.robot.commands.uppies_commands.CageLock;
+import frc.robot.commands.uppies_commands.UnstallCageLock;
 import frc.robot.commands.uppies_commands.UppiesLevellingTest;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
+import frc.robot.commands.uppies_commands.UppiesToPosition;
 import frc.robot.commands.wrist_commands.WristGoToPosition;
 import frc.robot.commands.wrist_commands.WristGoToStage;
 import frc.robot.commands.wrist_commands.WristManualControl;
@@ -76,11 +80,25 @@ public class RobotContainer {
     private final WristSystem wrist = new WristSystem();
 
     public Command UppiesUpCommand() {
-        return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
+        return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command UppiesDownCommand() {
-        return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
+        return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
+    }
+
+    public Command UppiesStallCommand() {
+        return new UppiesManualControl(uppies, UppiesConstants.STALL_SPEED);
+    }
+
+    public Command UppiesWithLock() {
+        return new CageLock(uppies)
+                .andThen(new UppiesToPosition(uppies, UppiesConstants.MANUAL_CONTROL_SPEED, 0))
+                .andThen(new UppiesManualControl(uppies, UppiesConstants.STALL_SPEED));
+    }
+
+    public Command UnstallUppies() {
+        return new UnstallCageLock(uppies);
     }
 
     public Command ElevatorStallCommand() {
@@ -188,13 +206,6 @@ public class RobotContainer {
                                                                                         // negative X (left)
                 ));
 
-        driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
-        // Rotates Drive Pods without actaully moving drive motor, might be useful for
-        // testing but not sure of any other practical application
-        // driverController.a().whileTrue(drivetrain.applyRequest(() -> point
-        // .withModuleDirection(new Rotation2d(-driverController.getLeftY(),
-        // -driverController.getLeftX()))));
-
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
@@ -205,8 +216,25 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
+        driverController.povLeft().onTrue(UppiesWithLock());
+        driverController.povRight().onTrue(UnstallUppies());
+        // driverController.povRight().onTrue(new UppiesLevellingTest(uppies));
         driverController.povUp().whileTrue(UppiesUpCommand());
         driverController.povDown().whileTrue(UppiesDownCommand());
+
+        driverController.leftBumper().whileTrue(IntakeCoralCommand());
+        driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
+        driverController.rightBumper().whileTrue(EjectCommand());
+
+        driverController.a().onTrue(GoToCoralStationStage());
+        driverController.x().onTrue(GoToAlgaeStageLow());
+        driverController.y().onTrue(GoToAlgaeStageHigh());
+        driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
+        // Rotates Drive Pods without actaully moving drive motor, might be useful for
+        // testing but not sure of any other practical application
+        // driverController.a().whileTrue(drivetrain.applyRequest(() -> point
+        // .withModuleDirection(new Rotation2d(-driverController.getLeftY(),
+        // -driverController.getLeftX()))));
 
         operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
         operatorController.povUp().whileTrue(ElevatorUpCommand());
@@ -218,19 +246,10 @@ public class RobotContainer {
         operatorController.leftTrigger().whileTrue(WristUpCommand());
         operatorController.leftBumper().whileTrue(WristDownCommand());
 
-        driverController.leftBumper().whileTrue(IntakeCoralCommand());
-        driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
-        driverController.rightBumper().whileTrue(EjectCommand());
-        driverController.a().onTrue(GoToCoralStationStage());
-        driverController.x().onTrue(GoToAlgaeStageLow());
-        driverController.y().onTrue(GoToAlgaeStageHigh());
-
         operatorController.a().onTrue(GoToStage1());
         operatorController.x().onTrue(GoToStage2());
         operatorController.b().onTrue(GoToStage3());
         operatorController.y().onTrue(GoToStage4());
-
-        driverController.povRight().onTrue(new UppiesLevellingTest(uppies));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

@@ -33,12 +33,13 @@ public class UppiesLevellingTest extends Command {
     startPosRight = uppiesSystem.getPosRight();
 
     uppiesSystem.runRightMotor(0.5);
-    uppiesSystem.runRightMotor(0.5);
+    uppiesSystem.runLeftMotor(0.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -87,8 +87,10 @@ public class UppiesSystem extends SubsystemBase {
    * @see frc.robot.subsystems.UppiesSystem#getScaledPosLeft()
    */
   public void runWithLimits(double speed) {
-    runLeftMotor(PosUtils.runWithLimits(speed, getScaledPosLeft(), UppiesConstants.LIMIT_MARGIN));
-    runRightMotor(PosUtils.runWithLimits(speed, getScaledPosRight(), UppiesConstants.LIMIT_MARGIN));
+    runLeftMotor(PosUtils.runWithLimits(speed * UppiesConstants.MOTOR_DESYNC_RATIO, getScaledPosLeft(),
+        UppiesConstants.LIMIT_MARGIN));
+    runRightMotor(PosUtils.runWithLimits(speed, getScaledPosRight(),
+        UppiesConstants.LIMIT_MARGIN));
   }
 
   /**
@@ -133,6 +135,21 @@ public class UppiesSystem extends SubsystemBase {
         1.0);
   }
 
+  public boolean atLowPosition(double position) {
+    boolean reachedRight = false;
+    boolean reachedLeft = false;
+    if ((getScaledPosRight() - UppiesConstants.LIMIT_MARGIN) <= position) {
+      reachedRight = true;
+    }
+
+    if ((getScaledPosLeft() - UppiesConstants.LIMIT_MARGIN) <= position) {
+      reachedLeft = true;
+    }
+
+    return reachedRight && reachedLeft;
+
+  }
+
   public void runLockMotor(double velocity) {
     motorLock.set(velocity);
   }
@@ -146,7 +163,7 @@ public class UppiesSystem extends SubsystemBase {
   }
 
   public boolean hasCage() {
-    return cageSensor.get();
+    return !cageSensor.get();
   }
 
   @Override
