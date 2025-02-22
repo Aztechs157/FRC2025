@@ -11,7 +11,11 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.GenericPublisher;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -30,6 +34,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static PIDController PID = ElevatorConstants.PID;
   private static SlewRateLimiter slew = new SlewRateLimiter(ElevatorConstants.SLEW_RATE_LIMIT_UP,
       ElevatorConstants.SLEW_RATE_LIMIT_DOWN, 0);
+  private GenericEntry shuffleboardFeedforward;
 
   /**
    * Creates a new elevator system with the values provided in Constants.java.
@@ -51,6 +56,12 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Motor Velocity", this::getMotorVelocity)
         .withWidget(BuiltInWidgets.kGraph).withPosition(9, 0);
+    shuffleboardFeedforward = Shuffleboard.getTab("Sensor values").add("Feedforward Setpoint", 0)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(12, 3).getEntry();
+
+    Shuffleboard.getTab("test").add(ElevatorConstants.NEW_PID).withWidget(BuiltInWidgets.kPIDController);
+
+    ElevatorConstants.NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
   /**
@@ -65,6 +76,20 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
+  }
+
+  public void runMotorVolts(double volts) {
+    motor.setVoltage(volts);
+  }
+
+  public void setClosedLoopGoal(double goal) {
+    ElevatorConstants.NEW_PID.setGoal(goal);
+  }
+
+  public void runClosedLoop() {
+    double feedForwardCalc = ElevatorConstants.FEEDFORWARD.calculate(ElevatorConstants.NEW_PID.getSetpoint().velocity);
+    shuffleboardFeedforward.setDouble(feedForwardCalc);
+    runMotorVolts(ElevatorConstants.NEW_PID.calculate(getScaledPos()) + feedForwardCalc);
   }
 
   public double runWithLimits(double speed) {
@@ -155,6 +180,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   public void reset() {
     slew.reset(0);
     PID.reset();
+  }
+
+  public void reset2() {
+    ElevatorConstants.NEW_PID.reset(getScaledPos());
   }
 
   /**
