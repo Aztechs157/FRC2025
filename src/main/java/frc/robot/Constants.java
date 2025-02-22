@@ -19,6 +19,8 @@ public class Constants {
         public static final double LEFT_X_DEADBAND = 0.05;
         public static final double LEFT_Y_DEADBAND = 0.05;
         public static final double RIGHT_X_DEADBAND = 0.05;
+
+        public static final double PRECISION_DRIVE_MODIFIER = 0.75;
     }
 
     public class VisionConstants {

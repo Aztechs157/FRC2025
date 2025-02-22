@@ -179,10 +179,12 @@ public class RobotContainer {
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
                         .withVelocityX(MathUtil.applyDeadband(-driverController.getLeftY(),
-                                ControllerConstants.LEFT_Y_DEADBAND) * MaxSpeed) // Drive forward with negative Y
-                                                                                 // (forward)
+                                ControllerConstants.LEFT_Y_DEADBAND) * modifySpeed(MaxSpeed)) // Drive forward with
+                                                                                              // negative Y
+                        // (forward)
                         .withVelocityY(MathUtil.applyDeadband(-driverController.getLeftX(),
-                                ControllerConstants.LEFT_X_DEADBAND) * MaxSpeed) // Drive left with negative X (left)
+                                ControllerConstants.LEFT_X_DEADBAND) * modifySpeed(MaxSpeed)) // Drive left with
+                                                                                              // negative X (left)
                         .withRotationalRate(MathUtil.applyDeadband(-driverController.getRightX(),
                                 ControllerConstants.RIGHT_X_DEADBAND) * MaxAngularRate) // Drive counterclockwise with
                                                                                         // negative X (left)
@@ -231,6 +233,11 @@ public class RobotContainer {
         operatorController.y().onTrue(GoToStage4());
 
         drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    public double modifySpeed(final double speed) {
+        final var modifier = 1 - driverController.getRightTriggerAxis() * ControllerConstants.PRECISION_DRIVE_MODIFIER;
+        return speed * modifier;
     }
 
     public Command getAutonomousCommand() {
