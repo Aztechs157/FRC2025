@@ -16,6 +16,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -84,6 +86,7 @@ public class RobotContainer {
     private final IntakeSystem intake = new IntakeSystem();
     private final ElbowSystem elbow = new ElbowSystem();
     private final WristSystem wrist = new WristSystem();
+    private final Field2d desiredField = new Field2d();
 
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
@@ -196,6 +199,8 @@ public class RobotContainer {
                 coralStation.getY(), // No Y offset
                 coralStation.getRotation() // Maintain the same rotation (adjust if needed)
         );
+        
+        desiredField.setRobotPose(adjustedPose);
         return drivetrain.driveToPose(adjustedPose);
     }
 
@@ -208,6 +213,7 @@ public class RobotContainer {
                 reef.getY() + offsetDistanceY, // No Y offset
                 reef.getRotation() // Maintain the same rotation (adjust if needed)
         );
+        desiredField.setRobotPose(adjustedPose);
         return drivetrain.driveToPose(adjustedPose);
     }
 
@@ -219,6 +225,7 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
     }
 
     private void configureBindings() {
