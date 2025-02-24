@@ -13,12 +13,14 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -231,6 +233,27 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder",
                     ex.getStackTrace());
         }
+    }
+
+    /**
+     * Use PathPlanner Path finding to go to a point on the field.
+     *
+     * @param pose Target {@link Pose2d} to go to.
+     * @return PathFinding command
+     */
+    public Command driveToPose(Pose2d pose) {
+        // Create the constraints to use while pathfinding
+        PathConstraints constraints = new PathConstraints(
+                1, 1,
+                Units.degreesToRadians(360),
+                Units.degreesToRadians(360));
+
+        // Since AutoBuilder is configured, we can use it to build pathfinding commands
+        return AutoBuilder.pathfindToPose(
+                pose,
+                constraints,
+                0.0 // Goal end velocity in meters/sec
+        );
     }
 
     /**

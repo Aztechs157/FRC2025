@@ -21,13 +21,12 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -262,15 +261,33 @@ public class VisionSystem extends SubsystemBase {
     return poseEstimatorRight.update(visionFrame);
   }
 
+  public double getTimeStamp() {
+    var resultTopRight = topRightCamera.getLatestResult();
+    var resultBottom = bottomCamera.getLatestResult();
+    double timestamp = 0;
+    double topRightImageCaptureTime = 0;
+    double bottomImageCaptureTime = 0;
+
+    if (resultTopRight.hasTargets()) {
+      topRightImageCaptureTime = Timer.getFPGATimestamp() - resultTopRight.getTimestampSeconds();
+    }
+    if (resultBottom.hasTargets()) {
+      bottomImageCaptureTime = Timer.getFPGATimestamp() - resultBottom.getTimestampSeconds();
+    }
+    timestamp = Math.max(topRightImageCaptureTime, bottomImageCaptureTime);
+
+    return timestamp;
+  }
+
   public Optional<Pose3d> getEstimatedGlobalPose() {
-    var poseLeft = poseEstimatorLeft.update(topRightCamera.getLatestResult());
-    var poseRight = poseEstimatorRight.update(bottomCamera.getLatestResult());
-    if (poseLeft.isPresent() && poseRight.isPresent()) {
-      return Optional.of(poseLeft.get().estimatedPose.interpolate(poseRight.get().estimatedPose, 0.5));
-    } else if (poseLeft.isPresent()) {
-      return Optional.of(poseLeft.get().estimatedPose);
-    } else if (poseRight.isPresent()) {
-      return Optional.of(poseRight.get().estimatedPose);
+    var poseTopRight = poseEstimatorLeft.update(topRightCamera.getLatestResult());
+    var poseBottom = poseEstimatorRight.update(bottomCamera.getLatestResult());
+    if (poseTopRight.isPresent() && poseBottom.isPresent()) {
+      return Optional.of(poseTopRight.get().estimatedPose.interpolate(poseBottom.get().estimatedPose, 0.5));
+    } else if (poseTopRight.isPresent()) {
+      return Optional.of(poseTopRight.get().estimatedPose);
+    } else if (poseBottom.isPresent()) {
+      return Optional.of(poseBottom.get().estimatedPose);
     } else {
       return Optional.empty();
     }
