@@ -27,6 +27,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,7 +63,7 @@ public class VisionSystem extends SubsystemBase {
     poseEstimatorRight = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         VisionConstants.BOTTOM_CAMERA_PLACEMENT); // TODO: decide which pose strategy to use
 
-    SmartDashboard.putData("vision based field", vision_field);
+    Shuffleboard.getTab("vision").add("vision based field", vision_field);
 
   }
 
