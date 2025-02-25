@@ -59,8 +59,6 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     shuffleboardFeedforward = Shuffleboard.getTab("Sensor values").add("Feedforward Setpoint", 0)
         .withWidget(BuiltInWidgets.kGraph).withPosition(12, 3).getEntry();
 
-    Shuffleboard.getTab("test").add(ElevatorConstants.NEW_PID).withWidget(BuiltInWidgets.kPIDController);
-
     ElevatorConstants.NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
   }
 
