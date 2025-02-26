@@ -26,18 +26,18 @@ public class Constants {
         public static final String TOPRIGHT_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_TopRight"; // TODO: find proper
                                                                                                     // value
         public static final Transform3d TOPRIGHT_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(0.0, 0.0, 0.72), new Rotation3d())
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.51, 0)))
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // TODO: find proper
-                                                                                      // value,
+                new Translation3d(0.165, 0.229, 1.003), new Rotation3d())
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.44, 0))) // This line to set possible
+                                                                                        // pitch
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // This line to set possible yaw,
         // new Rotation3d(0, 0.959931, 2.61799)
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom"; // TODO: find proper
                                                                                                 // value
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(-0.305816, -0.2276856, 0.5478018), new Rotation3d())
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.959931, 0)))
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0.523599))); // TODO: find proper
-                                                                                             // value,
+                new Translation3d(0, 0.254, 0.178), new Rotation3d())
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.35, 0))) // This line to set possible
+                                                                                        // pitch
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // This line to set possible yaw,
 
         public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
     }

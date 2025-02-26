@@ -23,8 +23,11 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -54,6 +57,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+    private final Field2d field = new Field2d();
 
     /*
      * SysId routine for characterizing translation. This is used to find PID gains
@@ -136,6 +140,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         configureAutoBuilder();
+        // Shuffleboard.getTab("vision").add("DriveSystem Position",
+        // field).withWidget(BuiltInWidgets.kField);
+
     }
 
     /**
@@ -162,6 +169,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         configureAutoBuilder();
+        // Shuffleboard.getTab("vision").add("DriveSystem Position",
+        // field).withWidget(BuiltInWidgets.kField);
+
     }
 
     /**
@@ -203,6 +213,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         configureAutoBuilder();
+        // Shuffleboard.getTab("vision").add("DriveSystem Position",
+        // field).withWidget(BuiltInWidgets.kField);
+
     }
 
     private void configureAutoBuilder() {
@@ -244,8 +257,8 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     public Command driveToPose(Pose2d pose) {
         // Create the constraints to use while pathfinding
         PathConstraints constraints = new PathConstraints(
-                1, 1,
-                Units.degreesToRadians(360),
+                0.8, 1,
+                Units.degreesToRadians(60),
                 Units.degreesToRadians(360));
 
         // Since AutoBuilder is configured, we can use it to build pathfinding commands
@@ -310,6 +323,10 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
                                 : kBlueAlliancePerspectiveRotation);
                 m_hasAppliedOperatorPerspective = true;
             });
+        }
+        var x = this.samplePoseAt(Utils.getCurrentTimeSeconds());
+        if (x.isPresent()) {
+            field.setRobotPose(x.get());
         }
     }
 
