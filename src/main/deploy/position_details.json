@@ -5,8 +5,8 @@
                 "verticalPos": 0.46,
                 "systemPositions": {
                     "elevator": 0,
-                    "elbow": 0.773,
-                    "wrist": 0.325
+                    "elbow": 1,
+                    "wrist": 0
                 },
                 "horizontalOffsets": {
                     "left": -0.301625,
