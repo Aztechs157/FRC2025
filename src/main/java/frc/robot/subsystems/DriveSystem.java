@@ -59,6 +59,10 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
     private final Field2d field = new Field2d();
 
+    public double forwardValue = 1000;
+    public double rotationValue = 1000;
+    public double translationValue = 1000;
+
     /*
      * SysId routine for characterizing translation. This is used to find PID gains
      * for the drive motors.
@@ -248,6 +252,10 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
         }
     }
 
+    public Pose2d getPose() {
+        return this.samplePoseAt(Utils.getCurrentTimeSeconds()).get();
+    }
+
     /**
      * Use PathPlanner Path finding to go to a point on the field.
      *
@@ -257,9 +265,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     public Command driveToPose(Pose2d pose) {
         // Create the constraints to use while pathfinding
         PathConstraints constraints = new PathConstraints(
-                0.8, 1,
-                Units.degreesToRadians(60),
-                Units.degreesToRadians(360));
+                1, 3,
+                Units.degreesToRadians(540),
+                Units.degreesToRadians(720));
 
         // Since AutoBuilder is configured, we can use it to build pathfinding commands
         return AutoBuilder.pathfindToPose(
@@ -267,6 +275,14 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
                 constraints,
                 0.0 // Goal end velocity in meters/sec
         );
+    }
+
+    public boolean atTargetPose(Pose2d targetPose) {
+        Pose2d currentPose = getPose();
+        double positionError = currentPose.getTranslation().getDistance(targetPose.getTranslation());
+        double angleError = Math.abs(currentPose.getRotation().getDegrees() - targetPose.getRotation().getDegrees());
+
+        return positionError < 0.1 && angleError < 5.0; // Example thresholds (0.1 meters and 5 degrees)
     }
 
     /**

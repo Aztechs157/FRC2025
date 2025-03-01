@@ -289,6 +289,7 @@ public class RobotContainer {
         if (pose.isPresent()) {
             double visionTime = visionSystem.getTimeStamp();
             drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
+            drivetrain.resetPose(pose.get().toPose2d());
         }
     }
 
