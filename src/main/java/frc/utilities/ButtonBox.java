@@ -48,6 +48,9 @@ public class ButtonBox extends CommandGenericHID {
     public Trigger buttonBinding(ButtonBoxButtons button) {
         return button(button.value, CommandScheduler.getInstance().getDefaultButtonLoop());
     }
+    public Trigger buttonBinding(ButtonBoxButtons button, boolean pressed) {
+        return buttonBinding(button).and((pressed?buttonBinding(ButtonBoxButtons.SW1):buttonBinding(ButtonBoxButtons.SW1).negate()));
+    }
 
     // public Trigger Bottom1() {
     //     return buttonBinding(ButtonBoxButtons.Bottom1);
