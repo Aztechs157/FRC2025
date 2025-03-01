@@ -27,7 +27,7 @@ public class SetTargetTag extends Command {
   public void initialize() {
     Pose2d reef = visionSystem.getTagPose(tagID).get().toPose2d();
     double offsetDistanceX = 1;
-    double offsetDistanceY = 0;
+    double offsetDistanceY = 1;
     Pose2d adjustedPose = new Pose2d(
         reef.getX() + offsetDistanceX, // Apply X offset
         reef.getY() + offsetDistanceY, // No Y offset

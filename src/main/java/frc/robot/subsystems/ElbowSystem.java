@@ -93,7 +93,6 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    *      double)
    */
   public boolean isOscillating(double desiredPos) {
-    System.out.println("Elbow | Goal: " + desiredPos + ", Curt: " + getScaledPos() + ", Vel: " + getMotorVelocity());
     return PosUtils.isOscillating(desiredPos, getScaledPos(), ElbowConstants.POS_TOLERANCE, getMotorVelocity(),
         ElbowConstants.MOTOR_VELOCITY_TOLERANCE);
   }

@@ -31,7 +31,6 @@ public class WristGoToPosition extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        System.out.println("wrist: " + wrist.getNewSpeed(position));
         wrist.runMotor(wrist.getNewSpeed(position));
     }
 
