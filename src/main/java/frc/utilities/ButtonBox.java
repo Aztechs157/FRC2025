@@ -8,29 +8,29 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class ButtonBox extends CommandGenericHID {
 
     public static enum ButtonBoxButtons {
-        Bottom1(0),
-        Bottom2(1),
-        Bottom3(2),
-        Bottom4(3),
-        Bottom5(4),
+        C1(1),
+        C2(2),
+        C3(3),
+        C4(4),
+        C5(5),
         
-        LeftTop(5),
-        LeftBottom(6),
-        
-        MiddleTop(7),
-        MiddleMid(8),
-        MiddleBottom(9),
+        U1(17),
+        U2(18),
+        U3(19),
+    
+        AH(14),
+        AL(15),
+        AP(16),
 
-        PosSwitch(10),
+        SW1(6),
 
-        PosTopLeft(11),
-        PosTopRight(12),
-        PosMidLeft(13),
-        PosMidRight(14),
-        PosBottomLeft(15),
-        PosBottomRight(16),
-        PosBottomMid(17),
-        PosPickupStation(18)
+        R4L(7),
+        R4R(8),
+        R3L(9),
+        R3R(10),
+        R2L(11),
+        R2R(12),
+        R1(13)
 
         ;
 
