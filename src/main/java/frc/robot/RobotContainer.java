@@ -6,16 +6,22 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import org.photonvision.simulation.VisionTargetSim;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.ControllerConstants;
@@ -55,6 +61,8 @@ import frc.robot.subsystems.WristSystem;
 // import frc.robot.subsystems.VisionSystem;
 import frc.robot.subsystems.UppiesSystem;
 import frc.robot.subsystems.VisionSystem;
+import frc.utilities.ButtonBox;
+import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -73,7 +81,8 @@ public class RobotContainer {
     private final PositionDetails positionDetails = new PositionDetails();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
-    private final CommandXboxController operatorController = new CommandXboxController(1);
+    //private final CommandXboxController operatorController = new CommandXboxController(1);
+    private final ButtonBox buttonBox = new ButtonBox(1);
 
     public final DriveSystem drivetrain = TunerConstants.createDrivetrain();
     private final UppiesSystem uppies = new UppiesSystem();
@@ -81,6 +90,7 @@ public class RobotContainer {
     private final IntakeSystem intake = new IntakeSystem();
     private final ElbowSystem elbow = new ElbowSystem();
     private final WristSystem wrist = new WristSystem();
+    private final Field2d desiredField = new Field2d();
 
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
@@ -195,6 +205,32 @@ public class RobotContainer {
         return GoToPositionCommand(Position.ALGAE2);
     }
 
+    public Command DriveToCoralStationPose() {
+        Pose2d coralStation = visionSystem.getTagPose(2).get().toPose2d();
+        double offsetDistance = 1;
+        Pose2d adjustedPose = new Pose2d(
+                coralStation.getX() + offsetDistance, // Apply X offset
+                coralStation.getY(), // No Y offset
+                coralStation.getRotation() // Maintain the same rotation (adjust if needed)
+        );
+        
+        desiredField.setRobotPose(adjustedPose);
+        return drivetrain.driveToPose(adjustedPose);
+    }
+
+    public Command DriveToReefPoseLeft() {
+        Pose2d reef = visionSystem.getTagPose(7).get().toPose2d();
+        double offsetDistanceX = 1;
+        double offsetDistanceY = 1;
+        Pose2d adjustedPose = new Pose2d(
+                reef.getX() + offsetDistanceX, // Apply X offset
+                reef.getY() + offsetDistanceY, // No Y offset
+                reef.getRotation() // Maintain the same rotation (adjust if needed)
+        );
+        desiredField.setRobotPose(adjustedPose);
+        return drivetrain.driveToPose(adjustedPose);
+    }
+
     public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
@@ -203,6 +239,7 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
 
         NamedCommands.registerCommand("Intake_Coral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
@@ -258,30 +295,35 @@ public class RobotContainer {
         driverController.rightBumper().toggleOnTrue(PlaceCoralCommand());
         driverController.rightTrigger().whileTrue(EjectCommand());
 
-        driverController.a().onTrue(GoToCoralStationStage());
-        driverController.x().onTrue(GoToAlgaeStageLow());
-        driverController.y().onTrue(GoToAlgaeStageHigh());
+        buttonBox.buttonBinding(ButtonBoxButtons.C1).onTrue(GoToCoralStationStage());
+        buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
+        buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToAlgaeStageHigh());
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
+
+        driverController.start().and(driverController.a()).onTrue(new InstantCommand(() -> {
+            Command driveToReefPose = DriveToReefPoseLeft(); // Create the command to drive to the pose
+            driveToReefPose.schedule(); // Schedule the command to be executed
+        }));
         // Rotates Drive Pods without actaully moving drive motor, might be useful for
         // testing but not sure of any other practical application
         // driverController.a().whileTrue(drivetrain.applyRequest(() -> point
         // .withModuleDirection(new Rotation2d(-driverController.getLeftY(),
         // -driverController.getLeftX()))));
 
-        operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
-        operatorController.povUp().whileTrue(ElevatorUpCommand());
-        operatorController.povDown().whileTrue(ElevatorDownCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.U3).toggleOnTrue(ElevatorStallCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.U1).whileTrue(ElevatorUpCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.U2).whileTrue(ElevatorDownCommand());
 
-        operatorController.rightTrigger().whileTrue(ElbowUpCommand());
-        operatorController.rightBumper().whileTrue(ElbowDownCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.R3R, true).whileTrue(ElbowUpCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.R3L, true).whileTrue(ElbowDownCommand());
 
-        operatorController.leftTrigger().whileTrue(WristUpCommand());
-        operatorController.leftBumper().whileTrue(WristDownCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.R4R, true).whileTrue(WristUpCommand());
+        buttonBox.buttonBinding(ButtonBoxButtons.R4L, true).whileTrue(WristDownCommand());
 
-        operatorController.a().onTrue(GoToStage1());
-        operatorController.x().onTrue(GoToStage2());
-        operatorController.b().onTrue(GoToStage3());
-        operatorController.y().onTrue(GoToStage4());
+        buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
+        buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
+        buttonBox.buttonBinding(ButtonBoxButtons.R3L,false).onTrue(GoToStage3());
+        buttonBox.buttonBinding(ButtonBoxButtons.R4L,false).onTrue(GoToStage4());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -289,6 +331,14 @@ public class RobotContainer {
     public double modifySpeed(final double speed) {
         final var modifier = 1 - driverController.getRightTriggerAxis() * ControllerConstants.PRECISION_DRIVE_MODIFIER;
         return speed * modifier;
+    }
+
+    public void updateVisionPose() {
+        var pose = visionSystem.getEstimatedGlobalPose();
+        if (pose.isPresent()) {
+            double visionTime = visionSystem.getTimeStamp();
+            drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
+        }
     }
 
     public Command getAutonomousCommand() {
