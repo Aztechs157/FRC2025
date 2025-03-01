@@ -34,6 +34,7 @@ import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
+import frc.robot.commands.intake_commands.PlaceCoral;
 import frc.robot.commands.uppies_commands.Lockies;
 import frc.robot.commands.uppies_commands.UnstallLockies;
 import frc.robot.commands.uppies_commands.UppiesLevellingTest;
@@ -143,8 +144,14 @@ public class RobotContainer {
         return new EjectCoral(intake);
     }
 
-    public Command ResetCoralSubsystems() {
-        return new ElevatorGoToExtrema(elevator, positionDetails, false);
+    public Command PlaceCoralCommand() {
+        return new PlaceCoral(intake);
+    }
+
+    public Command ResetCoralSubsystemsCommand() {
+        return new ElevatorGoToExtrema(elevator, positionDetails, false)
+        .alongWith(new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION))
+        .alongWith(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION));
     }
 
     public Command GoToPositionCommand(Position pos) {
@@ -192,6 +199,20 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
+        NamedCommands.registerCommand("Intake_Coral", IntakeCoralCommand());
+        NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
+        NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
+        NamedCommands.registerCommand("Reset_Coral_Subsystem", ResetCoralSubsystemsCommand());
+        
+        NamedCommands.registerCommand("GoToStage1", GoToStage1());
+        NamedCommands.registerCommand("GoToStage2", GoToStage2());    
+        NamedCommands.registerCommand("GoToStage3", GoToStage3());    
+        NamedCommands.registerCommand("GoToStage4", GoToStage4());            
+
+        NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
+        NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
+        NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
     }
 
     private void configureBindings() {
@@ -230,7 +251,8 @@ public class RobotContainer {
 
         driverController.leftBumper().toggleOnTrue(IntakeCoralCommand());
         driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
-        driverController.rightBumper().whileTrue(EjectCommand());
+        driverController.rightBumper().toggleOnTrue(PlaceCoralCommand());
+        driverController.rightTrigger().whileTrue(EjectCommand());
 
         driverController.a().onTrue(GoToCoralStationStage());
         driverController.x().onTrue(GoToAlgaeStageLow());
