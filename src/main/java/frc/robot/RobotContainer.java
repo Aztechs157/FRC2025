@@ -148,10 +148,10 @@ public class RobotContainer {
         return new PlaceCoral(intake);
     }
 
-    public Command ResetCoralSubsystemsCommand() {
-        return new ElevatorGoToExtrema(elevator, positionDetails, false)
-        .alongWith(new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION))
-        .alongWith(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION));
+    public Command ResetCoralSubsystemsCommand(Position pos) {
+        return new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION)
+        .andThen(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION))
+        .andThen(new ElevatorClosedLoopControl(elevator, positionDetails, pos));
     }
 
     public Command GoToPositionCommand(Position pos) {
@@ -159,6 +159,10 @@ public class RobotContainer {
                 .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
                 .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
+    }
+
+    public Command GoToBase() {
+        return ResetCoralSubsystemsCommand(Position.BASE);
     }
 
     public Command GoToStage1() {
@@ -203,7 +207,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake_Coral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
-        NamedCommands.registerCommand("Reset_Coral_Subsystem", ResetCoralSubsystemsCommand());
+        NamedCommands.registerCommand("Reset_Coral_Subsystem", GoToBase());
         
         NamedCommands.registerCommand("GoToStage1", GoToStage1());
         NamedCommands.registerCommand("GoToStage2", GoToStage2());    
