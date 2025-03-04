@@ -232,12 +232,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        configureBindings();
-        autoChooser = AutoBuilder.buildAutoChooser("New Auto");
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
-
-        NamedCommands.registerCommand("Intake_Coral", IntakeCoralCommand());
+        NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
         NamedCommands.registerCommand("Reset_Coral_Subsystem", ResetCoralSubsystemsCommand());
@@ -250,7 +245,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
         NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
-    }
+   
+        configureBindings();
+        autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+        SmartDashboard.putData("Auto Chooser", autoChooser);
+        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
+
+ }        
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
