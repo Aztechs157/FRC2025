@@ -224,7 +224,6 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
-        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
 
         NamedCommands.registerCommand("Intake_Coral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
