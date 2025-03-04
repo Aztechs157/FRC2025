@@ -28,7 +28,8 @@ public class PositionDetails {
         STAGE4(4),
         ALGAE1(6), // low
         ALGAE2(7), // high
-        CORALSTATION(0);
+        CORALSTATION(0),
+        BASE(10);
 
         public int stageNum;
 
@@ -180,6 +181,8 @@ public class PositionDetails {
                 return getElevatorPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getElevatorPosAtAlgae(pos.stageNum);
+            case BASE:
+                return 0;
             default:
                 return 0;
         }

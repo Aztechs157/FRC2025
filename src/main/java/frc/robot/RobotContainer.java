@@ -81,7 +81,8 @@ public class RobotContainer {
     private final PositionDetails positionDetails = new PositionDetails();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
-    //private final CommandXboxController operatorController = new CommandXboxController(1);
+    // private final CommandXboxController operatorController = new
+    // CommandXboxController(1);
     private final ButtonBox buttonBox = new ButtonBox(1);
 
     public final DriveSystem drivetrain = TunerConstants.createDrivetrain();
@@ -158,10 +159,10 @@ public class RobotContainer {
         return new PlaceCoral(intake);
     }
 
-    public Command ResetCoralSubsystemsCommand() {
-        return new ElevatorGoToExtrema(elevator, positionDetails, false)
-        .alongWith(new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION))
-        .alongWith(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION));
+    public Command ResetCoralSubsystemsCommand(Position pos) {
+        return new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION)
+                .andThen(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION))
+                .andThen(new ElevatorClosedLoopControl(elevator, positionDetails, pos));
     }
 
     public Command GoToPositionCommand(Position pos) {
@@ -169,6 +170,10 @@ public class RobotContainer {
                 .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
                 .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
+    }
+
+    public Command GoToBase() {
+        return ResetCoralSubsystemsCommand(Position.BASE);
     }
 
     public Command GoToStage1() {
@@ -209,7 +214,7 @@ public class RobotContainer {
                 coralStation.getY(), // No Y offset
                 coralStation.getRotation() // Maintain the same rotation (adjust if needed)
         );
-        
+
         desiredField.setRobotPose(adjustedPose);
         return drivetrain.driveToPose(adjustedPose);
     }
@@ -235,12 +240,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
-        NamedCommands.registerCommand("Reset_Coral_Subsystem", ResetCoralSubsystemsCommand());
-        
+        NamedCommands.registerCommand("Reset_Coral_Subsystem", GoToBase());
+
         NamedCommands.registerCommand("GoToStage1", GoToStage1());
-        NamedCommands.registerCommand("GoToStage2", GoToStage2());    
-        NamedCommands.registerCommand("GoToStage3", GoToStage3());    
-        NamedCommands.registerCommand("GoToStage4", GoToStage4());            
+        NamedCommands.registerCommand("GoToStage2", GoToStage2());
+        NamedCommands.registerCommand("GoToStage3", GoToStage3());
+        NamedCommands.registerCommand("GoToStage4", GoToStage4());
 
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
@@ -319,8 +324,8 @@ public class RobotContainer {
 
         buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
         buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
-        buttonBox.buttonBinding(ButtonBoxButtons.R3L,false).onTrue(GoToStage3());
-        buttonBox.buttonBinding(ButtonBoxButtons.R4L,false).onTrue(GoToStage4());
+        buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
+        buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
