@@ -57,7 +57,7 @@ public class VisionSystem extends SubsystemBase {
     PortForwarder.add(5800, "photonvision.local", 5800);
 
     try {
-      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2025Reefscape.m_resourceFile);
+      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2025ReefscapeAndyMark.m_resourceFile);
     } catch (IOException exception) {
       topRightCamera.close();
       bottomCamera.close();
