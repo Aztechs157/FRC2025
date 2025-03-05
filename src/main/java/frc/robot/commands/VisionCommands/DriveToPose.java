@@ -26,8 +26,10 @@ public class DriveToPose extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveCommand = driveSystem.driveToPose(visionSystem.desiredPose);
-    driveCommand.schedule();
+    if (visionSystem.desiredPose != null) {
+      driveCommand = driveSystem.driveToPose(visionSystem.desiredPose);
+      driveCommand.schedule();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,6 +48,6 @@ public class DriveToPose extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveCommand.isScheduled();
+    return visionSystem.desiredPose == null || driveCommand.isScheduled();
   }
 }

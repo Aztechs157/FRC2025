@@ -156,13 +156,37 @@ public class VisionSystem extends SubsystemBase {
    */
 
   public PhotonTrackedTarget findBestTarget() {
-    var visionFrame = topRightCamera.getLatestResult();
-    if (visionFrame.hasTargets()) {
-      PhotonTrackedTarget target = visionFrame.getBestTarget();
-      return target;
-    } else {
-      return null;
+
+    var resultTopRight = topRightCamera.getLatestResult();
+    var resultBottom = bottomCamera.getLatestResult();
+    PhotonTrackedTarget targetTop = null;
+    PhotonTrackedTarget targetBottom = null;
+    double topAmbiguity = 100000;
+    double bottomAmbiguity = 100000;
+
+    if (resultTopRight.hasTargets()) {
+      targetTop = resultTopRight.getBestTarget();
+      topAmbiguity = targetTop.getPoseAmbiguity();
     }
+    if (resultBottom.hasTargets()) {
+      targetBottom = resultBottom.getBestTarget();
+      bottomAmbiguity = targetBottom.getPoseAmbiguity();
+    }
+
+    if (topAmbiguity != 100000 && bottomAmbiguity != 100000) {
+      if (topAmbiguity > bottomAmbiguity) {
+        return targetBottom;
+      } else {
+        return targetTop;
+      }
+    }
+    if (topAmbiguity != 100000 && bottomAmbiguity == 100000) {
+      return targetTop;
+    }
+    if (bottomAmbiguity != 100000 && topAmbiguity == 100000) {
+      return targetBottom;
+    }
+    return null;
   }
 
   /*

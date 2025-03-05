@@ -7,31 +7,46 @@ package frc.robot.commands.VisionCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.parsing.PositionDetails;
+import frc.robot.parsing.PositionDetails.Position;
 import frc.robot.subsystems.VisionSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SetTargetTag extends Command {
   private VisionSystem visionSystem;
-  private int tagID;
+  private boolean isLeft;
+  private Position location;
+  private PositionDetails details;
 
   /** Creates a new SetTargetTag. */
-  public SetTargetTag(VisionSystem visionSystem, int tagID) {
+  public SetTargetTag(VisionSystem visionSystem, boolean isLeft, Position location, PositionDetails details) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.visionSystem = visionSystem;
-    this.tagID = tagID;
+    this.isLeft = isLeft;
+    this.location = location;
+    this.details = details;
     addRequirements(visionSystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Pose2d reef = visionSystem.getTagPose(tagID).get().toPose2d();
-    double offsetDistanceX = 1;
-    double offsetDistanceY = 1;
+    double offsetDistanceX = 0;
+    double offsetDistanceY = 0;
+    var bestTag = visionSystem.findBestTarget();
+    int tagID = visionSystem.getTargetID(visionSystem.findBestTarget());
+    Pose2d targetTag = visionSystem.getTagPose(tagID).get().toPose2d();
+    if (isLeft) {
+      offsetDistanceY = -details.getLeftOffsetAtStage(location.stageNum);
+    } else {
+      offsetDistanceY = -details.getRightOffsetAtStage(location.stageNum);
+    }
+    offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
+
     Pose2d adjustedPose = new Pose2d(
-        reef.getX() + offsetDistanceX, // Apply X offset
-        reef.getY() + offsetDistanceY, // No Y offset
-        reef.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
+        targetTag.getX() + offsetDistanceX, // Apply X offset
+        targetTag.getY() + offsetDistanceY, // No Y offset
+        targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
     );
     visionSystem.setDesiredPose(adjustedPose);
   }
