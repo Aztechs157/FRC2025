@@ -118,6 +118,7 @@
                     "left": 0,
                     "right": 0 
                 },
+        "depthOffset":0.3,
         "systemPositions": {
             "elevator": 0.025,
             "elbow": 0.99,

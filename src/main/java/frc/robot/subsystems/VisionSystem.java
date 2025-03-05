@@ -418,7 +418,14 @@ public class VisionSystem extends SubsystemBase {
 
   public void setDesiredPose(Pose2d pose) {
     desiredPose = pose;
-    desiredField.setRobotPose(pose);
+    if (pose != null)
+    {
+      desiredField.setRobotPose(pose);
+    }
+    else
+    {
+      desiredField.setRobotPose(new Pose2d());
+    }
   }
 
   // /* TODO: Docs say we don't care

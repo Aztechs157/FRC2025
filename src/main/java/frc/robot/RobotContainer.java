@@ -209,11 +209,12 @@ public class RobotContainer {
     }
 
     public Command DriveToCoralStationPose() {
-        return new SetTargetTag(visionSystem, 1).andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.CORALSTATION, positionDetails).andThen(new DriveToPose(drivetrain, visionSystem));
+
     }
 
-    public Command DriveToReefPoseLeft() {
-        return new SetTargetTag(visionSystem, 7).andThen(new DriveToPose(drivetrain, visionSystem));
+    public Command DriveToReefPoseRight() {
+        return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails).andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();
@@ -283,8 +284,6 @@ public class RobotContainer {
         buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
         buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToAlgaeStageHigh());
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
-
-        driverController.back().onTrue(DriveToReefPoseLeft());
         // Rotates Drive Pods without actaully moving drive motor, might be useful for
         // testing but not sure of any other practical application
         // driverController.a().whileTrue(drivetrain.applyRequest(() -> point
@@ -305,6 +304,9 @@ public class RobotContainer {
         buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
         buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
         buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
+
+        buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(DriveToReefPoseRight());
+        buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

@@ -46,7 +46,14 @@ public class SetTargetTag extends Command {
           break;
         case STAGE1, STAGE2, STAGE3, STAGE4:
           switch (tagID) {
-            case 7, 8, 36:
+            case 6, 7, 8, 9, 10, 11:
+            case 17, 18, 19, 20, 21, 22:
+              if (isLeft) {
+                offsetDistanceY = -details.getLeftOffsetAtStage(location.stageNum);
+              } else {
+                offsetDistanceY = -details.getRightOffsetAtStage(location.stageNum);
+              }
+              offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
               break;
           }
           break;
@@ -54,19 +61,20 @@ public class SetTargetTag extends Command {
           break;
 
       }
-      if (isLeft) {
-        offsetDistanceY = -details.getLeftOffsetAtStage(location.stageNum);
-      } else {
-        offsetDistanceY = -details.getRightOffsetAtStage(location.stageNum);
-      }
-      offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
 
-      Pose2d adjustedPose = new Pose2d(
-          targetTag.getX() + offsetDistanceX, // Apply X offset
-          targetTag.getY() + offsetDistanceY, // No Y offset
-          targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
-      );
-      visionSystem.setDesiredPose(adjustedPose);
+      if (offsetDistanceX != 0) {
+        Pose2d adjustedPose = new Pose2d(
+            targetTag.getX() + offsetDistanceX, // Apply X offset
+            targetTag.getY() + offsetDistanceY, // No Y offset
+            targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
+        );
+        visionSystem.setDesiredPose(adjustedPose);
+      } else {
+        visionSystem.setDesiredPose(null);
+      }
+
+    } else {
+      visionSystem.setDesiredPose(null);
     }
 
   }
