@@ -34,21 +34,41 @@ public class SetTargetTag extends Command {
     double offsetDistanceX = 0;
     double offsetDistanceY = 0;
     var bestTag = visionSystem.findBestTarget();
-    int tagID = visionSystem.getTargetID(visionSystem.findBestTarget());
-    Pose2d targetTag = visionSystem.getTagPose(tagID).get().toPose2d();
-    if (isLeft) {
-      offsetDistanceY = -details.getLeftOffsetAtStage(location.stageNum);
-    } else {
-      offsetDistanceY = -details.getRightOffsetAtStage(location.stageNum);
-    }
-    offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
+    if (bestTag != null) {
+      int tagID = bestTag.fiducialId;
+      Pose2d targetTag = visionSystem.getTagPose(tagID).get().toPose2d();
+      switch (location) {
+        case ALGAE1, ALGAE2:
+          break;
+        case BASE:
+          break;
+        case CORALSTATION:
+          break;
+        case STAGE1, STAGE2, STAGE3, STAGE4:
+          switch (tagID) {
+            case 7, 8, 36:
+              break;
+          }
+          break;
+        default:
+          break;
 
-    Pose2d adjustedPose = new Pose2d(
-        targetTag.getX() + offsetDistanceX, // Apply X offset
-        targetTag.getY() + offsetDistanceY, // No Y offset
-        targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
-    );
-    visionSystem.setDesiredPose(adjustedPose);
+      }
+      if (isLeft) {
+        offsetDistanceY = -details.getLeftOffsetAtStage(location.stageNum);
+      } else {
+        offsetDistanceY = -details.getRightOffsetAtStage(location.stageNum);
+      }
+      offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
+
+      Pose2d adjustedPose = new Pose2d(
+          targetTag.getX() + offsetDistanceX, // Apply X offset
+          targetTag.getY() + offsetDistanceY, // No Y offset
+          targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
+      );
+      visionSystem.setDesiredPose(adjustedPose);
+    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
