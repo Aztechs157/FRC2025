@@ -16,6 +16,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -49,7 +50,8 @@ import frc.robot.commands.uppies_commands.UppiesToPosition;
 import frc.robot.commands.wrist_commands.WristGoToPosition;
 import frc.robot.commands.wrist_commands.WristGoToStage;
 import frc.robot.commands.wrist_commands.WristManualControl;
-import frc.robot.generated.TunerConstants;
+import frc.robot.generated.AlphaTunerConstants;
+import frc.robot.generated.BetaTunerConstants;
 import frc.robot.parsing.PositionDetails;
 import frc.robot.parsing.PositionDetails.Position;
 import frc.robot.parsing.PositionDetails.Stage;
@@ -65,7 +67,8 @@ import frc.utilities.ButtonBox;
 import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private DigitalInput isBeta = new DigitalInput(5);
+    private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
                                                                                       // max angular velocity
 
@@ -85,12 +88,12 @@ public class RobotContainer {
     // CommandXboxController(1);
     private final ButtonBox buttonBox = new ButtonBox(1);
 
-    public final DriveSystem drivetrain = TunerConstants.createDrivetrain();
-    private final UppiesSystem uppies = new UppiesSystem();
-    private final ElevatorSystem elevator = new ElevatorSystem();
-    private final IntakeSystem intake = new IntakeSystem();
-    private final ElbowSystem elbow = new ElbowSystem();
-    private final WristSystem wrist = new WristSystem();
+    public final DriveSystem drivetrain = isBeta.get()?BetaTunerConstants.createDrivetrain():AlphaTunerConstants.createDrivetrain();
+    private final UppiesSystem uppies = new UppiesSystem(isBeta.get());
+    private final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
+    private final IntakeSystem intake = new IntakeSystem(isBeta.get());
+    private final ElbowSystem elbow = new ElbowSystem(isBeta.get());
+    private final WristSystem wrist = new WristSystem(isBeta.get());
     private final Field2d desiredField = new Field2d();
 
     public Command UppiesUpCommand() {

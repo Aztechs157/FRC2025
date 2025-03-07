@@ -20,20 +20,23 @@ import frc.utilities.PosUtils;
 public class WristSystem extends SubsystemBase implements PosUtils {
   private static SparkMax motor;
   private static PIDController PID;
-
-  /** Creates a new JointSystem. */
-
-  // This should be fine if you change the variables to not be static - Katie
-
-  /**
-   * Creates a new Joint subsystem, meant for the elbow and wrist as they should
-   * have very similar functionality.
-   * 
-   * @param isElbow Whether or not this joint is the elbow, primarily for choosing
-   *                the correct PID and displaying the proper name on shuffleboard
-   */
-  public WristSystem() {
-    motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
+    private boolean isBeta;
+  
+    /** Creates a new JointSystem. */
+  
+    // This should be fine if you change the variables to not be static - Katie
+  
+    /**
+     * Creates a new Joint subsystem, meant for the elbow and wrist as they should
+     * have very similar functionality.
+   * @param b 
+     * 
+     * @param isElbow Whether or not this joint is the elbow, primarily for choosing
+     *                the correct PID and displaying the proper name on shuffleboard
+     */
+    public WristSystem(boolean isBeta) {
+      this.isBeta = isBeta;
+      motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
     PID = WristConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 2);

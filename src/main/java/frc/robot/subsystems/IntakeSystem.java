@@ -20,10 +20,14 @@ public class IntakeSystem extends SubsystemBase {
   // MotorType.kBrushless);
   final TalonFX motor = new TalonFX(IntakeConstants.MOTOR_ID);
   private static DigitalInput sensor = new DigitalInput(IntakeConstants.SENSOR_ID);
-
-  /** Creates a new IntakeSystem. */
-  public IntakeSystem() {
-    Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral)
+    private boolean isBeta;
+    public static IntakeConstants constants;
+  
+    /** Creates a new IntakeSystem. 
+   * @param b */
+    public IntakeSystem(boolean isBeta) {
+      this.isBeta = isBeta;
+      Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 0);
     Shuffleboard.getTab("Sensor values").addDouble("Intake Motor Current", this::getMotorCurrent)
         .withWidget(BuiltInWidgets.kTextView).withPosition(12, 0);

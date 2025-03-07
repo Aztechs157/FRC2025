@@ -23,15 +23,18 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
   private static DigitalInput encoderInput = new DigitalInput(ElbowConstants.ENCODER_ID);
   private static DutyCycleEncoder encoder = new DutyCycleEncoder(encoderInput);
   private PIDController PID;
-
-  /** Creates a new JointSystem. */
-
-  /**
-   * Creates a new Joint subsystem, meant for the elbow and wrist as they should
-   * have very similar functionality.
-   */
-  public ElbowSystem() {
-    motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
+    private boolean isBeta;
+  
+    /** Creates a new JointSystem. */
+  
+    /**
+     * Creates a new Joint subsystem, meant for the elbow and wrist as they should
+     * have very similar functionality.
+   * @param b 
+     */
+    public ElbowSystem(boolean isBeta) {
+      this.isBeta = isBeta;
+      motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
     PID = ElbowConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Elbow Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 1);

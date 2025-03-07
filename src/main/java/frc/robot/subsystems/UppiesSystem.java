@@ -25,8 +25,9 @@ public class UppiesSystem extends SubsystemBase {
   private static DigitalInput lockSensor = new DigitalInput(UppiesConstants.LOCK_SENSOR_ID);
   private static DigitalInput cageSensor = new DigitalInput(UppiesConstants.CAGE_SENSOR_ID);
 
-  /** Creates a new UppiesSystem. */
-  public UppiesSystem() {
+  /** Creates a new UppiesSystem. 
+ * @param b */
+  public UppiesSystem(boolean b) {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Left Pos", this::getPosLeft)
         .withWidget(BuiltInWidgets.kTextView).withPosition(0, 3);
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Right Pos", this::getPosRight)

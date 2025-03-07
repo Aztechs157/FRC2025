@@ -35,16 +35,19 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static SlewRateLimiter slew = new SlewRateLimiter(ElevatorConstants.SLEW_RATE_LIMIT_UP,
       ElevatorConstants.SLEW_RATE_LIMIT_DOWN, 0);
   private GenericEntry shuffleboardFeedforward;
-
-  /**
-   * Creates a new elevator system with the values provided in Constants.java.
-   * Consists of one motor, a potentiometer, and 2 boolean sensors for the top and
-   * bottom limits.
-   * 
-   * @see frc.robot.Constants.ElevatorConstants
-   */
-  public ElevatorSystem() {
-    Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
+    private boolean isBeta;
+  
+    /**
+     * Creates a new elevator system with the values provided in Constants.java.
+     * Consists of one motor, a potentiometer, and 2 boolean sensors for the top and
+     * bottom limits.
+   * @param b 
+     * 
+     * @see frc.robot.Constants.ElevatorConstants
+     */
+    public ElevatorSystem(boolean isBeta) {
+      this.isBeta = isBeta;
+      Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 0);
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos)
         .withWidget(BuiltInWidgets.kTextView).withPosition(1, 0).withSize(2, 1);
