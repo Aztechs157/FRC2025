@@ -231,16 +231,22 @@ public class RobotContainer {
         desiredField.setRobotPose(adjustedPose);
         return drivetrain.driveToPose(adjustedPose);
     }
+    
+    public Command exitStartingPosition() {
+        return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
+    }
 
     public final VisionSystem visionSystem = new VisionSystem();
 
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        NamedCommands.registerCommand("ElevatorStall", ElevatorStallCommand());
+
         NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
-        NamedCommands.registerCommand("Reset_Coral_Subsystem", GoToBase());
+        NamedCommands.registerCommand("ExitStartingPosition", exitStartingPosition());
 
         NamedCommands.registerCommand("GoToStage1", GoToStage1());
         NamedCommands.registerCommand("GoToStage2", GoToStage2());
