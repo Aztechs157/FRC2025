@@ -82,8 +82,12 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    * @return The current value of the encoder, in percentage of total travel
    */
   public double getScaledPos() {
-    return PosUtils.mapRange(getPos(), ElbowConstants.MIN_POSITION, ElbowConstants.MAX_POSITION, 0.0, 1.0);
+    if (isBeta) {
+      return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MIN_POSITION, ElbowConstants.BETA_MAX_POSITION, 0.0, 1.0);
+    } else {
+    return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MIN_POSITION, ElbowConstants.ALPHA_MAX_POSITION, 0.0, 1.0);
   }
+}
 
   /**
    * Checks if the motor position is within tolerance (as set in Constants) of the

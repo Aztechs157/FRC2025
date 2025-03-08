@@ -258,6 +258,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         Shuffleboard.getTab("vision").add("Desired Position", desiredField);
+        Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get).withPosition(0, 7);
 
  }        
 

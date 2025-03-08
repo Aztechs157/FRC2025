@@ -112,7 +112,8 @@ public class Constants {
          * Position limits, in raw encoder units. In this case, rotations. This defines
          * our virtual limits.
          */
-        public static final double MAX_POSITION = 2634, MIN_POSITION = 616;
+        public static final double ALPHA_MAX_POSITION = 2634, ALPHA_MIN_POSITION = 616;
+        public static final double BETA_MAX_POSITION = 4015, BETA_MIN_POSITION = 2015;
 
         public static final double POS_TOLERANCE = 0.01;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
@@ -156,7 +157,8 @@ public class Constants {
          * Position limits, in raw encoder units. In this case, rotations. This defines
          * our virtual limits.
          */
-        public static final double MAX_POSITION = 0.4, MIN_POSITION = 0.748;
+        public static final double ALPHA_MAX_POSITION = 0.4, ALPHA_MIN_POSITION = 0.748;
+        public static final double BETA_MAX_POSITION = 0.825, BETA_MIN_POSITION = 0.477;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;
