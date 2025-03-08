@@ -6,6 +6,7 @@ package frc.robot.commands.VisionCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.parsing.PositionDetails;
 import frc.robot.parsing.PositionDetails.Position;
@@ -63,9 +64,10 @@ public class SetTargetTag extends Command {
       }
 
       if (offsetDistanceX != 0) {
+        double offsetHypot = Math.sqrt(offsetDistanceX * offsetDistanceX + offsetDistanceY * offsetDistanceY);
         Pose2d adjustedPose = new Pose2d(
-            targetTag.getX() + offsetDistanceX, // Apply X offset
-            targetTag.getY() + offsetDistanceY, // No Y offset
+            targetTag.getX() + offsetHypot * Math.cos(targetTag.getRotation().getRadians()), // Apply X offset
+            targetTag.getY() + offsetHypot * Math.sin(targetTag.getRotation().getRadians()), // Apply Y offset
             targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
         );
         visionSystem.setDesiredPose(adjustedPose);

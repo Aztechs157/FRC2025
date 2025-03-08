@@ -215,8 +215,8 @@ public class RobotContainer {
     }
 
     public Command DriveToReefPoseRight() {
-        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
-                .andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails);
+        // .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();

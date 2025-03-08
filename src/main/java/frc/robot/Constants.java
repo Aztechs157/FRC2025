@@ -29,7 +29,9 @@ public class Constants {
                 new Translation3d(0.229, 0.165, 1.003), new Rotation3d())
                 .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.44, 0))) // This line to set possible
                                                                                         // pitch
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // This line to set possible yaw,
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(Math.PI / 2, 0, 0))); // This line to set
+                                                                                                // possible
+        // yaw,
         // new Rotation3d(0, 0.959931, 2.61799)
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom"; // TODO: find proper
                                                                                                 // value

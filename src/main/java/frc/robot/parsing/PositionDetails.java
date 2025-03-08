@@ -49,7 +49,7 @@ public class PositionDetails {
         public double depthOffset;
 
         public Stage(JsonNode stageJSON) {
-            //System.out.println(stageJSON.toPrettyString());
+            // System.out.println(stageJSON.toPrettyString());
             this.leftOffset = stageJSON.get("horizontalOffsets").get("left").asDouble();
             this.rightOffset = stageJSON.get("horizontalOffsets").get("right").asDouble();
             this.depthOffset = stageJSON.get("depthOffset").asDouble();
