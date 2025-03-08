@@ -68,7 +68,9 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private boolean isButtonBox = false;
+    private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
+                                                                                       // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
                                                                                       // max angular velocity
 
@@ -84,11 +86,11 @@ public class RobotContainer {
     private final PositionDetails positionDetails = new PositionDetails();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
-    // private final CommandXboxController operatorController = new
-    // CommandXboxController(1);
-    private final ButtonBox buttonBox = new ButtonBox(1);
+    private final CommandXboxController operatorController;
+    private final ButtonBox buttonBox;
 
-    public final DriveSystem drivetrain = isBeta.get()?BetaTunerConstants.createDrivetrain():AlphaTunerConstants.createDrivetrain();
+    public final DriveSystem drivetrain = isBeta.get() ? BetaTunerConstants.createDrivetrain()
+            : AlphaTunerConstants.createDrivetrain();
     private final UppiesSystem uppies = new UppiesSystem(isBeta.get());
     private final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
     private final IntakeSystem intake = new IntakeSystem(isBeta.get());
@@ -240,6 +242,14 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        if (isButtonBox) {
+            buttonBox = new ButtonBox(1);
+            operatorController = null;
+        } else {
+            operatorController = new CommandXboxController(1);
+            buttonBox = null;
+        }
+
         NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
@@ -253,14 +263,14 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
         NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
-   
+
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         Shuffleboard.getTab("vision").add("Desired Position", desiredField);
         Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get).withPosition(0, 7);
 
- }        
+    }
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
@@ -301,9 +311,16 @@ public class RobotContainer {
         driverController.rightBumper().toggleOnTrue(PlaceCoralCommand());
         driverController.rightTrigger().whileTrue(EjectCommand());
 
-        buttonBox.buttonBinding(ButtonBoxButtons.C1).onTrue(GoToCoralStationStage());
-        buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
-        buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToAlgaeStageHigh());
+        if (isButtonBox) {
+            buttonBox.buttonBinding(ButtonBoxButtons.C1).onTrue(GoToCoralStationStage());
+            buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
+            buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToAlgaeStageHigh());
+        } else {
+            driverController.a().onTrue(GoToCoralStationStage());
+            driverController.x().onTrue(GoToAlgaeStageLow());
+            driverController.y().onTrue(GoToAlgaeStageHigh());
+        }
+
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
 
         driverController.start().and(driverController.a()).onTrue(new InstantCommand(() -> {
@@ -316,20 +333,37 @@ public class RobotContainer {
         // .withModuleDirection(new Rotation2d(-driverController.getLeftY(),
         // -driverController.getLeftX()))));
 
-        buttonBox.buttonBinding(ButtonBoxButtons.U3).toggleOnTrue(ElevatorStallCommand());
-        buttonBox.buttonBinding(ButtonBoxButtons.U1).whileTrue(ElevatorUpCommand());
-        buttonBox.buttonBinding(ButtonBoxButtons.U2).whileTrue(ElevatorDownCommand());
+        if (isButtonBox) {
+            buttonBox.buttonBinding(ButtonBoxButtons.U3).toggleOnTrue(ElevatorStallCommand());
+            buttonBox.buttonBinding(ButtonBoxButtons.U1).whileTrue(ElevatorUpCommand());
+            buttonBox.buttonBinding(ButtonBoxButtons.U2).whileTrue(ElevatorDownCommand());
 
-        buttonBox.buttonBinding(ButtonBoxButtons.R3R, true).whileTrue(ElbowUpCommand());
-        buttonBox.buttonBinding(ButtonBoxButtons.R3L, true).whileTrue(ElbowDownCommand());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3R, true).whileTrue(ElbowUpCommand());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3L, true).whileTrue(ElbowDownCommand());
 
-        buttonBox.buttonBinding(ButtonBoxButtons.R4R, true).whileTrue(WristUpCommand());
-        buttonBox.buttonBinding(ButtonBoxButtons.R4L, true).whileTrue(WristDownCommand());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4R, true).whileTrue(WristUpCommand());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4L, true).whileTrue(WristDownCommand());
 
-        buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
-        buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
-        buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
-        buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
+            buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
+            buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
+        } else {
+            operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
+            operatorController.povUp().whileTrue(ElevatorUpCommand());
+            operatorController.povDown().whileTrue(ElevatorDownCommand());
+
+            operatorController.rightTrigger().whileTrue(ElbowUpCommand());
+            operatorController.rightBumper().whileTrue(ElbowDownCommand());
+
+            operatorController.leftTrigger().whileTrue(WristUpCommand());
+            operatorController.leftBumper().whileTrue(WristDownCommand());
+
+            operatorController.a().onTrue(GoToStage1());
+            operatorController.x().onTrue(GoToStage2());
+            operatorController.b().onTrue(GoToStage3());
+            operatorController.y().onTrue(GoToStage4());
+        }
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
