@@ -27,7 +27,7 @@ public class ElevatorClosedLoopControl extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.reset2();
+    elevator.reset();
     elevator.setClosedLoopGoal(position);
   }
 

@@ -62,7 +62,8 @@ public class Constants {
         // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-elevator.html
         // maxAccel and maxVel are fairly self explanatory, should be in percentage of
         // travel/s(^2 for accel). start small, increase later
-        static final double maxAccel = 1, maxVel = 0.7;
+        static final double alphaMaxAccel = 1, alphaMaxVel = 0.7;
+        static final double betaMaxAccel = 0.3, betaMaxVel = 0.3;
         // s, g, v, and a are harder to find. these are the best candidates for sysID
         // tuning, but manual tuning should go as follows
         // s is unclear, it is meant to represent friction in the system. it is possible
@@ -74,26 +75,36 @@ public class Constants {
         // speed.
         // after all these are tuned for slow speeds, increase speed and use PID for any
         // fine tuning adjustments s = 0, g = 0.5, v = 10, a = 0.7;
-        static final double s = 0, g = 0.9, v = 9, a = 0.7;
+        static final double as = 0, ag = 0.9, av = 9, aa = 0.7;
+        // bg could go lower but is fine for now.
+        static final double bs = 0, bg = 0.3, bv = 8.6, ba = 0;
+        // v = 8.6, a = 0.05
         // these are standard PID values, but they are much less active in control then
         // standard PID, the feedforward should be doing 80+% of the work. tune these
         // last
-        static final double p2 = 1, i2 = 0, d2 = 0;
+        static final double ap = 1, ai = 0, ad = 0;
+
+        static final double bp = 0, bi = 0, bd = 0;
 
         /**
          * PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d
          * as {@value #d}.
          */
-        public static final PIDController PID = new PIDController(p, i, d);
-        public static ProfiledPIDController NEW_PID = new ProfiledPIDController(p2, i2, d2,
-                new TrapezoidProfile.Constraints(maxAccel, maxAccel));
-        public static ElevatorFeedforward FEEDFORWARD = new ElevatorFeedforward(s, g, v, a);
+   
+        public static ProfiledPIDController ALPHA_NEW_PID = new ProfiledPIDController(ap, ai, ad,
+                new TrapezoidProfile.Constraints(alphaMaxAccel, alphaMaxAccel));
+        public static ElevatorFeedforward ALPHA_FEEDFORWARD = new ElevatorFeedforward(as, ag, av, aa);
+
+        public static ProfiledPIDController BETA_NEW_PID = new ProfiledPIDController(bp, bi, bd,
+                new TrapezoidProfile.Constraints(betaMaxAccel, betaMaxAccel));
+        public static ElevatorFeedforward BETA_FEEDFORWARD = new ElevatorFeedforward(bs, bg, bv, ba);
 
         public static final double SLEW_RATE_LIMIT_UP = 1.57;
         public static final double SLEW_RATE_LIMIT_DOWN = -1.57;
 
         /** The motor power needed to hold the elevator in place. */
-        public static final double STALL_POWER = 0.057;
+        public static final double ALPHA_STALL_POWER = 0.057;
+        public static final double BETA_STALL_POWER = 0.045;
 
         /**
          * The power used to move the motor for manual control, ie not in "go to
@@ -113,7 +124,7 @@ public class Constants {
          * our virtual limits.
          */
         public static final double ALPHA_MAX_POSITION = 2634, ALPHA_MIN_POSITION = 616;
-        public static final double BETA_MAX_POSITION = 4015, BETA_MIN_POSITION = 2015;
+        public static final double BETA_MAX_POSITION = 4080, BETA_MIN_POSITION = 2015;
 
         public static final double POS_TOLERANCE = 0.01;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
@@ -158,7 +169,7 @@ public class Constants {
          * our virtual limits.
          */
         public static final double ALPHA_MAX_POSITION = 0.4, ALPHA_MIN_POSITION = 0.748;
-        public static final double BETA_MAX_POSITION = 0.825, BETA_MIN_POSITION = 0.477;
+        public static final double BETA_MAX_POSITION = 0.825, BETA_MIN_POSITION = 0.444;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;
@@ -189,7 +200,8 @@ public class Constants {
          * Position limits, in raw encoder units. In this case, rotations. This defines
          * our virtual limits. The minimum position is when the elbow is at the top.
          */
-        public static final double MAX_POSITION = 0.08, MIN_POSITION = 0.545;
+        public static final double ALPHA_MAX_POSITION = 0.08, ALPHA_MIN_POSITION = 0.545;
+        public static final double BETA_MAX_POSITION = 0.869, BETA_MIN_POSITION = 0.271;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;

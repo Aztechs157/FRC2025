@@ -4,18 +4,15 @@
 
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.networktables.DoubleEntry;
+
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.GenericPublisher;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -31,38 +28,51 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private static AnalogInput pot = new AnalogInput(ElevatorConstants.POT_ID);
   private static DigitalInput bottomLimit = new DigitalInput(ElevatorConstants.BOTTOM_LIMIT_ID);
   private static DigitalInput topLimit = new DigitalInput(ElevatorConstants.TOP_LIMIT_ID);
-  private static PIDController PID = ElevatorConstants.PID;
-  private static SlewRateLimiter slew = new SlewRateLimiter(ElevatorConstants.SLEW_RATE_LIMIT_UP,
-      ElevatorConstants.SLEW_RATE_LIMIT_DOWN, 0);
-  private GenericEntry shuffleboardFeedforward;
-    private boolean isBeta;
-  
-    /**
-     * Creates a new elevator system with the values provided in Constants.java.
-     * Consists of one motor, a potentiometer, and 2 boolean sensors for the top and
-     * bottom limits.
-   * @param b 
-     * 
-     * @see frc.robot.Constants.ElevatorConstants
-     */
-    public ElevatorSystem(boolean isBeta) {
-      this.isBeta = isBeta;
-      Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
+  private GenericEntry shuffleboardFeedforwardSetpoint;
+  private GenericEntry shuffleboardFeedforwardVel;
+  private boolean isBeta;
+
+  /**
+   * Creates a new elevator system with the values provided in Constants.java.
+   * Consists of one motor, a potentiometer, and 2 boolean sensors for the top and
+   * bottom limits.
+   * 
+   * @param b
+   * 
+   * @see frc.robot.Constants.ElevatorConstants
+   */
+  public ElevatorSystem(boolean isBeta) {
+    this.isBeta = isBeta;
+    var config = new SparkMaxConfig();
+    config.idleMode(IdleMode.kBrake);
+    config.inverted(isBeta);
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 0);
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos)
         .withWidget(BuiltInWidgets.kTextView).withPosition(1, 0).withSize(2, 1);
-    Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot 2", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(9, 3);
+
+    
+
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 0);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Motor Velocity", this::getMotorVelocity)
         .withWidget(BuiltInWidgets.kGraph).withPosition(9, 0);
-    shuffleboardFeedforward = Shuffleboard.getTab("Sensor values").add("Feedforward Setpoint", 0)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(12, 3).getEntry();
 
-    ElevatorConstants.NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+    shuffleboardFeedforwardSetpoint = Shuffleboard.getTab("Elevator Feedforward").add("Feedforward Setpoint", 0)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(0, 0).getEntry();
+    shuffleboardFeedforwardVel = Shuffleboard.getTab("Elevator Feedforward").add("Feedforward Velocity", 0)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(3, 0).getEntry();
+    Shuffleboard.getTab("Elevator Feedforward").addDouble("Scaled Elevator Pot 2", this::getScaledPos)
+        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 0);  
+    if (isBeta){
+      ElevatorConstants.BETA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+    } else {
+      ElevatorConstants.ALPHA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+    }
+    
   }
 
   /**
@@ -84,23 +94,39 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   public void setClosedLoopGoal(double goal) {
-    ElevatorConstants.NEW_PID.setGoal(goal);
+    if (isBeta) {
+      ElevatorConstants.BETA_NEW_PID.setGoal(goal);
+    } else {
+      ElevatorConstants.ALPHA_NEW_PID.setGoal(goal);
+    }
   }
 
   public void runClosedLoop() {
-    double feedForwardCalc = ElevatorConstants.FEEDFORWARD.calculate(ElevatorConstants.NEW_PID.getSetpoint().velocity);
-    shuffleboardFeedforward.setDouble(feedForwardCalc);
-    runMotorVolts(ElevatorConstants.NEW_PID.calculate(getScaledPos()) + feedForwardCalc);
+    double feedForwardCalc;
+    double feedForwardVel;
+    if (isBeta){
+      var setPoint = ElevatorConstants.BETA_NEW_PID.getSetpoint();
+      feedForwardVel = setPoint.position;
+      feedForwardCalc = ElevatorConstants.BETA_FEEDFORWARD.calculate(setPoint.velocity);
+      runMotorVolts(ElevatorConstants.BETA_NEW_PID.calculate(getScaledPos()) + feedForwardCalc);
+    } else {
+      var setPoint = ElevatorConstants.BETA_NEW_PID.getSetpoint();
+      feedForwardVel = setPoint.position;
+      feedForwardCalc = ElevatorConstants.ALPHA_FEEDFORWARD.calculate(setPoint.velocity);
+      runMotorVolts(ElevatorConstants.ALPHA_NEW_PID.calculate(getScaledPos()) + feedForwardCalc);
+    }
+    shuffleboardFeedforwardSetpoint.setDouble(feedForwardCalc);
+    shuffleboardFeedforwardVel.setDouble(feedForwardVel);
   }
 
   public double runWithLimits(double speed) {
-    if (getScaledPos() >= 1.0 - ElevatorConstants.LIMIT_MARGIN && speed < 0) {
+    if (getScaledPos() >= 1.0 - ElevatorConstants.LIMIT_MARGIN && speed > 0) {
       return 0;
-    } else if (getScaledPos() >= 0.9 - ElevatorConstants.LIMIT_MARGIN && speed < 0) {
+    } else if (getScaledPos() >= 0.9 - ElevatorConstants.LIMIT_MARGIN && speed > 0) {
       return speed * 0.75;
-    } else if (getScaledPos() <= 0.0 + ElevatorConstants.LIMIT_MARGIN && speed > 0) {
+    } else if (getScaledPos() <= 0.0 + ElevatorConstants.LIMIT_MARGIN && speed < 0) {
       return 0;
-    } else if (getScaledPos() <= 0.1 + ElevatorConstants.LIMIT_MARGIN && speed > 0) {
+    } else if (getScaledPos() <= 0.1 + ElevatorConstants.LIMIT_MARGIN && speed < 0) {
       return speed * 0.75;
     } else {
       return speed;
@@ -132,9 +158,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public double getScaledPos() {
     if (isBeta) {
-      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0, 1.0);
+      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
+          1.0);
     } else {
-      return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION, 0.0, 1.0);
+      return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
+          0.0, 1.0);
     }
   }
 
@@ -171,24 +199,13 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     return !topLimit.get();
   }
 
-  /**
-   * Uses PID to find the speed to move the elevator at to get to the desired
-   * position.
-   * 
-   * @param desiredPos - the desired position in scaled potentiometer units
-   * @return - the speed to move the elevator
-   */
-  public double getNewSpeed(double desiredPos) {
-    return slew.calculate(PID.calculate(getScaledPos(), desiredPos));
-  }
-
   public void reset() {
-    slew.reset(0);
-    PID.reset();
-  }
-
-  public void reset2() {
-    ElevatorConstants.NEW_PID.reset(getScaledPos());
+    if (isBeta){
+      ElevatorConstants.BETA_NEW_PID.reset(getScaledPos());
+    } else {
+      ElevatorConstants.ALPHA_NEW_PID.reset(getScaledPos());
+    }
+   
   }
 
   /**

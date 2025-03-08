@@ -6,8 +6,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import org.photonvision.simulation.VisionTargetSim;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -15,7 +13,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -31,30 +28,23 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.elbow_commands.ElbowGoToPosition;
-import frc.robot.commands.elbow_commands.ElbowGoToStage;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
-import frc.robot.commands.elevator_commands.ElevatorGoToStage;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
 import frc.robot.commands.elevator_commands.ElevatorClosedLoopControl;
-import frc.robot.commands.elevator_commands.ElevatorGoToExtrema;
-import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
 import frc.robot.commands.intake_commands.PlaceCoral;
 import frc.robot.commands.uppies_commands.Lockies;
 import frc.robot.commands.uppies_commands.UnstallLockies;
-import frc.robot.commands.uppies_commands.UppiesLevellingTest;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.uppies_commands.UppiesToPosition;
 import frc.robot.commands.wrist_commands.WristGoToPosition;
-import frc.robot.commands.wrist_commands.WristGoToStage;
 import frc.robot.commands.wrist_commands.WristManualControl;
 import frc.robot.generated.AlphaTunerConstants;
 import frc.robot.generated.BetaTunerConstants;
 import frc.robot.parsing.PositionDetails;
 import frc.robot.parsing.PositionDetails.Position;
-import frc.robot.parsing.PositionDetails.Stage;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.IntakeSystem;
@@ -121,7 +111,7 @@ public class RobotContainer {
     }
 
     public Command ElevatorStallCommand() {
-        return new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER);
+        return new ElevatorManualControl(elevator, isBeta.get()?ElevatorConstants.BETA_STALL_POWER:ElevatorConstants.ALPHA_STALL_POWER);
     }
 
     public Command ElevatorUpCommand() {
@@ -172,7 +162,7 @@ public class RobotContainer {
 
     public Command GoToPositionCommand(Position pos) {
         return (new ElevatorClosedLoopControl(elevator, positionDetails, pos)
-                .andThen(new ElevatorManualControl(elevator, ElevatorConstants.STALL_POWER)))
+                .andThen(new ElevatorManualControl(elevator, isBeta.get()?ElevatorConstants.BETA_STALL_POWER:ElevatorConstants.ALPHA_STALL_POWER)))
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
                 .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
     }
@@ -350,14 +340,14 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
-            operatorController.povUp().whileTrue(ElevatorUpCommand());
+            operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());
             operatorController.povDown().whileTrue(ElevatorDownCommand());
 
-            operatorController.rightTrigger().whileTrue(ElbowUpCommand());
-            operatorController.rightBumper().whileTrue(ElbowDownCommand());
+            operatorController.rightTrigger().whileTrue(ElbowDownCommand());
+            operatorController.rightBumper().whileTrue(ElbowUpCommand());
 
-            operatorController.leftTrigger().whileTrue(WristUpCommand());
-            operatorController.leftBumper().whileTrue(WristDownCommand());
+            operatorController.leftTrigger().whileTrue(WristDownCommand());
+            operatorController.leftBumper().whileTrue(WristUpCommand());
 
             operatorController.a().onTrue(GoToStage1());
             operatorController.x().onTrue(GoToStage2());

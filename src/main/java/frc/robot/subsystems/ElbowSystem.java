@@ -6,8 +6,12 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -16,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElbowConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.utilities.PosUtils;
 
 public class ElbowSystem extends SubsystemBase implements PosUtils {
@@ -35,6 +40,10 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
     public ElbowSystem(boolean isBeta) {
       this.isBeta = isBeta;
       motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
+      var config = new SparkMaxConfig();
+      config.idleMode(IdleMode.kBrake);
+      config.inverted(!isBeta);
+      motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     PID = ElbowConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Elbow Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 1);
@@ -56,6 +65,21 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
+  }
+
+   public double runWithLimits(double speed) {
+    System.out.println(speed);
+    if (getScaledPos() >= 1.0 - ElbowConstants.LIMIT_MARGIN && speed > 0) {
+      return 0;
+    } else if (getScaledPos() >= 0.9 - ElbowConstants.LIMIT_MARGIN && speed > 0) {
+      return speed * 0.75;
+    } else if (getScaledPos() <= 0.0 + ElbowConstants.LIMIT_MARGIN && speed < 0) {
+      return 0;
+    } else if (getScaledPos() <= 0.1 + ElbowConstants.LIMIT_MARGIN && speed < 0) {
+      return speed * 0.75;
+    } else {
+      return speed;
+    }
   }
 
   /**
