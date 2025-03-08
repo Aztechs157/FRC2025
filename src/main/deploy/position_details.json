@@ -8,7 +8,7 @@
                     "elbow": 1,
                     "wrist": 0
                 },
-                "depthOffset": 0.3,
+                "depthOffset": 0.35,
                 "horizontalOffsets": {
                     "left": -0.301625,
                     "right": 0.301625 
@@ -21,10 +21,10 @@
                     "elbow": 0.847,
                     "wrist": 0.196
                 },
-                "depthOffset": 0.3,
+                "depthOffset": 0.5,
                 "horizontalOffsets": {
-                    "left": -0.1651,
-                    "right": 0.1651
+                    "left": -0.1,
+                    "right": 0.1
                 }
             },
             "stage3": {

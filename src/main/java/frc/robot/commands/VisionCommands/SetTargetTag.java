@@ -49,9 +49,9 @@ public class SetTargetTag extends Command {
             case 6, 7, 8, 9, 10, 11:
             case 17, 18, 19, 20, 21, 22:
               if (isLeft) {
-                offsetDistanceY = -details.getLeftOffsetAtStage(location.stageNum);
+                offsetDistanceY = details.getLeftOffsetAtStage(location.stageNum);
               } else {
-                offsetDistanceY = -details.getRightOffsetAtStage(location.stageNum);
+                offsetDistanceY = details.getRightOffsetAtStage(location.stageNum);
               }
               offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
               break;

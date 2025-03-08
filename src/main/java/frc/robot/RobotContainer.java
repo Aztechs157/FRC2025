@@ -209,16 +209,17 @@ public class RobotContainer {
     }
 
     public Command DriveToCoralStationPose() {
-        return new SetTargetTag(visionSystem, false, Position.CORALSTATION, positionDetails).andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.CORALSTATION, positionDetails)
+                .andThen(new DriveToPose(drivetrain, visionSystem));
 
     }
 
     public Command DriveToReefPoseRight() {
-        return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails).andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
+                .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();
-
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
