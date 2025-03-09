@@ -64,12 +64,7 @@ public class SetTargetTag extends Command {
       }
 
       if (offsetDistanceX != 0) {
-        double offsetHypot = Math.sqrt(offsetDistanceX * offsetDistanceX + offsetDistanceY * offsetDistanceY);
-        Pose2d adjustedPose = new Pose2d(
-            targetTag.getX() + offsetHypot * Math.cos(targetTag.getRotation().getRadians()), // Apply X offset
-            targetTag.getY() + offsetHypot * Math.sin(targetTag.getRotation().getRadians()), // Apply Y offset
-            targetTag.getRotation().plus(new Rotation2d(Math.PI)) // Maintain the same rotation (adjust if needed)
-        );
+        Pose2d adjustedPose = targetTag.plus(new Transform2d(offsetDistanceX, offsetDistanceY, Rotation2d.kPi));
         visionSystem.setDesiredPose(adjustedPose);
       } else {
         visionSystem.setDesiredPose(null);
