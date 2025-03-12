@@ -279,7 +279,7 @@ public class RobotContainer {
         driverController.leftBumper().toggleOnTrue(IntakeCoralCommand());
         driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
         driverController.rightBumper().toggleOnTrue(PlaceCoralCommand());
-        driverController.rightTrigger().whileTrue(EjectCommand());
+        // driverController.rightTrigger().whileTrue(EjectCommand());
 
         buttonBox.buttonBinding(ButtonBoxButtons.C1).onTrue(GoToCoralStationStage());
         buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
