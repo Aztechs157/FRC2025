@@ -2,3 +2,16 @@ perp x = 0.4064
 perp y = 0.70390544819
 par x = 0.14298079416
 par y = 0.08255
+
+for each face:
+    1. isolate x-pos of face
+    2. convert into metric.
+    3. repeat for y
+    4. find direction of x and y components of the perp vector
+for each letter:
+    5. switch the signs
+    6. repeat for par
+    7. make a new path
+    8. plug in x and y values
+    9. link waypoint and name it the letter
+    10. name the path "goTo<Letter>"
