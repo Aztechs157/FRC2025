@@ -215,8 +215,8 @@ public class RobotContainer {
     }
 
     public Command DriveToReefPoseRight() {
-        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails);
-        // .andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
+                .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();
@@ -309,6 +309,12 @@ public class RobotContainer {
         buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(DriveToReefPoseRight());
         buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
 
+        buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(DriveToReefPoseRight());
+        buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(GoToStage3());
+
+        buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(DriveToReefPoseRight());
+        buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
+
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
@@ -319,7 +325,8 @@ public class RobotContainer {
 
     public void updateVisionPose() {
         var pose = visionSystem.getEstimatedGlobalPose();
-        if (pose.isPresent()) {
+        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond == 0
+                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond == 0) {
             double visionTime = visionSystem.getTimeStamp();
             drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
             drivetrain.resetPose(pose.get().toPose2d());
