@@ -10,6 +10,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.spark.SparkMax;
@@ -19,10 +21,13 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,16 +48,21 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private boolean isBeta;
   private final MutVoltage SysIDVolts = Volts.mutable(0);
   private final MutDistance SysIDPosition = Meter.mutable(0);
+  private final MutLinearVelocity SysIDVelocity = Meters.per(Second).mutable(0);
+  private double lastPos = -1;
+  private double lastTime = -1;
+  private double scaledVelocity = -1;
 
   private final SysIdRoutine sysID = 
       new SysIdRoutine(
         new Config(),
         new SysIdRoutine.Mechanism(
-          motor::setVoltage, log -> {
+          motor::setVoltage, 
+          log -> {
             log.motor("main").voltage(SysIDVolts.mut_replace(motor.get()*RobotController.getBatteryVoltage(), Volts))
             .linearPosition(SysIDPosition.mut_replace(this.getScaledPos(), Meters))
-            .linearVelocity(null);
-          }, null)
+            .linearVelocity(SysIDVelocity.mut_replace(this.scaledVelocity, MetersPerSecond));
+          }, this)
       );
 
 
@@ -268,8 +278,24 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     });
   }
 
+  public Command SysIDQuasi(SysIdRoutine.Direction dir) {
+    return sysID.quasistatic(dir);
+  }
+  public Command SysIDDynamic(SysIdRoutine.Direction dir) {
+    return sysID.dynamic(dir);
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    if (lastPos == -1)
+    {
+      lastPos = getScaledPos();
+      lastTime = Timer.getFPGATimestamp();
+    }
+    else {
+      scaledVelocity = (getScaledPos()-lastPos)/(Timer.getFPGATimestamp()/lastTime);
+      lastPos = getScaledPos();
+      lastTime = Timer.getFPGATimestamp();
+    }
   }
 }
