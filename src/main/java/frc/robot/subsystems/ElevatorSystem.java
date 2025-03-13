@@ -7,18 +7,28 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.ElevatorConstants;
 import frc.utilities.PosUtils;
 
@@ -31,6 +41,20 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private GenericEntry shuffleboardFeedforwardSetpoint;
   private GenericEntry shuffleboardFeedforwardVel;
   private boolean isBeta;
+  private final MutVoltage SysIDVolts = Volts.mutable(0);
+  private final MutDistance SysIDPosition = Meter.mutable(0);
+
+  private final SysIdRoutine sysID = 
+      new SysIdRoutine(
+        new Config(),
+        new SysIdRoutine.Mechanism(
+          motor::setVoltage, log -> {
+            log.motor("main").voltage(SysIDVolts.mut_replace(motor.get()*RobotController.getBatteryVoltage(), Volts))
+            .linearPosition(SysIDPosition.mut_replace(this.getScaledPos(), Meters))
+            .linearVelocity(null);
+          }, null)
+      );
+
 
   /**
    * Creates a new elevator system with the values provided in Constants.java.
