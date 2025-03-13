@@ -31,6 +31,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private GenericEntry shuffleboardFeedforwardSetpoint;
   private GenericEntry shuffleboardFeedforwardVel;
   private boolean isBeta;
+  public boolean isClosedLoopRunning = false;
+
+  public boolean isClosedLoopRunning() {
+    return isClosedLoopRunning;
+  }
 
   /**
    * Creates a new elevator system with the values provided in Constants.java.
@@ -66,9 +71,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     shuffleboardFeedforwardVel = Shuffleboard.getTab("Elevator Feedforward").add("Feedforward Velocity", 0)
         .withWidget(BuiltInWidgets.kGraph).withPosition(3, 0).getEntry();
     Shuffleboard.getTab("Elevator Feedforward").addDouble("Scaled Elevator Pot 2", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 0);  
+        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 0); 
+       
     if (isBeta){
       ElevatorConstants.BETA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+      Shuffleboard.getTab("Elevator Feedforward").addBoolean("Is ClosedLoop Running?", this::isClosedLoopRunning).withWidget(BuiltInWidgets.kBooleanBox);
     } else {
       ElevatorConstants.ALPHA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
     }
@@ -110,7 +117,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
       feedForwardCalc = ElevatorConstants.BETA_FEEDFORWARD.calculate(setPoint.velocity);
       runMotorVolts(ElevatorConstants.BETA_NEW_PID.calculate(getScaledPos()) + feedForwardCalc);
     } else {
-      var setPoint = ElevatorConstants.BETA_NEW_PID.getSetpoint();
+      var setPoint = ElevatorConstants.ALPHA_NEW_PID.getSetpoint();
       feedForwardVel = setPoint.position;
       feedForwardCalc = ElevatorConstants.ALPHA_FEEDFORWARD.calculate(setPoint.velocity);
       runMotorVolts(ElevatorConstants.ALPHA_NEW_PID.calculate(getScaledPos()) + feedForwardCalc);
