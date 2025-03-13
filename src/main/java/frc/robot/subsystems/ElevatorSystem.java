@@ -18,7 +18,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
-
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
@@ -53,18 +52,15 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private double lastTime = -1;
   private double scaledVelocity = -1;
 
-  private final SysIdRoutine sysID = 
-      new SysIdRoutine(
-        new Config(),
-        new SysIdRoutine.Mechanism(
-          motor::setVoltage, 
+  private final SysIdRoutine sysID = new SysIdRoutine(
+      new Config(),
+      new SysIdRoutine.Mechanism(
+          motor::setVoltage,
           log -> {
-            log.motor("main").voltage(SysIDVolts.mut_replace(motor.get()*RobotController.getBatteryVoltage(), Volts))
-            .linearPosition(SysIDPosition.mut_replace(this.getScaledPos(), Meters))
-            .linearVelocity(SysIDVelocity.mut_replace(this.scaledVelocity, MetersPerSecond));
-          }, this)
-      );
-
+            log.motor("main").voltage(SysIDVolts.mut_replace(motor.getAppliedOutput()* RobotController.getBatteryVoltage(), Volts))
+                .linearPosition(SysIDPosition.mut_replace(this.getScaledPos(), Meters))
+                .linearVelocity(SysIDVelocity.mut_replace(this.scaledVelocity, MetersPerSecond));
+          }, this));
 
   /**
    * Creates a new elevator system with the values provided in Constants.java.
@@ -86,8 +82,6 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos)
         .withWidget(BuiltInWidgets.kTextView).withPosition(1, 0).withSize(2, 1);
 
-    
-
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 0);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop)
@@ -100,13 +94,15 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     shuffleboardFeedforwardVel = Shuffleboard.getTab("Elevator Feedforward").add("Feedforward Velocity", 0)
         .withWidget(BuiltInWidgets.kGraph).withPosition(3, 0).getEntry();
     Shuffleboard.getTab("Elevator Feedforward").addDouble("Scaled Elevator Pot 2", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 0);  
-    if (isBeta){
-      ElevatorConstants.BETA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 0);
+    if (isBeta) {
+      ElevatorConstants.BETA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE,
+          ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
     } else {
-      ElevatorConstants.ALPHA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE, ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+      ElevatorConstants.ALPHA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE,
+          ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
     }
-    
+
   }
 
   /**
@@ -138,7 +134,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   public void runClosedLoop() {
     double feedForwardCalc;
     double feedForwardVel;
-    if (isBeta){
+    if (isBeta) {
       var setPoint = ElevatorConstants.BETA_NEW_PID.getSetpoint();
       feedForwardVel = setPoint.position;
       feedForwardCalc = ElevatorConstants.BETA_FEEDFORWARD.calculate(setPoint.velocity);
@@ -234,12 +230,12 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   public void reset() {
-    if (isBeta){
+    if (isBeta) {
       ElevatorConstants.BETA_NEW_PID.reset(getScaledPos());
     } else {
       ElevatorConstants.ALPHA_NEW_PID.reset(getScaledPos());
     }
-   
+
   }
 
   /**
@@ -281,19 +277,26 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   public Command SysIDQuasi(SysIdRoutine.Direction dir) {
     return sysID.quasistatic(dir);
   }
+
   public Command SysIDDynamic(SysIdRoutine.Direction dir) {
     return sysID.dynamic(dir);
   }
 
+  public boolean sysIDNotAtTop() {
+    return getScaledPos() <= 0.9;
+  }
+
+  public boolean sysIDNotAtBottom() {
+    return getScaledPos() >= 0.1;
+  }
+
   @Override
   public void periodic() {
-    if (lastPos == -1)
-    {
+    if (lastPos == -1) {
       lastPos = getScaledPos();
       lastTime = Timer.getFPGATimestamp();
-    }
-    else {
-      scaledVelocity = (getScaledPos()-lastPos)/(Timer.getFPGATimestamp()/lastTime);
+    } else {
+      scaledVelocity = (getScaledPos() - lastPos) / (Timer.getFPGATimestamp() - lastTime);
       lastPos = getScaledPos();
       lastTime = Timer.getFPGATimestamp();
     }

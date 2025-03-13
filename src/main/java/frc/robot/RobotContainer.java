@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElbowConstants;
@@ -88,6 +89,16 @@ public class RobotContainer {
     private final WristSystem wrist = new WristSystem(isBeta.get());
     private final Field2d desiredField = new Field2d();
 
+    public Command SysIDQuasi(Direction dir) {
+        return elevator.SysIDQuasi(dir)
+                .onlyWhile((dir == Direction.kForward) ? elevator::sysIDNotAtTop : elevator::sysIDNotAtBottom);
+    }
+
+    public Command SysIDDynamic(Direction dir) {
+        return elevator.SysIDDynamic(dir)
+                .onlyWhile((dir == Direction.kForward) ? elevator::sysIDNotAtTop : elevator::sysIDNotAtBottom);
+    }
+
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
     }
@@ -111,7 +122,8 @@ public class RobotContainer {
     }
 
     public Command ElevatorStallCommand() {
-        return new ElevatorManualControl(elevator, isBeta.get()?ElevatorConstants.BETA_STALL_POWER:ElevatorConstants.ALPHA_STALL_POWER);
+        return new ElevatorManualControl(elevator,
+                isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER);
     }
 
     public Command ElevatorUpCommand() {
@@ -162,7 +174,8 @@ public class RobotContainer {
 
     public Command GoToPositionCommand(Position pos) {
         return (new ElevatorClosedLoopControl(elevator, positionDetails, pos)
-                .andThen(new ElevatorManualControl(elevator, isBeta.get()?ElevatorConstants.BETA_STALL_POWER:ElevatorConstants.ALPHA_STALL_POWER)))
+                .andThen(new ElevatorManualControl(elevator,
+                        isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)))
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
                 .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
     }
@@ -349,10 +362,15 @@ public class RobotContainer {
             operatorController.leftTrigger().whileTrue(WristDownCommand());
             operatorController.leftBumper().whileTrue(WristUpCommand());
 
-            operatorController.a().onTrue(GoToStage1());
-            operatorController.x().onTrue(GoToStage2());
-            operatorController.b().onTrue(GoToStage3());
-            operatorController.y().onTrue(GoToStage4());
+            operatorController.a().and(operatorController.start().negate()).onTrue(GoToStage1());
+            operatorController.x().and(operatorController.start().negate()).onTrue(GoToStage2());
+            operatorController.b().and(operatorController.start().negate()).onTrue(GoToStage3());
+            operatorController.y().and(operatorController.start().negate()).onTrue(GoToStage4());
+
+            operatorController.a().and(operatorController.start()).whileTrue(SysIDQuasi(Direction.kReverse));
+            operatorController.b().and(operatorController.start()).whileTrue(SysIDQuasi(Direction.kForward));
+            operatorController.x().and(operatorController.start()).whileTrue(SysIDDynamic(Direction.kReverse));
+            operatorController.y().and(operatorController.start()).whileTrue(SysIDDynamic(Direction.kForward));
         }
 
         drivetrain.registerTelemetry(logger::telemeterize);

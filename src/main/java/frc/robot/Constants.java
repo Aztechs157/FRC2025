@@ -77,7 +77,7 @@ public class Constants {
         // fine tuning adjustments s = 0, g = 0.5, v = 10, a = 0.7;
         static final double as = 0, ag = 0.9, av = 9, aa = 0.7;
         // bg could go lower but is fine for now.
-        static final double bs = 0, bg = 0.3, bv = 8.6, ba = 0;
+        static final double bs = 0.35921, bg = 0.79494, bv = 8.1184, ba = 0.93545;
         // v = 8.6, a = 0.05
         // these are standard PID values, but they are much less active in control then
         // standard PID, the feedforward should be doing 80+% of the work. tune these
