@@ -35,8 +35,6 @@ import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
 import frc.robot.commands.intake_commands.PlaceCoral;
-import frc.robot.commands.uppies_commands.Lockies;
-import frc.robot.commands.uppies_commands.UnstallLockies;
 import frc.robot.commands.uppies_commands.UppiesManualControl;
 import frc.robot.commands.uppies_commands.UppiesToPosition;
 import frc.robot.commands.wrist_commands.WristGoToPosition;
@@ -89,29 +87,20 @@ public class RobotContainer {
     private final Field2d desiredField = new Field2d();
 
     public Command UppiesUpCommand() {
-        return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
+        return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command UppiesDownCommand() {
-        return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
+        return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
     }
 
     public Command UppiesStallCommand() {
         return new UppiesManualControl(uppies, UppiesConstants.STALL_SPEED);
     }
 
-    public Command UppiesWithLock() {
-        return new UnstallLockies(uppies).andThen(new Lockies(uppies))
-                .andThen(new UppiesToPosition(uppies, UppiesConstants.MANUAL_CONTROL_SPEED, 0))
-                .andThen(new UppiesManualControl(uppies, UppiesConstants.STALL_SPEED));
-    }
-
-    public Command UnstallUppies() {
-        return new UnstallLockies(uppies);
-    }
-
     public Command ElevatorStallCommand() {
-        return new ElevatorManualControl(elevator, isBeta.get()?ElevatorConstants.BETA_STALL_POWER:ElevatorConstants.ALPHA_STALL_POWER);
+        return new ElevatorManualControl(elevator,
+                isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER);
     }
 
     public Command ElevatorUpCommand() {
@@ -162,7 +151,8 @@ public class RobotContainer {
 
     public Command GoToPositionCommand(Position pos) {
         return (new ElevatorClosedLoopControl(elevator, positionDetails, pos)
-                .andThen(new ElevatorManualControl(elevator, isBeta.get()?ElevatorConstants.BETA_STALL_POWER:ElevatorConstants.ALPHA_STALL_POWER)))
+                .andThen(new ElevatorManualControl(elevator,
+                        isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)))
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
                 .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
     }
@@ -290,8 +280,6 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         driverController.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        driverController.povLeft().onTrue(UppiesWithLock());
-        driverController.povRight().onTrue(UnstallUppies());
         // driverController.povRight().onTrue(new UppiesLevellingTest(uppies));
         driverController.povUp().whileTrue(UppiesUpCommand());
         driverController.povDown().whileTrue(UppiesDownCommand());

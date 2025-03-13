@@ -90,7 +90,7 @@ public class Constants {
          * PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d
          * as {@value #d}.
          */
-   
+
         public static ProfiledPIDController ALPHA_NEW_PID = new ProfiledPIDController(ap, ai, ad,
                 new TrapezoidProfile.Constraints(alphaMaxAccel, alphaMaxAccel));
         public static ElevatorFeedforward ALPHA_FEEDFORWARD = new ElevatorFeedforward(as, ag, av, aa);
@@ -218,8 +218,8 @@ public class Constants {
 
     public static class UppiesConstants {
         // IDs/Ports for the sensors/actuators. The motors uses a CAN ID
-        public static final int LEFT_MOTOR_ID = 30, RIGHT_MOTOR_ID = 31, LOCK_MOTOR_ID = 32;
-        public static final int LOCK_SENSOR_ID = 2, CAGE_SENSOR_ID = 3;
+        public static final int MOTOR_ID = 30;
+        public static final int ENCODER_ID = 2;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MOTOR_SPEED = 0.75, MANUAL_CONTROL_SPEED = 0.75, STALL_SPEED = 0.25;
@@ -237,16 +237,6 @@ public class Constants {
          * Position limits, in raw encoder units, for the left Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double LEFT_MAX_POSITION = 0.112, LEFT_MIN_POSITION = 0.520;
-
-        /**
-         * Position limits, in raw encoder units, for the right Uppies motor. In this
-         * case, the raw encoder unit is rotations. This defines our virtual limits.
-         */
-        public static final double RIGHT_MAX_POSITION = 0.681, RIGHT_MIN_POSITION = 0.244;
-
-        public static final double LOCK_MOTOR_SPEED = 0.5, LOCK_MOTOR_STALL_SPEED = 0.025; // TODO: find proper values
-
-        public static final double LOCK_TIME = 0.5; // TODO: find proper value
+        public static final double MAX_POSITION = 0.486, MIN_POSITION = 0.185;
     }
 }
