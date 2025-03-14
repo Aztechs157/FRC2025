@@ -58,6 +58,7 @@ import frc.robot.parsing.PositionDetails.Stage;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.ElbowSystem;
 import frc.robot.subsystems.WristSystem;
 // import frc.robot.subsystems.VisionSystem;
@@ -95,7 +96,7 @@ public class RobotContainer {
     private final ElbowSystem elbow = new ElbowSystem(isBeta.get());
     private final WristSystem wrist = new WristSystem(isBeta.get());
     private final Field2d desiredField = new Field2d();
-
+    private final LEDSystem led = new LEDSystem();
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
     }
