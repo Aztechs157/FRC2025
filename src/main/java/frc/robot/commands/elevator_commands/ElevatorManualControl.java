@@ -28,7 +28,7 @@ public class ElevatorManualControl extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevatorSystem.runMotor(commandValue);
+    elevatorSystem.runMotor(elevatorSystem.runWithLimits(commandValue));
   }
 
   // Called once the command ends or is interrupted.

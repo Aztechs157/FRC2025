@@ -5,38 +5,48 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import java.util.Map;
 
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.WristConstants;
 import frc.utilities.PosUtils;
 
 public class WristSystem extends SubsystemBase implements PosUtils {
   private static SparkMax motor;
   private static PIDController PID;
-    private boolean isBeta;
-  
-    /** Creates a new JointSystem. */
-  
-    // This should be fine if you change the variables to not be static - Katie
-  
-    /**
-     * Creates a new Joint subsystem, meant for the elbow and wrist as they should
-     * have very similar functionality.
-   * @param b 
-     * 
-     * @param isElbow Whether or not this joint is the elbow, primarily for choosing
-     *                the correct PID and displaying the proper name on shuffleboard
-     */
-    public WristSystem(boolean isBeta) {
-      this.isBeta = isBeta;
-      motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
+  private boolean isBeta;
+
+  /** Creates a new JointSystem. */
+
+  // This should be fine if you change the variables to not be static - Katie
+
+  /**
+   * Creates a new Joint subsystem, meant for the elbow and wrist as they should
+   * have very similar functionality.
+   * 
+   * @param b
+   * 
+   * @param isElbow Whether or not this joint is the elbow, primarily for choosing
+   *                the correct PID and displaying the proper name on shuffleboard
+   */
+  public WristSystem(boolean isBeta) {
+    this.isBeta = isBeta;
+    motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
+    var config = new SparkMaxConfig();
+    config.idleMode(IdleMode.kBrake);
+    config.inverted(isBeta);
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     PID = WristConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 2);
@@ -58,6 +68,21 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
+  }
+
+  public double runWithLimits(double speed) {
+    System.out.println(speed);
+    if (getScaledPos() >= 1.0 - WristConstants.LIMIT_MARGIN && speed > 0) {
+      return 0;
+    } else if (getScaledPos() >= 0.9 - WristConstants.LIMIT_MARGIN && speed > 0) {
+      return speed * 0.75;
+    } else if (getScaledPos() <= 0.0 + WristConstants.LIMIT_MARGIN && speed < 0) {
+      return 0;
+    } else if (getScaledPos() <= 0.1 + WristConstants.LIMIT_MARGIN && speed < 0) {
+      return speed * 0.75;
+    } else {
+      return speed;
+    }
   }
 
   /**
@@ -84,7 +109,8 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    * @return The current value of the encoder, in percentage of total travel
    */
   public double getScaledPos() {
-    return PosUtils.mapRange(getPos(), WristConstants.MIN_POSITION, WristConstants.MAX_POSITION, 0.0, 1.0);
+    return PosUtils.mapRange(getPos(), isBeta ? WristConstants.BETA_MIN_POSITION : WristConstants.ALPHA_MIN_POSITION,
+        isBeta ? WristConstants.BETA_MAX_POSITION : WristConstants.ALPHA_MAX_POSITION, 0.0, 1.0);
   }
 
   /**
@@ -98,7 +124,6 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    *      double)
    */
   public boolean isOscillating(double desiredPos) {
-    System.out.println("Wrist | Goal: " + desiredPos + ", Curt: " + getScaledPos() + ", Vel: " + getMotorVelocity());
     return PosUtils.isOscillating(desiredPos, getScaledPos(), WristConstants.POS_TOLERANCE, getMotorVelocity(),
         WristConstants.MOTOR_VELOCITY_TOLERANCE);
   }
