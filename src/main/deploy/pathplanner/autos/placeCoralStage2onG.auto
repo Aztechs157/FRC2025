@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Reset_Coral_Subsystem"
+            "name": "ExitStartingPosition"
           }
         },
         {
@@ -17,15 +17,35 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "GoToStage2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceCoral"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToStage2"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PlaceCoral"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]

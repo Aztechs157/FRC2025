@@ -215,6 +215,10 @@ public class RobotContainer {
                 .andThen(new DriveToPose(drivetrain, visionSystem));
 
     }
+    
+    public Command exitStartingPosition() {
+        return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
+    }
 
     public Command DriveToReefPoseRight() {
         return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
@@ -228,11 +232,12 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
+        NamedCommands.registerCommand("ElevatorStall", ElevatorStallCommand());
 
-        NamedCommands.registerCommand("Intake_Coral", IntakeCoralCommand());
+        NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
         NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
-        NamedCommands.registerCommand("Reset_Coral_Subsystem", GoToBase());
+        NamedCommands.registerCommand("ExitStartingPosition", exitStartingPosition());
 
         NamedCommands.registerCommand("GoToStage1", GoToStage1());
         NamedCommands.registerCommand("GoToStage2", GoToStage2());
@@ -242,7 +247,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
         NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
-    }
+   
+        configureBindings();
+        autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+        SmartDashboard.putData("Auto Chooser", autoChooser);
+        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
+
+ }        
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
