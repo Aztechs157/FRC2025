@@ -26,18 +26,20 @@ public class Constants {
         public static final String TOPRIGHT_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_TopRight"; // TODO: find proper
                                                                                                     // value
         public static final Transform3d TOPRIGHT_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(0.0, 0.0, 0.72), new Rotation3d())
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.51, 0)))
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // TODO: find proper
-                                                                                      // value,
+                new Translation3d(0.229, 0.165, 1.003), new Rotation3d())
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.44, 0))) // This line to set possible
+                                                                                        // pitch
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(Math.PI / 2, 0, 0))); // This line to set
+                                                                                                // possible
+        // yaw,
         // new Rotation3d(0, 0.959931, 2.61799)
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom"; // TODO: find proper
                                                                                                 // value
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(-0.305816, -0.2276856, 0.5478018), new Rotation3d())
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.959931, 0)))
-                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0.523599))); // TODO: find proper
-                                                                                             // value,
+                new Translation3d(0.254, 0, 0.178), new Rotation3d())
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0.35, 0))) // This line to set possible
+                                                                                        // pitch
+                .plus(new Transform3d(new Translation3d(), new Rotation3d(0, 0, 0))); // This line to set possible yaw,
 
         public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
     }
@@ -136,7 +138,7 @@ public class Constants {
         // a digital I/O
         public static final int MOTOR_ID = 22;
         public static final int SENSOR_ID = 1;
-        public static final double INTAKE_ALGAE_SPEED = 1, ALGAE_HOLDING_SPEED = 0.1, CORAL_HOLDING_SPEED = 0.02;
+        public static final double INTAKE_ALGAE_SPEED = 1, ALGAE_HOLDING_SPEED = 0.1, CORAL_HOLDING_SPEED = 0.01;
         public static final double ALGAE_HELD_CURRENT = 40, CORAL_HELD_CURRENT = 40;
         public static final int ALGAE_HOLD_COUNTER = 25, CORAL_HOLD_COUNTER = 5;
 
@@ -144,7 +146,7 @@ public class Constants {
          * The speed, as a percentage of total power, to run the intake motor at for the
          * specified action.
          */
-        public static final double INTAKE_MOTOR_SPEED = 0.5, PLACE_MOTOR_SPEED = 0.5, EJECT_MOTOR_SPEED = 0.5;
+        public static final double INTAKE_MOTOR_SPEED = 0.357, PLACE_MOTOR_SPEED = 0.5, EJECT_MOTOR_SPEED = 0.5;
 
         /** The time to wait before considering the action done, in seconds. */
         public static final double PLACE_TIME = 0.5, EJECT_TIME = 0.5;

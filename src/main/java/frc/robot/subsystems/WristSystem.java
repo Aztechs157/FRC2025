@@ -124,7 +124,6 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    *      double)
    */
   public boolean isOscillating(double desiredPos) {
-    System.out.println("Wrist | Goal: " + desiredPos + ", Curt: " + getScaledPos() + ", Vel: " + getMotorVelocity());
     return PosUtils.isOscillating(desiredPos, getScaledPos(), WristConstants.POS_TOLERANCE, getMotorVelocity(),
         WristConstants.MOTOR_VELOCITY_TOLERANCE);
   }

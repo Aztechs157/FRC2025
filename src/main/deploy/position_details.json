@@ -8,9 +8,10 @@
                     "elbow": 1,
                     "wrist": 0
                 },
+                "depthOffset": 0.35,
                 "horizontalOffsets": {
-                    "left": -0.301625,
-                    "right": 0.301625 
+                    "left": -0.15,
+                    "right": 0.15 
                 }
             },
             "stage2": {
@@ -20,9 +21,10 @@
                     "elbow": 0.847,
                     "wrist": 0.196
                 },
+                "depthOffset": 0.45,
                 "horizontalOffsets": {
-                    "left": -0.1651,
-                    "right": 0.1651
+                    "left": -0.15,
+                    "right": 0.15
                 }
             },
             "stage3": {
@@ -32,9 +34,10 @@
                     "elbow": 0.847,
                     "wrist": 0.196
                 },
+                "depthOffset": 0.45,
                 "horizontalOffsets": {
-                    "left": -0.1651,
-                    "right": 0.1651
+                    "left": -0.15,
+                    "right": 0.15
                 }
             },
             "stage4": {
@@ -45,9 +48,10 @@
                     "elbow": 0.9,
                     "wrist": 0.1
                 },
+                "depthOffset": 0.357,
                 "horizontalOffsets": {
-                    "left": -0.1651,
-                    "right": 0.1651
+                    "left": -0.15,
+                    "right": 0.15
                 }
             }
         },
@@ -114,6 +118,7 @@
                     "left": 0,
                     "right": 0 
                 },
+        "depthOffset":0.3,
         "systemPositions": {
             "elevator": 0.025,
             "elbow": 0.99,
