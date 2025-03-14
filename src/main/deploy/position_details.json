@@ -21,7 +21,7 @@
                     "elbow": 0.847,
                     "wrist": 0.196
                 },
-                "depthOffset": 0.36,
+                "depthOffset": 0.45,
                 "horizontalOffsets": {
                     "left": -0.15,
                     "right": 0.15
@@ -34,7 +34,7 @@
                     "elbow": 0.847,
                     "wrist": 0.196
                 },
-                "depthOffset": 0.36,
+                "depthOffset": 0.45,
                 "horizontalOffsets": {
                     "left": -0.15,
                     "right": 0.15
@@ -48,7 +48,7 @@
                     "elbow": 0.9,
                     "wrist": 0.1
                 },
-                "depthOffset": 0.28,
+                "depthOffset": 0.357,
                 "horizontalOffsets": {
                     "left": -0.15,
                     "right": 0.15

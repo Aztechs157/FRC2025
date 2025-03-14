@@ -43,7 +43,9 @@ import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
+import frc.robot.commands.intake_commands.IntakeCoralSimple;
 import frc.robot.commands.intake_commands.PlaceCoral;
+import frc.robot.commands.intake_commands.PlaceCoralSimple;
 import frc.robot.commands.uppies_commands.Lockies;
 import frc.robot.commands.uppies_commands.UnstallLockies;
 import frc.robot.commands.uppies_commands.UppiesLevellingTest;
@@ -146,7 +148,7 @@ public class RobotContainer {
     }
 
     public Command IntakeCoralCommand() {
-        return new IntakeCoral(intake);
+        return new IntakeCoralSimple(intake);
     }
 
     public Command IntakeAlgaeCommand() {
@@ -158,7 +160,7 @@ public class RobotContainer {
     }
 
     public Command PlaceCoralCommand() {
-        return new PlaceCoral(intake);
+        return new PlaceCoralSimple(intake);
     }
 
     public Command ResetCoralSubsystemsCommand(Position pos) {
@@ -325,8 +327,8 @@ public class RobotContainer {
 
     public void updateVisionPose() {
         var pose = visionSystem.getEstimatedGlobalPose();
-        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond == 0
-                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond == 0) {
+        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 0.5
+                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 0.5) {
             double visionTime = visionSystem.getTimeStamp();
             drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
             drivetrain.resetPose(pose.get().toPose2d());
