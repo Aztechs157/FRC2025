@@ -27,7 +27,8 @@ public class ElevatorClosedLoopControl extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.reset2();
+    elevator.isClosedLoopRunning = true;
+    elevator.reset();
     elevator.setClosedLoopGoal(position);
   }
 
@@ -40,11 +41,13 @@ public class ElevatorClosedLoopControl extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    elevator.isClosedLoopRunning = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return elevator.isOscillating(position);
+    // return elevator.isOscillating(position);
+    return false;
   }
 }
