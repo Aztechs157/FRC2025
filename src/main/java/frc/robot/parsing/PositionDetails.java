@@ -46,10 +46,13 @@ public class PositionDetails {
         public double elevatorPos;
         public double elbowPos;
         public double wristPos;
+        public double depthOffset;
 
         public Stage(JsonNode stageJSON) {
+            // System.out.println(stageJSON.toPrettyString());
             this.leftOffset = stageJSON.get("horizontalOffsets").get("left").asDouble();
             this.rightOffset = stageJSON.get("horizontalOffsets").get("right").asDouble();
+            this.depthOffset = stageJSON.get("depthOffset").asDouble();
             this.elevatorPos = stageJSON.get("systemPositions").get("elevator").asDouble();
             this.elbowPos = stageJSON.get("systemPositions").get("elbow").asDouble();
             this.wristPos = stageJSON.get("systemPositions").get("wrist").asDouble();
@@ -167,6 +170,16 @@ public class PositionDetails {
      */
     public double getRightOffsetAtStage(int stage) {
         return corals[stage].rightOffset;
+    }
+
+    /**
+     * Get right offset for the specified stage
+     * 
+     * @param stage - one-indexed ie: 1,2,3,4
+     * @return a double representing the right offset
+     */
+    public double getDepthOffsetAtStage(int stage) {
+        return corals[stage].depthOffset;
     }
 
     /**

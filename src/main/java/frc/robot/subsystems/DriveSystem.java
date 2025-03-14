@@ -23,8 +23,11 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -54,6 +57,11 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+    private final Field2d field = new Field2d();
+
+    public double forwardValue = 1000;
+    public double rotationValue = 1000;
+    public double translationValue = 1000;
 
     /*
      * SysId routine for characterizing translation. This is used to find PID gains
@@ -136,6 +144,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         configureAutoBuilder();
+        // Shuffleboard.getTab("vision").add("DriveSystem Position",
+        // field).withWidget(BuiltInWidgets.kField);
+
     }
 
     /**
@@ -162,6 +173,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         configureAutoBuilder();
+        // Shuffleboard.getTab("vision").add("DriveSystem Position",
+        // field).withWidget(BuiltInWidgets.kField);
+
     }
 
     /**
@@ -203,6 +217,9 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
         configureAutoBuilder();
+        // Shuffleboard.getTab("vision").add("DriveSystem Position",
+        // field).withWidget(BuiltInWidgets.kField);
+
     }
 
     private void configureAutoBuilder() {
@@ -235,6 +252,10 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
         }
     }
 
+    public Pose2d getPose() {
+        return this.samplePoseAt(Utils.getCurrentTimeSeconds()).get();
+    }
+
     /**
      * Use PathPlanner Path finding to go to a point on the field.
      *
@@ -246,7 +267,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
         PathConstraints constraints = new PathConstraints(
                 1, 1,
                 Units.degreesToRadians(360),
-                Units.degreesToRadians(360));
+                Units.degreesToRadians(480));
 
         // Since AutoBuilder is configured, we can use it to build pathfinding commands
         return AutoBuilder.pathfindToPose(
@@ -254,6 +275,14 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
                 constraints,
                 0.0 // Goal end velocity in meters/sec
         );
+    }
+
+    public boolean atTargetPose(Pose2d targetPose) {
+        Pose2d currentPose = getPose();
+        double positionError = currentPose.getTranslation().getDistance(targetPose.getTranslation());
+        double angleError = Math.abs(currentPose.getRotation().getDegrees() - targetPose.getRotation().getDegrees());
+
+        return positionError < 0.1 && angleError < 5.0; // Example thresholds (0.1 meters and 5 degrees)
     }
 
     /**
@@ -310,6 +339,10 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
                                 : kBlueAlliancePerspectiveRotation);
                 m_hasAppliedOperatorPerspective = true;
             });
+        }
+        var x = this.samplePoseAt(Utils.getCurrentTimeSeconds());
+        if (x.isPresent()) {
+            field.setRobotPose(x.get());
         }
     }
 

@@ -16,6 +16,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +30,8 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.VisionCommands.DriveToPose;
+import frc.robot.commands.VisionCommands.SetTargetTag;
 import frc.robot.commands.elbow_commands.ElbowGoToPosition;
 import frc.robot.commands.elbow_commands.ElbowGoToStage;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
@@ -40,7 +43,9 @@ import frc.robot.commands.elevator_commands.ElevatorGoToPosition;
 import frc.robot.commands.intake_commands.EjectCoral;
 import frc.robot.commands.intake_commands.IntakeAlgae;
 import frc.robot.commands.intake_commands.IntakeCoral;
+import frc.robot.commands.intake_commands.IntakeCoralSimple;
 import frc.robot.commands.intake_commands.PlaceCoral;
+import frc.robot.commands.intake_commands.PlaceCoralSimple;
 import frc.robot.commands.uppies_commands.Lockies;
 import frc.robot.commands.uppies_commands.UnstallLockies;
 import frc.robot.commands.uppies_commands.UppiesLevellingTest;
@@ -91,7 +96,6 @@ public class RobotContainer {
     private final IntakeSystem intake = new IntakeSystem();
     private final ElbowSystem elbow = new ElbowSystem();
     private final WristSystem wrist = new WristSystem();
-    private final Field2d desiredField = new Field2d();
 
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, -UppiesConstants.MANUAL_CONTROL_SPEED);
@@ -144,7 +148,7 @@ public class RobotContainer {
     }
 
     public Command IntakeCoralCommand() {
-        return new IntakeCoral(intake);
+        return new IntakeCoralSimple(intake);
     }
 
     public Command IntakeAlgaeCommand() {
@@ -156,7 +160,7 @@ public class RobotContainer {
     }
 
     public Command PlaceCoralCommand() {
-        return new PlaceCoral(intake);
+        return new PlaceCoralSimple(intake);
     }
 
     public Command ResetCoralSubsystemsCommand(Position pos) {
@@ -207,40 +211,27 @@ public class RobotContainer {
     }
 
     public Command DriveToCoralStationPose() {
-        Pose2d coralStation = visionSystem.getTagPose(2).get().toPose2d();
-        double offsetDistance = 1;
-        Pose2d adjustedPose = new Pose2d(
-                coralStation.getX() + offsetDistance, // Apply X offset
-                coralStation.getY(), // No Y offset
-                coralStation.getRotation() // Maintain the same rotation (adjust if needed)
-        );
+        return new SetTargetTag(visionSystem, false, Position.CORALSTATION, positionDetails)
+                .andThen(new DriveToPose(drivetrain, visionSystem));
 
-        desiredField.setRobotPose(adjustedPose);
-        return drivetrain.driveToPose(adjustedPose);
-    }
-
-    public Command DriveToReefPoseLeft() {
-        Pose2d reef = visionSystem.getTagPose(7).get().toPose2d();
-        double offsetDistanceX = 1;
-        double offsetDistanceY = 1;
-        Pose2d adjustedPose = new Pose2d(
-                reef.getX() + offsetDistanceX, // Apply X offset
-                reef.getY() + offsetDistanceY, // No Y offset
-                reef.getRotation() // Maintain the same rotation (adjust if needed)
-        );
-        desiredField.setRobotPose(adjustedPose);
-        return drivetrain.driveToPose(adjustedPose);
     }
     
     public Command exitStartingPosition() {
         return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
     }
 
-    public final VisionSystem visionSystem = new VisionSystem();
+    public Command DriveToReefPoseRight() {
+        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
+                .andThen(new DriveToPose(drivetrain, visionSystem));
+    }
 
+    public final VisionSystem visionSystem = new VisionSystem();
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        configureBindings();
+        autoChooser = AutoBuilder.buildAutoChooser("New Auto");
+        SmartDashboard.putData("Auto Chooser", autoChooser);
         NamedCommands.registerCommand("ElevatorStall", ElevatorStallCommand());
 
         NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
@@ -301,17 +292,12 @@ public class RobotContainer {
         driverController.leftBumper().toggleOnTrue(IntakeCoralCommand());
         driverController.leftTrigger().toggleOnTrue(IntakeAlgaeCommand());
         driverController.rightBumper().toggleOnTrue(PlaceCoralCommand());
-        driverController.rightTrigger().whileTrue(EjectCommand());
+        // driverController.rightTrigger().whileTrue(EjectCommand());
 
         buttonBox.buttonBinding(ButtonBoxButtons.C1).onTrue(GoToCoralStationStage());
         buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
         buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToAlgaeStageHigh());
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
-
-        driverController.start().and(driverController.a()).onTrue(new InstantCommand(() -> {
-            Command driveToReefPose = DriveToReefPoseLeft(); // Create the command to drive to the pose
-            driveToReefPose.schedule(); // Schedule the command to be executed
-        }));
         // Rotates Drive Pods without actaully moving drive motor, might be useful for
         // testing but not sure of any other practical application
         // driverController.a().whileTrue(drivetrain.applyRequest(() -> point
@@ -333,6 +319,15 @@ public class RobotContainer {
         buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
         buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
 
+        buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(DriveToReefPoseRight());
+        buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
+
+        buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(DriveToReefPoseRight());
+        buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(GoToStage3());
+
+        buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(DriveToReefPoseRight());
+        buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
+
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
@@ -343,9 +338,11 @@ public class RobotContainer {
 
     public void updateVisionPose() {
         var pose = visionSystem.getEstimatedGlobalPose();
-        if (pose.isPresent()) {
+        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 0.5
+                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 0.5) {
             double visionTime = visionSystem.getTimeStamp();
             drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
+            drivetrain.resetPose(pose.get().toPose2d());
         }
     }
 

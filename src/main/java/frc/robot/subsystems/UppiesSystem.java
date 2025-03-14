@@ -19,30 +19,38 @@ import frc.robot.Constants.UppiesConstants;
 import frc.utilities.PosUtils;
 
 public class UppiesSystem extends SubsystemBase {
-  private static SparkMax motorLeft = new SparkMax(UppiesConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
-  private static SparkMax motorRight = new SparkMax(UppiesConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
-  private static SparkMax motorLock = new SparkMax(UppiesConstants.LOCK_MOTOR_ID, MotorType.kBrushless);
+  private static SparkMax motorLeft;// = new SparkMax(UppiesConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
+  private static SparkMax motorRight;// = new SparkMax(UppiesConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
+  private static SparkMax motorLock;// = new SparkMax(UppiesConstants.LOCK_MOTOR_ID, MotorType.kBrushless);
   private static DigitalInput lockSensor = new DigitalInput(UppiesConstants.LOCK_SENSOR_ID);
   private static DigitalInput cageSensor = new DigitalInput(UppiesConstants.CAGE_SENSOR_ID);
 
   /** Creates a new UppiesSystem. */
   public UppiesSystem() {
-    Shuffleboard.getTab("Sensor values").addDouble("Uppies Left Pos", this::getPosLeft)
-        .withWidget(BuiltInWidgets.kTextView).withPosition(0, 3);
-    Shuffleboard.getTab("Sensor values").addDouble("Uppies Right Pos", this::getPosRight)
-        .withWidget(BuiltInWidgets.kTextView).withPosition(0, 4);
-    Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Left Pos", this::getScaledPosLeft)
-        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
-        .withPosition(1, 3).withSize(2, 1);
-    Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Right Pos", this::getScaledPosRight)
-        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
-        .withPosition(1, 4).withSize(2, 1);
-    Shuffleboard.getTab("Sensor values").addDouble("Uppies Lock Motor Current", this::getLockMotorCurrent)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(12, 0);
-    Shuffleboard.getTab("Sensor values").addBoolean("Lock Sensor", this::cageLocked)
-        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 4);
-    Shuffleboard.getTab("Sensor values").addBoolean("Cage Sensor", this::hasCage)
-        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 3);
+    // Shuffleboard.getTab("Sensor values").addDouble("Uppies Left Pos",
+    // this::getPosLeft)
+    // .withWidget(BuiltInWidgets.kTextView).withPosition(0, 3);
+    // Shuffleboard.getTab("Sensor values").addDouble("Uppies Right Pos",
+    // this::getPosRight)
+    // .withWidget(BuiltInWidgets.kTextView).withPosition(0, 4);
+    // Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Left Pos",
+    // this::getScaledPosLeft)
+    // .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0,
+    // "center", 0, "max", 1))
+    // .withPosition(1, 3).withSize(2, 1);
+    // Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Right Pos",
+    // this::getScaledPosRight)
+    // .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0,
+    // "center", 0, "max", 1))
+    // .withPosition(1, 4).withSize(2, 1);
+    // Shuffleboard.getTab("Sensor values").addDouble("Uppies Lock Motor Current",
+    // this::getLockMotorCurrent)
+    // .withWidget(BuiltInWidgets.kGraph).withPosition(12, 0);
+    // Shuffleboard.getTab("Sensor values").addBoolean("Lock Sensor",
+    // this::cageLocked)
+    // .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 4);
+    // Shuffleboard.getTab("Sensor values").addBoolean("Cage Sensor", this::hasCage)
+    // .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 3);
   }
 
   /**
