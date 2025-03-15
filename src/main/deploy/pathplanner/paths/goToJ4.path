@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 5.48824381057,
-        "y": 5.45614024631
+        "x": 5.181936189,
+        "y": 5.525599884
       },
       "prevControl": {
-        "x": 4.48824381057,
-        "y": 5.45614024631
+        "x": 4.181936189,
+        "y": 5.525599884
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "I"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Stage 4",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

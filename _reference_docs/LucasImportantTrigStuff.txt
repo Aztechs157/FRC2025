@@ -1,17 +1,28 @@
-perp x = 0.4064
-perp y = 0.70390544819
-par x = 0.14298079416
-par y = 0.08255
+pe = 0.8142
+pa = 0.15
 
-for each face:
-    1. isolate x-pos of face
-    2. convert into metric.
-    3. repeat for y
-    4. find direction of x and y components of the perp vector
-for each letter:
-    5. switch the signs
-    6. repeat for par
-    7. make a new path
-    8. plug in x and y values
-    9. link waypoint and name it the letter
-    10. name the path "goTo<Letter>"
+
+Ax = 3.6576254 - b1
+Ay = 4.0259 + b2
+Bx = 3.6576254 - b1
+By = 4.0259 - b2
+Cx = 4.073906 - b1 * SIN(radians(30)) - b2 * SIN(radians(60))
+Cy = 3.306318 - b1 * COS(radians(30)) + b2 * COS(radians(60))
+Dx = 4.073906 - b1 * SIN(radians(30)) + b2 * SIN(radians(60))
+Dy = 3.306318 - b1 * COS(radians(30)) - b2 * COS(radians(60))
+Ex = 4.90474 + b1 * SIN(radians(30)) - b2 * SIN(radians(60))
+Ey = 3.306318 - b1 * COS(radians(30)) - b2 * COS(radians(60))
+Fx = 4.90474 + b1 * SIN(radians(30)) + b2 * SIN(radians(60))
+Fy = 3.306318 - b1 * COS(radians(30)) + b2 * COS(radians(60))
+Gx = 5.321046 + b1
+Gy = 4.0259 - b2
+Hx = 5.321046 + b1
+Hy = 4.0259 + b2
+Ix = 4.90474 + b1 * SIN(radians(30)) + b2 * SIN(radians(60))
+Iy = 4.745482 + b1 * COS(radians(30)) - b2 * COS(radians(60))
+Jx = 4.90474 + b1 * SIN(radians(30)) - b2 * SIN(radians(60))
+Jy = 4.745482 + b1 * COS(radians(30)) + b2 * COS(radians(60))
+Kx = 4.073906 - b1 * SIN(radians(30)) + b2 * SIN(radians(60))
+Ky = 4.745482 + b1 * COS(radians(30)) + b2 * COS(radians(60))
+Lx = 4.073906 - b1 * SIN(radians(30)) - b2 * SIN(radians(60))
+Ly = 4.745482 + b1 * COS(radians(30)) - b2 * COS(radians(60))
