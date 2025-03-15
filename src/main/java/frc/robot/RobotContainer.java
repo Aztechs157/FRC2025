@@ -64,7 +64,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private boolean isButtonBox = true;
+    private boolean isButtonBox = false;
     private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                        // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
@@ -79,7 +79,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final PositionDetails positionDetails = new PositionDetails();
+    private final PositionDetails positionDetails = new PositionDetails(isBeta.get());
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController;

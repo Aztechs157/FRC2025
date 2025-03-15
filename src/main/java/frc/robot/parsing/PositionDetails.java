@@ -18,7 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** Add your docs here. */
 public class PositionDetails {
-    private final String JSONPath = "/position_details.json";
+    private final String betaJSONPath = "/beta_position_details.json";
+    private final String alphaJSONPath = "/alpha_position_details.json";
     public Stage[] corals = new Stage[5];
 
     public enum Position {
@@ -59,8 +60,8 @@ public class PositionDetails {
         }
     }
 
-    public PositionDetails() { // TODO bug here parsing int in line 49
-        File file = new File(Filesystem.getDeployDirectory().toPath() + JSONPath);
+    public PositionDetails(boolean isBeta) { // TODO bug here parsing int in line 49
+        File file = new File(Filesystem.getDeployDirectory().toPath() + (isBeta ? betaJSONPath : alphaJSONPath));
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -90,6 +91,10 @@ public class PositionDetails {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public PositionDetails() {
+        this(true);
     }
 
     /**
