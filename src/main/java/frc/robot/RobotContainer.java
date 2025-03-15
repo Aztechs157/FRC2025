@@ -62,7 +62,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private boolean isButtonBox = false;
+    private boolean isButtonBox = true;
     private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                        // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
@@ -91,7 +91,7 @@ public class RobotContainer {
     private final ElbowSystem elbow = new ElbowSystem(isBeta.get());
     private final WristSystem wrist = new WristSystem(isBeta.get());
     private final Field2d desiredField = new Field2d();
-    private final LEDSystem led = new LEDSystem();
+    private final LEDSystem prettyLights = new LEDSystem();
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
     }
@@ -243,7 +243,7 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
-        Shuffleboard.getTab("vision").add("Desired Position", desiredField);
+        // Shuffleboard.getTab("vision").add("Desired Position", desiredField);
         Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get).withPosition(0, 7);
 
     }
