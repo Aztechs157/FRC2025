@@ -189,6 +189,27 @@ public class VisionSystem extends SubsystemBase {
     return null;
   }
 
+  public PhotonTrackedTarget findBestTargetReef() {
+
+    var resultBottom = bottomCamera.getLatestResult();
+    double bestTargetArea = 0;
+    PhotonTrackedTarget bestTarget = resultBottom.getBestTarget();
+
+    if (resultBottom.hasTargets()) {
+      
+      resultBottom.getTargets();
+      for (PhotonTrackedTarget target : resultBottom.getTargets()) {
+        double targetArea = target.area;
+        if (targetArea > bestTargetArea) {
+          bestTargetArea = targetArea;
+          bestTarget = target;
+        }
+      }
+        return bestTarget;
+    }
+    return null;
+  }
+
   /*
    * Gets the yaw of the target in degrees (positive right).
    */

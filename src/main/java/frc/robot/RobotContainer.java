@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -93,8 +94,7 @@ public class RobotContainer {
     private final WristSystem wrist = new WristSystem(isBeta.get());
     private final Field2d desiredField = new Field2d();
     private final LEDSystem prettyLights = new LEDSystem();
-    private Command useAutoPosCommand = drivetrain.run(() -> {
-    });
+    private Command useAutoPosCommand = new WaitCommand(10).repeatedly();
     private Trigger useAutoPos = new Trigger(useAutoPosCommand::isScheduled);
 
     public Command UppiesUpCommand() {
@@ -213,13 +213,13 @@ public class RobotContainer {
     }
 
     public Command DriveToReefPoseRight() {
-        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails);
-        // .andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
+        .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public Command DriveToReefPoseLeft() {
-        return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails);
-        // .andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails)
+         .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();
@@ -254,6 +254,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
         Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get).withPosition(0, 7);
+        Shuffleboard.getTab("Sensor values").addBoolean("useAutoPosition", useAutoPos);
 
     }
 

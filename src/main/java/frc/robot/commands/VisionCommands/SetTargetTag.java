@@ -34,7 +34,7 @@ public class SetTargetTag extends Command {
   public void initialize() {
     double offsetDistanceX = 0;
     double offsetDistanceY = 0;
-    var bestTag = visionSystem.findBestTarget();
+    var bestTag = visionSystem.findBestTargetReef();
     if (bestTag != null) {
       int tagID = bestTag.fiducialId;
       Pose2d targetTag = visionSystem.getTagPose(tagID).get().toPose2d();

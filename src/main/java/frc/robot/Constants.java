@@ -118,7 +118,7 @@ public class Constants {
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.05;
+        public static final double LIMIT_MARGIN = 0.01;
 
         // max is top-most for all systems, min is bottom-most for all systems
         /**
@@ -138,7 +138,7 @@ public class Constants {
         // a digital I/O
         public static final int MOTOR_ID = 22;
         public static final int SENSOR_ID = 1;
-        public static final double INTAKE_ALGAE_SPEED = 1, ALGAE_HOLDING_SPEED = 0.1, CORAL_HOLDING_SPEED = 0.01;
+        public static final double INTAKE_ALGAE_SPEED = 1, ALGAE_HOLDING_SPEED = 0.1, CORAL_HOLDING_SPEED = 0.02;
         public static final double ALGAE_HELD_CURRENT = 40, CORAL_HELD_CURRENT = 40;
         public static final int ALGAE_HOLD_COUNTER = 25, CORAL_HOLD_COUNTER = 5;
 
@@ -146,7 +146,7 @@ public class Constants {
          * The speed, as a percentage of total power, to run the intake motor at for the
          * specified action.
          */
-        public static final double INTAKE_MOTOR_SPEED = 0.357, PLACE_MOTOR_SPEED = 0.5, EJECT_MOTOR_SPEED = 0.5;
+        public static final double INTAKE_MOTOR_SPEED = 0.5, PLACE_MOTOR_SPEED = 0.5, EJECT_MOTOR_SPEED = 0.5;
 
         /** The time to wait before considering the action done, in seconds. */
         public static final double PLACE_TIME = 0.5, EJECT_TIME = 0.5;
