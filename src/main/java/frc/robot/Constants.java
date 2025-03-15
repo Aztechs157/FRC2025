@@ -118,7 +118,7 @@ public class Constants {
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.05;
+        public static final double LIMIT_MARGIN = 0.01;
 
         // max is top-most for all systems, min is bottom-most for all systems
         /**
@@ -180,7 +180,7 @@ public class Constants {
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.05;
+        public static final double LIMIT_MARGIN = 0.01;
 
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
         public static final double POS_TOLERANCE = 0.02;
@@ -190,7 +190,7 @@ public class Constants {
         // IDs/Ports for the sensors/actuators. The motor uses a CAN ID
         public static final int MOTOR_ID = 24;
 
-        static final double p = 1.0, i = 0.0, d = 0.0001;
+        static final double p = 2, i = 0.0, d = 0.0001;
 
         /**
          * PID controller for the wrist, with p as {@value #p}, i as {@value #i}, and d
@@ -212,7 +212,7 @@ public class Constants {
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.05;
+        public static final double LIMIT_MARGIN = 0.01;
 
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
         public static final double POS_TOLERANCE = 0.02;

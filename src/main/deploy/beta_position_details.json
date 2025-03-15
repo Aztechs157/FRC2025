@@ -1,0 +1,136 @@
+{
+    "reef": {
+        "coral": {
+            "stage1": {
+                "verticalPos": 0.46,
+                "systemPositions": {
+                    "elevator": 0,
+                    "elbow": 1,
+                    "wrist": 0
+                },
+                "depthOffset": 0.35,
+                "horizontalOffsets": {
+                    "left": -0.15,
+                    "right": 0.15 
+                }
+            },
+            "stage2": {
+                "verticalPos": 0.81,
+                "systemPositions": {
+                    "elevator": 0.187,
+                    "elbow": 0.82,
+                    "wrist": 0.12
+                },
+                "depthOffset": 0.45,
+                "horizontalOffsets": {
+                    "left": -0.15,
+                    "right": 0.15
+                }
+            },
+            "stage3": {
+                "verticalPos": 1.21,
+                "systemPositions": {
+                    "elevator": 0.52,
+                    "elbow": 0.82,
+                    "wrist": 0.11
+                },
+                "depthOffset": 0.45,
+                "horizontalOffsets": {
+                    "left": -0.15,
+                    "right": 0.15
+                }
+            },
+            "stage4": {
+                "verticalPos": 1.83,
+                "systemPositions": {
+                    "elevator": 0.98,
+                    "elbow": 0.92,
+                    "wrist": 0.01
+                },
+                "depthOffset": 0.357,
+                "horizontalOffsets": {
+                    "left": -0.15,
+                    "right": 0.15
+                }
+            }
+        },
+
+        "tag6": {
+            "face": "closeLeftFace",
+            "algaeVerticalPos": 0.965,
+            "systemPositions": {
+                        "elevator": 0.19,
+                        "elbow": 0.82,
+                        "wrist": 0.19
+            }
+        },
+
+        "tag7": {
+            "face": "closeCenterFace",
+            "algaeVerticalPos": 0.965,
+            "systemPositions": {
+                        "elevator": 0.483,
+                        "elbow": 0.82,
+                        "wrist": 0.19
+            }
+        },
+
+        "tag9": {
+            "face": "farRightFace",
+            "algaeVerticalPos": 1.365,
+            "systemPositions": {
+                        "elevator": 0,
+                        "elbow": 0,
+                        "wrist": 0
+            }
+        },
+
+        "tag10": {
+            "face": "farCenterFace",
+            "algaeVerticalPos": 0.965,
+            "systemPositions": {
+                        "elevator": 0,
+                        "elbow": 0,
+                        "wrist": 0
+            }
+        },
+
+        "tag11": {
+            "face": "farLeftFace",
+            "algaeVerticalPos": 1.365,
+            "systemPositions": {
+                        "elevator": 0,
+                        "elbow": 0,
+                        "wrist": 0
+            }
+        }
+    },
+
+    "processor": {
+        "verticalPos": 0.43,
+        "horizontalOffset": 0
+    },
+
+    "coralStation": {
+        "verticalPos": 0.95,
+        "horizontalOffsets": {
+                    "left": 0,
+                    "right": 0 
+                },
+        "depthOffset":0.3,
+        "systemPositions": {
+            "elevator": 0.09,
+            "elbow": 0.87,
+            "wrist": 0.34
+        },
+        "tag1": {
+            "side": "left",
+            "horizontalOffsets": [-0.85777, -0.64333, -0.42888, -0.21444, 0, 0.21444, 0.42888, 0.64333, 0.85777]
+        },
+        "tag2": {
+            "side": "right",
+            "horizontalOffsets": [-0.85777, -0.64333, -0.42888, -0.21444, 0, 0.21444, 0.42888, 0.64333, 0.85777]
+        }
+    }
+
+}
