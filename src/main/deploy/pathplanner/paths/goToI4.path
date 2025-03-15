@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "I4"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": "Stage 4",
+  "folder": "Reef I",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
