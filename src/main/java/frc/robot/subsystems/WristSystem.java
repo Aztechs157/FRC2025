@@ -42,7 +42,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    */
   public WristSystem(boolean isBeta) {
     this.isBeta = isBeta;
-    startingPos = isBeta ? 0.4:0.4;
+    startingPos = isBeta ? 0.4 : 0.4;
     motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
     PID = WristConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
