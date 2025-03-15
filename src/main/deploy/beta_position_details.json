@@ -30,7 +30,7 @@
             "stage3": {
                 "verticalPos": 1.21,
                 "systemPositions": {
-                    "elevator": 0.52,
+                    "elevator": 0.5,
                     "elbow": 0.82,
                     "wrist": 0.11
                 },
@@ -51,6 +51,19 @@
                 "horizontalOffsets": {
                     "left": -0.15,
                     "right": 0.15
+                }
+            },
+            "stage5": {
+                "verticalPos": 0,
+                "systemPositions": {
+                    "elevator": 0.98,
+                    "elbow": 0.91,
+                    "wrist": 0.33
+                },
+                "depthOffset": 0,
+                "horizontalOffsets": {
+                    "left": -0,
+                    "right": 0
                 }
             }
         },

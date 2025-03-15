@@ -188,6 +188,10 @@ public class RobotContainer {
         return GoToPositionCommand(Position.STAGE4);
     }
 
+    public Command GoToBarge() {
+        return GoToPositionCommand(Position.BARGE);
+    }
+
     public Command GoToCoralStationStage() {
         return new ElevatorClosedLoopControl(elevator, positionDetails, Position.CORALSTATION)
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION))
@@ -214,12 +218,12 @@ public class RobotContainer {
 
     public Command DriveToReefPoseRight() {
         return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
-        .andThen(new DriveToPose(drivetrain, visionSystem));
+                .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public Command DriveToReefPoseLeft() {
         return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails)
-         .andThen(new DriveToPose(drivetrain, visionSystem));
+                .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();
@@ -343,6 +347,7 @@ public class RobotContainer {
 
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
+            buttonBox.buttonBinding(ButtonBoxButtons.C5).onTrue(GoToBarge());
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
             operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());
@@ -357,7 +362,8 @@ public class RobotContainer {
             operatorController.a().onTrue(GoToStage1());
             operatorController.x().onTrue(GoToStage2());
             operatorController.b().onTrue(GoToStage3());
-            operatorController.y().onTrue(GoToStage4());
+            operatorController.y().and(operatorController.back().negate()).onTrue(GoToStage4());
+            operatorController.y().and(operatorController.back()).onTrue(GoToBarge());
         }
 
         drivetrain.registerTelemetry(logger::telemeterize);

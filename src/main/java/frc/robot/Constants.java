@@ -190,7 +190,7 @@ public class Constants {
         // IDs/Ports for the sensors/actuators. The motor uses a CAN ID
         public static final int MOTOR_ID = 24;
 
-        static final double p = 2, i = 0.0, d = 0.0001;
+        static final double p = 3, i = 0.0, d = 0.0001;
 
         /**
          * PID controller for the wrist, with p as {@value #p}, i as {@value #i}, and d
@@ -233,12 +233,12 @@ public class Constants {
          * The margin, as a percentage (ie 1.0 = 100%) of the travel that is off limits
          * on both the top and the bottom of the travel.
          */
-        public static final double LIMIT_MARGIN = 0.05;
+        public static final double LIMIT_MARGIN = 0.00;
 
         /**
          * Position limits, in raw encoder units, for the left Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double MAX_POSITION = 0.486, MIN_POSITION = 0.185;
+        public static final double MAX_POSITION = 0.478, MIN_POSITION = 0.175;
     }
 }

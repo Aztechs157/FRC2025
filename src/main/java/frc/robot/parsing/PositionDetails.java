@@ -20,13 +20,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PositionDetails {
     private final String betaJSONPath = "/beta_position_details.json";
     private final String alphaJSONPath = "/alpha_position_details.json";
-    public Stage[] corals = new Stage[5];
+    public Stage[] corals = new Stage[6];
 
     public enum Position {
         STAGE1(1),
         STAGE2(2),
         STAGE3(3),
         STAGE4(4),
+        BARGE(5),
         ALGAE1(6), // low
         ALGAE2(7), // high
         CORALSTATION(0),
@@ -81,7 +82,7 @@ public class PositionDetails {
 
             List<Stage> coralList = new ArrayList<Stage>(5);
             coralList.add(new Stage(json.get("coralStation")));
-            for (int i = 1; i <= 4; i++) {
+            for (int i = 1; i <= 5; i++) {
                 coralList.add(new Stage(json.get("reef").get("coral").get("stage" + i)));
             }
 
@@ -130,7 +131,7 @@ public class PositionDetails {
     /**
      * Get elevator position for the specified stage
      * 
-     * @param stage - one-indexed ie: 1,2,3,4
+     * @param stage - one-indexed ie: 1,2,3,4,5(barge)
      * @return a double representing the elevator position
      */
     public double getElevatorPosAtStage(int stage) {
@@ -140,7 +141,7 @@ public class PositionDetails {
     /**
      * Get elbow position for the specified stage
      * 
-     * @param stage - one-indexed ie: 1,2,3,4
+     * @param stage - one-indexed ie: 1,2,3,4,5(barge)
      * @return a double representing the elbow position
      */
     public double getElbowPosAtStage(int stage) {
@@ -150,7 +151,7 @@ public class PositionDetails {
     /**
      * Get wrist position for the specified stage
      * 
-     * @param stage - one-indexed ie: 1,2,3,4
+     * @param stage - one-indexed ie: 1,2,3,4,5(barge)
      * @return a double representing the wrist position
      */
     public double getWristPosAtStage(int stage) {
@@ -195,7 +196,7 @@ public class PositionDetails {
      */
     public double getElevatorPos(Position pos) {
         switch (pos) {
-            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION:
+            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGE:
                 return getElevatorPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getElevatorPosAtAlgae(pos.stageNum);
@@ -214,7 +215,7 @@ public class PositionDetails {
      */
     public double getElbowPos(Position pos) {
         switch (pos) {
-            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION:
+            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGE:
                 return getElbowPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getElbowPosAtAlgae(pos.stageNum);
@@ -231,7 +232,7 @@ public class PositionDetails {
      */
     public double getWristPos(Position pos) {
         switch (pos) {
-            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION:
+            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGE:
                 return getWristPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getWristPosAtAlgae(pos.stageNum);
