@@ -28,22 +28,19 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
   private static DigitalInput encoderInput = new DigitalInput(ElbowConstants.ENCODER_ID);
   private static DutyCycleEncoder encoder = new DutyCycleEncoder(encoderInput);
   private PIDController PID;
-    private boolean isBeta;
-  
-    /** Creates a new JointSystem. */
-  
-    /**
-     * Creates a new Joint subsystem, meant for the elbow and wrist as they should
-     * have very similar functionality.
-   * @param b 
-     */
-    public ElbowSystem(boolean isBeta) {
-      this.isBeta = isBeta;
-      motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
-      var config = new SparkMaxConfig();
-      config.idleMode(IdleMode.kBrake);
-      config.inverted(!isBeta);
-      motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  private boolean isBeta;
+
+  /** Creates a new JointSystem. */
+
+  /**
+   * Creates a new Joint subsystem, meant for the elbow and wrist as they should
+   * have very similar functionality.
+   * 
+   * @param b
+   */
+  public ElbowSystem(boolean isBeta) {
+    this.isBeta = isBeta;
+    motor = new SparkFlex(ElbowConstants.MOTOR_ID, MotorType.kBrushless);
     PID = ElbowConstants.PID;
     Shuffleboard.getTab("Sensor values").addDouble("Elbow Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
         .withPosition(0, 1);
@@ -67,7 +64,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
     motor.set(velocity);
   }
 
-   public double runWithLimits(double speed) {
+  public double runWithLimits(double speed) {
     System.out.println(speed);
     if (getScaledPos() >= 1.0 - ElbowConstants.LIMIT_MARGIN && speed > 0) {
       return 0;
@@ -109,9 +106,10 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
     if (isBeta) {
       return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MIN_POSITION, ElbowConstants.BETA_MAX_POSITION, 0.0, 1.0);
     } else {
-    return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MIN_POSITION, ElbowConstants.ALPHA_MAX_POSITION, 0.0, 1.0);
+      return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MIN_POSITION, ElbowConstants.ALPHA_MAX_POSITION, 0.0,
+          1.0);
+    }
   }
-}
 
   /**
    * Checks if the motor position is within tolerance (as set in Constants) of the
