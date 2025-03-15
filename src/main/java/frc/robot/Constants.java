@@ -203,7 +203,7 @@ public class Constants {
          * our virtual limits. The minimum position is when the elbow is at the top.
          */
         public static final double ALPHA_MAX_POSITION = 0.08, ALPHA_MIN_POSITION = 0.545;
-        public static final double BETA_MAX_POSITION = 0.869, BETA_MIN_POSITION = 0.271;
+        public static final double BETA_MAX_POSITION = 0.827, BETA_MIN_POSITION = 0.271;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;
