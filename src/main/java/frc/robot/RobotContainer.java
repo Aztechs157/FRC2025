@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElbowConstants;
@@ -92,6 +93,10 @@ public class RobotContainer {
     private final WristSystem wrist = new WristSystem(isBeta.get());
     private final Field2d desiredField = new Field2d();
     private final LEDSystem prettyLights = new LEDSystem();
+    private Command useAutoPosCommand = drivetrain.run(() -> {
+    });
+    private Trigger useAutoPos = new Trigger(useAutoPosCommand::isScheduled);
+
     public Command UppiesUpCommand() {
         return new UppiesManualControl(uppies, UppiesConstants.MANUAL_CONTROL_SPEED);
     }
@@ -202,14 +207,19 @@ public class RobotContainer {
                 .andThen(new DriveToPose(drivetrain, visionSystem));
 
     }
-    
+
     public Command exitStartingPosition() {
         return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
     }
 
     public Command DriveToReefPoseRight() {
-        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
-                .andThen(new DriveToPose(drivetrain, visionSystem));
+        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails);
+        // .andThen(new DriveToPose(drivetrain, visionSystem));
+    }
+
+    public Command DriveToReefPoseLeft() {
+        return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails);
+        // .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
     public final VisionSystem visionSystem = new VisionSystem();
@@ -243,7 +253,6 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
-        // Shuffleboard.getTab("vision").add("Desired Position", desiredField);
         Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get).withPosition(0, 7);
 
     }
@@ -294,6 +303,7 @@ public class RobotContainer {
             driverController.x().onTrue(GoToAlgaeStageLow());
             driverController.y().onTrue(GoToAlgaeStageHigh());
         }
+        driverController.rightStick().and(driverController.leftStick()).toggleOnTrue(useAutoPosCommand);
 
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
         // Rotates Drive Pods without actaully moving drive motor, might be useful for
@@ -314,17 +324,24 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.R4L, true).whileTrue(WristDownCommand());
 
             buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
+
             buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
+            buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft());
+
             buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft());
+
             buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
-            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(DriveToReefPoseRight());
-        buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft());
 
-        buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(DriveToReefPoseRight());
-        buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(GoToStage3());
+            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
+            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
 
-        buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(DriveToReefPoseRight());
-        buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(GoToStage3());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
+
+            buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
             operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());
