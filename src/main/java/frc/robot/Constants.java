@@ -65,7 +65,7 @@ public class Constants {
         // maxAccel and maxVel are fairly self explanatory, should be in percentage of
         // travel/s(^2 for accel). start small, increase later
         static final double alphaMaxAccel = 1, alphaMaxVel = 0.7;
-        static final double betaMaxAccel = 1, betaMaxVel = 0.6;
+        static final double betaMaxAccel = 1.75, betaMaxVel = 1;
         // s, g, v, and a are harder to find. these are the best candidates for sysID
         // tuning, but manual tuning should go as follows
         // s is unclear, it is meant to represent friction in the system. it is possible
@@ -86,7 +86,7 @@ public class Constants {
         // last
         static final double ap = 1, ai = 0, ad = 0;
 
-        static final double bp = 20, bi = 0, bd = 0;
+        static final double bp = 25, bi = 0, bd = 0;
 
         /**
          * PID controller for the elbow, with p as {@value #p}, i as {@value #i}, and d
