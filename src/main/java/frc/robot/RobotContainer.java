@@ -161,11 +161,12 @@ public class RobotContainer {
 
     public Command GoToPositionCommand(Position pos) {
         return new EnsureSafety(elevator, elbow, wrist, positionDetails)
-                .andThen(new ElevatorClosedLoopControl(elevator, positionDetails, pos)
-                .andThen(new ElevatorManualControl(elevator,
-                        isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)))
+                .andThen(
+                    new ElevatorClosedLoopControl(elevator, positionDetails, pos)
+                    .andThen(new ElevatorManualControl(elevator, isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)
+                )
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
-                .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
+                .alongWith(new WristGoToPosition(wrist, positionDetails, pos)));
     }
 
     public Command GoToStage1() {
