@@ -2,6 +2,7 @@ package frc.utilities;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import edu.wpi.first.math.Pair;
@@ -150,6 +151,20 @@ public final class PriorityMap<K extends Comparable<K>, V> {
 
         return valueMap.lastEntry().getKey().getSecond();
     }
+    public Integer firstPriority() {
+        if (isEmpty()) {
+            return null;
+        }
+        return valueMap.firstEntry().getKey().getFirst();
+    }
+
+    public Integer lastPriority() {
+        if (isEmpty()) {
+            return null;
+        }
+        return valueMap.lastEntry().getKey().getFirst();
+    }
+
 
     /**
      * Returns <code>true</code> if the map contains a mapping for the specified key
@@ -161,7 +176,8 @@ public final class PriorityMap<K extends Comparable<K>, V> {
     public boolean containsKey(K key) {
         return indexMap.containsKey(key);
     }
-
+    
+    
     /**
      * Returns the value to which the specified key is mapped, or <code>null</code>
      * if this map
