@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 7.6,
+        "y": 1.9092499999999994
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 7.9158127121470985,
+        "y": 1.8198195165989162
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "OCStart"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 2.526200116
       },
       "prevControl": {
-        "x": 4.181936189,
-        "y": 2.526200116
+        "x": 4.940585578572977,
+        "y": 2.5913912415195304
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "E4"
     }
   ],
   "rotationTargets": [],
@@ -45,10 +45,10 @@
     "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Stage 4",
+  "folder": "Reef E",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

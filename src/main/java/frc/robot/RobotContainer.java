@@ -36,6 +36,7 @@ import frc.robot.commands.VisionCommands.DriveToPose;
 import frc.robot.commands.VisionCommands.SetTargetTag;
 import frc.robot.commands.elbow_commands.ElbowGoToPosition;
 import frc.robot.commands.elbow_commands.ElbowManualControl;
+import frc.robot.commands.elbow_commands.EnsureSafety;
 import frc.robot.commands.elevator_commands.ElevatorManualControl;
 import frc.robot.commands.elevator_commands.ElevatorClosedLoopControl;
 import frc.robot.commands.intake_commands.EjectCoral;
@@ -66,7 +67,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private boolean isButtonBox = false;
+    private boolean isButtonBox = true;
     private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                        // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
@@ -156,22 +157,18 @@ public class RobotContainer {
         return new PlaceCoralSimple(intake);
     }
 
-    public Command ResetCoralSubsystemsCommand(Position pos) {
-        return new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION)
-                .andThen(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION))
-                .andThen(new ElevatorClosedLoopControl(elevator, positionDetails, pos));
+    public Command ResetCoralSubsystemsCommand() {
+        return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
     }
 
     public Command GoToPositionCommand(Position pos) {
-        return (new ElevatorClosedLoopControl(elevator, positionDetails, pos)
-                .andThen(new ElevatorManualControl(elevator,
-                        isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)))
+        return new EnsureSafety(elevator, elbow, wrist, positionDetails)
+                .andThen(
+                    new ElevatorClosedLoopControl(elevator, positionDetails, pos)
+                    .andThen(new ElevatorManualControl(elevator, isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)
+                )
                 .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
-                .alongWith(new WristGoToPosition(wrist, positionDetails, pos));
-    }
-
-    public Command GoToBase() {
-        return ResetCoralSubsystemsCommand(Position.BASE);
+                .alongWith(new WristGoToPosition(wrist, positionDetails, pos)));
     }
 
     public Command GoToStage1() {
