@@ -64,7 +64,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private boolean isButtonBox = false;
+    private boolean isButtonBox = true;
     private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                        // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
