@@ -21,16 +21,16 @@ public class EnsureSafety extends Command {
   private boolean doAnything = false;
   private PositionDetails positionDetails;
   private double position;
-  
-    /** Creates a new EnsureSafety. */
-    public EnsureSafety(ElevatorSystem elevator, ElbowSystem elbow, WristSystem wrist, PositionDetails positionDetails) {
-      this.elevator = elevator;
-      this.elbow = elbow;
-      this.wrist = wrist;
-      this.positionDetails = positionDetails;
-      addRequirements(elevator, elbow, wrist);
-      // Use addRequirements() here to declare subsystem dependencies.
-      position = positionDetails.getElbowPosAtStage(Position.STAGE2.stageNum);
+
+  /** Creates a new EnsureSafety. */
+  public EnsureSafety(ElevatorSystem elevator, ElbowSystem elbow, WristSystem wrist, PositionDetails positionDetails) {
+    this.elevator = elevator;
+    this.elbow = elbow;
+    this.wrist = wrist;
+    this.positionDetails = positionDetails;
+    addRequirements(elevator, elbow, wrist);
+    // Use addRequirements() here to declare subsystem dependencies.
+    position = positionDetails.getElbowPosAtStage(Position.STAGE2.stageNum) - 0.15;
   }
 
   // Called when the command is initially scheduled.
@@ -39,7 +39,7 @@ public class EnsureSafety extends Command {
     elbow.reset();
 
     if (PosUtils.isWithin(elevator.getScaledPos(), 0, 0.1) && PosUtils.isWithin(elbow.getScaledPos(), 1, 0.1)
-        && PosUtils.isWithin(wrist.getScaledPos(), wrist.startingPos, 0.1)) {
+        && PosUtils.isWithin(wrist.getScaledPos(), wrist.startingPos, 0.15)) {
       doAnything = true;
     } else {
       doAnything = false;
@@ -63,6 +63,6 @@ public class EnsureSafety extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !doAnything || PosUtils.isWithin(elbow.getScaledPos(),position ,0.1);
+    return !doAnything || PosUtils.isWithin(elbow.getScaledPos(), position, 0.1);
   }
 }

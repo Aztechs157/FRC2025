@@ -16,12 +16,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -88,6 +91,8 @@ public class RobotContainer {
     private final CommandXboxController operatorController;
     private final ButtonBox buttonBox;
 
+    private final static LEDSystem prettyLights = new LEDSystem();
+
     public final DriveSystem drivetrain = isBeta.get() ? BetaTunerConstants.createDrivetrain()
             : AlphaTunerConstants.createDrivetrain();
     private final UppiesSystem uppies = new UppiesSystem(isBeta.get());
@@ -95,8 +100,7 @@ public class RobotContainer {
     private final IntakeSystem intake = new IntakeSystem(isBeta.get());
     private final ElbowSystem elbow = new ElbowSystem(isBeta.get());
     private final WristSystem wrist = new WristSystem(isBeta.get());
-    private final Field2d desiredField = new Field2d();
-    private final LEDSystem prettyLights = new LEDSystem();
+    public final VisionSystem visionSystem = new VisionSystem(prettyLights);
     private Command useAutoPosCommand = new WaitCommand(10).repeatedly();
     private Trigger useAutoPos = new Trigger(useAutoPosCommand::isScheduled);
 
@@ -164,11 +168,12 @@ public class RobotContainer {
     public Command GoToPositionCommand(Position pos) {
         return new EnsureSafety(elevator, elbow, wrist, positionDetails)
                 .andThen(
-                    new ElevatorClosedLoopControl(elevator, positionDetails, pos)
-                    .andThen(new ElevatorManualControl(elevator, isBeta.get() ? ElevatorConstants.BETA_STALL_POWER : ElevatorConstants.ALPHA_STALL_POWER)
-                )
-                .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
-                .alongWith(new WristGoToPosition(wrist, positionDetails, pos)));
+                        new ElevatorClosedLoopControl(elevator, positionDetails, pos)
+                                .andThen(new ElevatorManualControl(elevator,
+                                        isBeta.get() ? ElevatorConstants.BETA_STALL_POWER
+                                                : ElevatorConstants.ALPHA_STALL_POWER))
+                                .alongWith(new ElbowGoToPosition(elbow, positionDetails, pos))
+                                .alongWith(new WristGoToPosition(wrist, positionDetails, pos)));
     }
 
     public Command GoToStage1() {
@@ -192,9 +197,7 @@ public class RobotContainer {
     }
 
     public Command GoToCoralStationStage() {
-        return new ElevatorClosedLoopControl(elevator, positionDetails, Position.CORALSTATION)
-                .alongWith(new ElbowGoToPosition(elbow, positionDetails, Position.CORALSTATION))
-                .alongWith(new WristGoToPosition(wrist, positionDetails, Position.CORALSTATION));
+        return GoToPositionCommand(Position.CORALSTATION);
     }
 
     public Command GoToAlgaeStageLow() {
@@ -225,7 +228,6 @@ public class RobotContainer {
                 .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
-    public final VisionSystem visionSystem = new VisionSystem();
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
@@ -348,6 +350,10 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
             buttonBox.buttonBinding(ButtonBoxButtons.C5).onTrue(GoToBarge());
+            buttonBox.buttonBinding(ButtonBoxButtons.C3)
+                    .toggleOnTrue(
+                            Commands.runEnd(() -> prettyLights.addTopPattern("Test", 156, LEDPattern.solid(Color.kRed)),
+                                    () -> prettyLights.removeTopPattern("Test")));
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
             operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());

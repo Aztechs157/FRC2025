@@ -27,11 +27,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
@@ -44,6 +46,7 @@ public class VisionSystem extends SubsystemBase {
   PhotonPoseEstimator poseEstimatorLeft;
   PhotonPoseEstimator poseEstimatorRight;
   private Field2d vision_field = new Field2d();
+  private LEDSystem prettyLights;
 
   public Pose2d desiredPose = new Pose2d();
   public Field2d desiredField = new Field2d();
@@ -51,7 +54,8 @@ public class VisionSystem extends SubsystemBase {
   boolean blueAlliance = true;
 
   /** Creates a new vision. */
-  public VisionSystem() {
+  public VisionSystem(LEDSystem prettyLights) {
+    this.prettyLights = prettyLights;
     topRightCamera = new PhotonCamera(VisionConstants.TOPRIGHT_CAMERA_NICKNAME);
     bottomCamera = new PhotonCamera(VisionConstants.BOTTOM_CAMERA_NICKNAME);
     PortForwarder.add(5800, "photonvision.local", 5800);
@@ -196,7 +200,7 @@ public class VisionSystem extends SubsystemBase {
     PhotonTrackedTarget bestTarget = resultBottom.getBestTarget();
 
     if (resultBottom.hasTargets()) {
-      
+
       resultBottom.getTargets();
       for (PhotonTrackedTarget target : resultBottom.getTargets()) {
         double targetArea = target.area;
@@ -205,7 +209,7 @@ public class VisionSystem extends SubsystemBase {
           bestTarget = target;
         }
       }
-        return bestTarget;
+      return bestTarget;
     }
     return null;
   }
@@ -469,6 +473,16 @@ public class VisionSystem extends SubsystemBase {
     var pose = getEstimatedGlobalPose();
     if (pose.isPresent()) {
       vision_field.setRobotPose(pose.get().toPose2d());
+    }
+    LEDPattern pattern = LEDPattern.solid(Color.kGreen);
+    boolean hasTag = bottomCamera.getLatestResult().hasTargets();
+    if (hasTag) {
+      if (!prettyLights.hasTopPattern("Has Tag")) {
+        prettyLights.addTopPattern("Has Tag", 10, pattern);
+      }
+
+    } else {
+      prettyLights.removeTopPattern("Has Tag");
     }
   }
 }
