@@ -3,9 +3,23 @@
   "robotLength": 0.902,
   "holonomicMode": true,
   "pathFolders": [
+    "Reef L",
+    "Reef A",
+    "Reef B",
+    "Reef C",
+    "Reef D",
+    "Reef E",
+    "Reef F",
+    "Reef G",
+    "Reef H",
+    "Reef I",
+    "Reef J",
+    "Reef K",
     "Stage 4"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "New Folder"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

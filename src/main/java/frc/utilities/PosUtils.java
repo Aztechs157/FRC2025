@@ -72,4 +72,8 @@ public interface PosUtils {
     }
   }
 
+  static boolean isWithin(double value, double target, double tolerance){
+    return(value > target-tolerance && value < target+tolerance);
+  }
+
 }

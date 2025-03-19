@@ -42,6 +42,7 @@ public class ElevatorClosedLoopControl extends Command {
   @Override
   public void end(boolean interrupted) {
     elevator.isClosedLoopRunning = false;
+    elevator.runMotor(0);
   }
 
   // Returns true when the command should end.

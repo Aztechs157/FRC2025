@@ -219,6 +219,7 @@ public class PositionDetails {
                 return getElbowPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getElbowPosAtAlgae(pos.stageNum);
+            case BASE:
             default:
                 return 0;
         }
@@ -236,6 +237,7 @@ public class PositionDetails {
                 return getWristPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getWristPosAtAlgae(pos.stageNum);
+            case BASE:
             default:
                 return 0;
         }

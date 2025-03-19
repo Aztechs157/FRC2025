@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 5.441743811,
+        "x": 5.442,
         "y": 2.676200116
       },
       "prevControl": {
-        "x": 4.441743811,
+        "x": 4.442,
         "y": 2.676200116
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "F4"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Stage 4",
+  "folder": "Reef F",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
