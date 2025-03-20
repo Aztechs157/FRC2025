@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.581,
-        "y": 4.0
+        "x": 0.8274646802,
+        "y": 6.699431314
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.483327730339278,
-        "y": 3.8185969569749068
+        "x": 1.0868479709907035,
+        "y": 6.3353563915913504
       },
       "isLocked": false,
-      "linkedName": "StartCenter"
+      "linkedName": "LS3"
     },
     {
       "anchor": {
-        "x": 5.409643811,
-        "y": 5.320001053
+        "x": 2.9369877049180326,
+        "y": 6.344620901639344
       },
       "prevControl": {
-        "x": 5.157334654174703,
-        "y": 5.421933077562799
+        "x": 2.396126161569872,
+        "y": 6.665875186862465
+      },
+      "nextControl": {
+        "x": 3.4778492482661933,
+        "y": 6.023366616416222
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.65625,
+        "y": 5.5414446721311466
+      },
+      "prevControl": {
+        "x": 3.431190189,
+        "y": 5.945501240131146
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "I4"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Reef K",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 126.0
   },
   "useDefaultConstraints": true
 }

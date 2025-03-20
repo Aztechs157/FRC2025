@@ -254,6 +254,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
         NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
+        NamedCommands.registerCommand("GoToReefLeft", DriveToReefPoseLeft());
+        NamedCommands.registerCommand("GoToReefRight", DriveToReefPoseRight());
 
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
@@ -370,9 +372,10 @@ public class RobotContainer {
             operatorController.x().and(useAutoPos).onTrue(DriveToReefPoseLeft());
             operatorController.b().onTrue(GoToStage3());
             operatorController.b().and(useAutoPos).onTrue(DriveToReefPoseRight());
-            
+
             operatorController.y().and(operatorController.back().negate()).onTrue(GoToStage4());
-            operatorController.y().and(operatorController.back().negate()).and(useAutoPos).onTrue(DriveToReefPoseRight());
+            operatorController.y().and(operatorController.back().negate()).and(useAutoPos)
+                    .onTrue(DriveToReefPoseRight());
             operatorController.y().and(operatorController.back().onTrue(GoToBarge()));
         }
 
