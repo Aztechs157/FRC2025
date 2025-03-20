@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +18,8 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.net.WebServer;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -33,8 +34,17 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
 
+
+  static void startServer() {
+    System.out.println("I AM STARTING WEBSERVER =======================================================");
+    String path = Filesystem.getDeployDirectory().getPath()+"\\ElasticLayout";
+    WebServer.start(5800, path);
+    //PortForwarder.add(5800, "localhost", 5900);
+  }
+
   public Robot() {
     m_robotContainer = new RobotContainer();
+    //startServer();
     Pathfinding.setPathfinder(new LocalADStar());
     PathfindingCommand.warmupCommand().schedule();
     SmartDashboard.putData("Field", m_field);
