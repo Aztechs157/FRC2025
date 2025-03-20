@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.581,
-        "y": 4.0
+        "x": 8.483327730339278,
+        "y": 3.8185969569749068
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "StartCenter"
     },
     {
       "anchor": {
-        "x": 6.5,
-        "y": 4.0
+        "x": 5.441743811,
+        "y": 5.375599884
       },
       "prevControl": {
-        "x": 5.5,
-        "y": 4.0
+        "x": 5.189434654174704,
+        "y": 5.477531908562798
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "I4"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": true
 }
