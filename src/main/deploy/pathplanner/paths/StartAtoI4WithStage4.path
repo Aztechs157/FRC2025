@@ -3,51 +3,58 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.374643811,
-        "y": 5.259379275
+        "x": 7.581,
+        "y": 6.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.63525,
-        "y": 5.752929492
-      },
-      "isLocked": false,
-      "linkedName": "I4"
-    },
-    {
-      "anchor": {
-        "x": 5.571892006325316,
-        "y": 6.059940214248965
-      },
-      "prevControl": {
-        "x": 5.689680049388829,
-        "y": 5.633824646695671
-      },
-      "nextControl": {
-        "x": 5.323582534900576,
-        "y": 6.958236243226695
+        "x": 7.24578629062195,
+        "y": 5.960530394669655
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.8274646802,
-        "y": 6.699431314
+        "x": 5.976749999999999,
+        "y": 6.0
       },
       "prevControl": {
-        "x": 0.48376082802335146,
-        "y": 6.600098757660751
+        "x": 6.391917286677391,
+        "y": 6.214089113642807
+      },
+      "nextControl": {
+        "x": 5.625750000005223,
+        "y": 5.819000000002652
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.374643811,
+        "y": 5.259379275
+      },
+      "prevControl": {
+        "x": 5.723000000005222,
+        "y": 5.616429492002651
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LS3"
+      "linkedName": "I4"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "GoToStage4",
+      "waypointRelativePos": 1.4496402877697714,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -58,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "Reef I",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
