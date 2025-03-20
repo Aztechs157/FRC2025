@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.536902189,
+        "y": 5.375599884
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.816034740483404,
+        "y": 4.649448036779947
+      },
+      "isLocked": false,
+      "linkedName": "L4"
+    },
+    {
+      "anchor": {
+        "x": 0.8652004934,
+        "y": 6.647492423
+      },
+      "prevControl": {
+        "x": 0.9186043824962883,
+        "y": 6.891721873782234
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LS3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 126.0
+  },
+  "reversed": false,
+  "folder": "Reef L",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "useDefaultConstraints": true
+}
