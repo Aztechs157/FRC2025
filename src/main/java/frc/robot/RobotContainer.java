@@ -70,7 +70,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private boolean isButtonBox = true;
+    private boolean isButtonBox = false;
     private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                        // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
@@ -367,9 +367,13 @@ public class RobotContainer {
 
             operatorController.a().onTrue(GoToStage1());
             operatorController.x().onTrue(GoToStage2());
+            operatorController.x().and(useAutoPos).onTrue(DriveToReefPoseLeft());
             operatorController.b().onTrue(GoToStage3());
+            operatorController.b().and(useAutoPos).onTrue(DriveToReefPoseRight());
+            
             operatorController.y().and(operatorController.back().negate()).onTrue(GoToStage4());
-            operatorController.y().and(operatorController.back()).onTrue(GoToBarge());
+            operatorController.y().and(operatorController.back().negate()).and(useAutoPos).onTrue(DriveToReefPoseRight());
+            operatorController.y().and(operatorController.back().onTrue(GoToBarge()));
         }
 
         drivetrain.registerTelemetry(logger::telemeterize);
@@ -382,8 +386,8 @@ public class RobotContainer {
 
     public void updateVisionPose() {
         var pose = visionSystem.getEstimatedGlobalPose();
-        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 0.5
-                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 0.5) {
+        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 2
+                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 2) {
             double visionTime = visionSystem.getTimeStamp();
             drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
             drivetrain.resetPose(pose.get().toPose2d());

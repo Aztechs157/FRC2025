@@ -19,24 +19,18 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
                         "name": "GoToStage4"
                       }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 5.0
-                      }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PlaceCoral"
                 }
               },
               {
@@ -44,15 +38,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "wait",
                       "data": {
-                        "name": "GoToCoralStationStage"
+                        "waitTime": 0.5
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 5.0
+                        "name": "PlaceCoral"
                       }
                     }
                   ]
@@ -62,15 +56,47 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "I4toLS3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "I4toLS3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "IntakeCoral"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
           }
         },
         {
@@ -88,24 +114,18 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
                         "name": "GoToStage4"
                       }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 5.0
-                      }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PlaceCoral"
                 }
               },
               {
@@ -113,15 +133,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "wait",
                       "data": {
-                        "name": "GoToCoralStationStage"
+                        "waitTime": 0.5
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 5.0
+                        "name": "PlaceCoral"
                       }
                     }
                   ]
@@ -131,15 +151,47 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "K4toLS3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "K4toLS3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "IntakeCoral"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
           }
         },
         {
@@ -157,24 +209,18 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
                         "name": "GoToStage4"
                       }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 5.0
-                      }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PlaceCoral"
                 }
               },
               {
@@ -182,15 +228,15 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "wait",
                       "data": {
-                        "name": "GoToCoralStationStage"
+                        "waitTime": 0.5
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 5.0
+                        "name": "PlaceCoral"
                       }
                     }
                   ]
@@ -200,15 +246,47 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "L4toLS3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L4toLS3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "IntakeCoral"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
           }
         }
       ]
