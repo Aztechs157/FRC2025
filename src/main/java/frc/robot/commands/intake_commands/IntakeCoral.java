@@ -4,8 +4,11 @@
 
 package frc.robot.commands.intake_commands;
 
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -39,6 +42,7 @@ public class IntakeCoral extends Command {
       intakeSystem.run(0);
     } else {
       intakeSystem.run(IntakeConstants.CORAL_HOLDING_SPEED);
+      RobotContainer.prettyLights.addMidPattern("Has Coral", 11, LEDPattern.solid(Color.kOrange));
     }
   }
 

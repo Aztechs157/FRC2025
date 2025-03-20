@@ -6,6 +6,7 @@ package frc.robot.commands.intake_commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSystem;
 
@@ -26,6 +27,8 @@ public class PlaceCoralSimple extends Command {
   public void initialize() {
     intakeSystem.run(-IntakeConstants.PLACE_MOTOR_SPEED);
     timer.start();
+    RobotContainer.prettyLights.removeMidPattern("Has Coral");
+    RobotContainer.prettyLights.removeMidPattern("Has Algae");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +40,7 @@ public class PlaceCoralSimple extends Command {
   @Override
   public void end(boolean interrupted) {
     intakeSystem.run(0);
+
   }
 
   // Returns true when the command should end.

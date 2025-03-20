@@ -91,7 +91,7 @@ public class RobotContainer {
     private final CommandXboxController operatorController;
     private final ButtonBox buttonBox;
 
-    private final static LEDSystem prettyLights = new LEDSystem();
+    public final static LEDSystem prettyLights = new LEDSystem();
 
     public final DriveSystem drivetrain = isBeta.get() ? BetaTunerConstants.createDrivetrain()
             : AlphaTunerConstants.createDrivetrain();
@@ -146,7 +146,7 @@ public class RobotContainer {
     }
 
     public Command IntakeCoralCommand() {
-        return new IntakeCoralSimple(intake);
+        return new IntakeCoral(intake);
     }
 
     public Command IntakeAlgaeCommand() {
