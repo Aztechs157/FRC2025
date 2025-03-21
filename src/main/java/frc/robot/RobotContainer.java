@@ -70,7 +70,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
-    private boolean isButtonBox = false;
+    private boolean isButtonBox = true;
     private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
                                                                                        // speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
@@ -242,7 +242,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ElevatorStall", ElevatorStallCommand());
 
         NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
-        NamedCommands.registerCommand("Intake_Algae", IntakAlgaeCommand());
+        NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
         NamedCommands.registerCommand("ExitStartingPosition", exitStartingPosition());
 
@@ -254,6 +254,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
         NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
+
         NamedCommands.registerCommand("GoToReefLeft", DriveToReefPoseLeft());
         NamedCommands.registerCommand("GoToReefRight", DriveToReefPoseRight());
 
@@ -377,6 +378,7 @@ public class RobotContainer {
             operatorController.y().and(operatorController.back().negate()).and(useAutoPos)
                     .onTrue(DriveToReefPoseRight());
             operatorController.y().and(operatorController.back().onTrue(GoToBarge()));
+
         }
 
         drivetrain.registerTelemetry(logger::telemeterize);

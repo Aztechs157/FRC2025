@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.581,
-        "y": 4.0
+        "x": 5.374643811,
+        "y": 2.792420725
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.347207419717096,
-        "y": 1.5470596590909103
+        "x": 5.65310339596253,
+        "y": 2.4946781438383607
       },
       "isLocked": false,
-      "linkedName": "StartCenter"
+      "linkedName": "F4"
     },
     {
       "anchor": {
-        "x": 2.8448,
-        "y": 3.8608
+        "x": 5.374643811,
+        "y": 1.978206051948191
       },
       "prevControl": {
-        "x": 3.699460227272727,
-        "y": 2.4943607954545453
+        "x": 5.478638314142059,
+        "y": 2.211203724097294
+      },
+      "nextControl": {
+        "x": 5.272749332027482,
+        "y": 1.7499134433185661
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.521407097,
+        "y": 0.8481900079
+      },
+      "prevControl": {
+        "x": 1.7991404105760487,
+        "y": 1.0502093636915293
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "B"
+      "linkedName": "RS7"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -126.0
   },
   "reversed": false,
-  "folder": "Reef B",
+  "folder": "Reef F",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

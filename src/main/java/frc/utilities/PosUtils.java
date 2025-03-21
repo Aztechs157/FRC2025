@@ -5,6 +5,10 @@
 package frc.utilities;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.PubSubOption;
+import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.networktables.StringTopic;
 import frc.robot.Constants.WristConstants;
 
 /** Add your docs here. */
@@ -75,5 +79,24 @@ public interface PosUtils {
   static boolean isWithin(double value, double target, double tolerance){
     return(value > target-tolerance && value < target+tolerance);
   }
+
+  static final StringTopic selectedTabTopic =
+      NetworkTableInstance.getDefault().getStringTopic("/Elastic/SelectedTab");
+  static final StringPublisher selectedTabPublisher =
+      selectedTabTopic.publish(PubSubOption.keepDuplicates(true));
+
+      public static void selectTab(String tabName) {
+        selectedTabPublisher.set(tabName);
+      }
+    
+      /**
+       * Selects the tab of the dashboard at the given index. If this index is greater than or equal to
+       * the number of tabs, this will have no effect.
+       *
+       * @param tabIndex the index of the tab to select.
+       */
+      public static void selectTab(int tabIndex) {
+        selectTab(Integer.toString(tabIndex));
+      }
 
 }
