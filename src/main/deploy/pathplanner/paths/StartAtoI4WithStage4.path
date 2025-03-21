@@ -50,8 +50,8 @@
   "eventMarkers": [
     {
       "name": "GoToStage4",
-      "waypointRelativePos": 0.8309352517985567,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 0.851079136690648,
+      "endWaypointRelativePos": 1.92,
       "command": null
     }
   ],

@@ -27,12 +27,6 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "GoToStage4"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
                         "name": "GoToReefRight"
                       }
                     }
@@ -130,12 +124,6 @@
                       "data": {
                         "name": "GoToReefRight"
                       }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "GoToStage4"
-                      }
                     }
                   ]
                 }
@@ -230,12 +218,6 @@
                       "type": "named",
                       "data": {
                         "name": "GoToReefLeft"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "GoToStage4"
                       }
                     }
                   ]
