@@ -129,6 +129,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
+    PosUtils.selectTab(0);
+
   }
 
   @Override
@@ -136,7 +138,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    PosUtils.selectTab(0);
 
   }
 
