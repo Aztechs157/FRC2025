@@ -60,6 +60,14 @@ public class LEDSystem extends SubsystemBase {
 
   }
 
+  public void isFMS() {
+    LEDPattern assabet = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGold, Color.kBlue);
+
+    LEDPattern assabetScroll = assabet.scrollAtRelativeSpeed(Percent.per(Second).of(25));
+
+    fullPatterns.replace("Assabet Scroll", assabetScroll);
+  }
+
   // full
   public void addPattern(String name, int priority, LEDPattern pattern) {
     fullPatterns.put(name, priority, pattern);
