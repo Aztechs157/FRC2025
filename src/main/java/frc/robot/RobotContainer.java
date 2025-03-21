@@ -306,8 +306,9 @@ public class RobotContainer {
 
         if (isButtonBox) {
             buttonBox.buttonBinding(ButtonBoxButtons.C1).onTrue(GoToCoralStationStage());
-            buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageLow());
-            buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToAlgaeStageHigh());
+            buttonBox.buttonBinding(ButtonBoxButtons.AP).onTrue(GoToAlgaeStageLow());
+            buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageHigh());
+            buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToBarge());
         } else {
             driverController.a().onTrue(GoToCoralStationStage());
             driverController.x().onTrue(GoToAlgaeStageLow());
@@ -352,11 +353,6 @@ public class RobotContainer {
 
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
-            buttonBox.buttonBinding(ButtonBoxButtons.C5).onTrue(GoToBarge());
-            buttonBox.buttonBinding(ButtonBoxButtons.C3)
-                    .toggleOnTrue(
-                            Commands.runEnd(() -> prettyLights.addTopPattern("Test", 156, LEDPattern.solid(Color.kRed)),
-                                    () -> prettyLights.removeTopPattern("Test")));
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
             operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());
