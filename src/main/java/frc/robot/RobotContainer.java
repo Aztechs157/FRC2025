@@ -390,8 +390,8 @@ public class RobotContainer {
 
     public void updateVisionPose() {
         var pose = visionSystem.getEstimatedGlobalPose();
-        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 2
-                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 2) {
+        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 0.5
+                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 0.5) {
             double visionTime = visionSystem.getTimeStamp();
             drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
             drivetrain.resetPose(pose.get().toPose2d());

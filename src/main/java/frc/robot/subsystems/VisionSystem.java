@@ -338,13 +338,13 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public Optional<Pose3d> getEstimatedGlobalPose() {
-    var poseTopRight = poseEstimatorLeft.update(topRightCamera.getLatestResult());
+    // var poseTopRight = poseEstimatorLeft.update(topRightCamera.getLatestResult());
     var poseBottom = poseEstimatorRight.update(bottomCamera.getLatestResult());
-    if (poseTopRight.isPresent() && poseBottom.isPresent()) {
-      return Optional.of(poseTopRight.get().estimatedPose.interpolate(poseBottom.get().estimatedPose, 0.5));
-    } else if (poseTopRight.isPresent()) {
-      return Optional.of(poseTopRight.get().estimatedPose);
-    } else if (poseBottom.isPresent()) {
+    // if (poseTopRight.isPresent() && poseBottom.isPresent()) {
+      // return Optional.of(poseTopRight.get().estimatedPose.interpolate(poseBottom.get().estimatedPose, 0.5));
+    // } else if (poseTopRight.isPresent()) {
+      // return Optional.of(poseTopRight.get().estimatedPose);
+   if (poseBottom.isPresent()) {
       return Optional.of(poseBottom.get().estimatedPose);
     } else {
       return Optional.empty();
