@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
 
 public class Robot extends TimedRobot {
@@ -38,18 +39,18 @@ public class Robot extends TimedRobot {
   public final Field2d m_field = new Field2d();
 
   private final RobotContainer m_robotContainer;
-
+  public static boolean isFMS = false;
 
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
-    String path = Filesystem.getDeployDirectory().getPath()+"\\ElasticLayout";
+    String path = Filesystem.getDeployDirectory().getPath() + "\\ElasticLayout";
     WebServer.start(5800, path);
-    //PortForwarder.add(5800, "localhost", 5900);
+    // PortForwarder.add(5800, "localhost", 5900);
   }
 
   public Robot() {
+    // startServer();
     m_robotContainer = new RobotContainer();
-    //startServer();
     Pathfinding.setPathfinder(new LocalADStar());
     PathfindingCommand.warmupCommand().schedule();
     SmartDashboard.putData("Field", m_field);
@@ -60,6 +61,10 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     m_robotContainer.updateVisionPose();
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+    if (!isFMS && DriverStation.isFMSAttached()) {
+      isFMS = true;
+      RobotContainer.prettyLights.isFMS();
+    }
   }
 
   @Override
@@ -67,30 +72,32 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledPeriodic() {    
+  public void disabledPeriodic() {
     var pose = m_robotContainer.visionSystem.getEstimatedGlobalPose();
     if (pose.isPresent()) {
       m_field.setRobotPose(pose.get().toPose2d());
     }
     newAlliance = DriverStation.getAlliance();
     newAutoName = m_robotContainer.getAutonomousCommand().getName();
-    if(autoName != newAutoName || alliance != newAlliance) {
+    if (autoName != newAutoName || alliance != newAlliance) {
       autoName = newAutoName;
       alliance = newAlliance;
-      if(AutoBuilder.getAllAutoNames().contains(autoName)) {
-        try{
-        List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
-        List<Pose2d> poses = new ArrayList<>();
-        for (PathPlannerPath path : pathPlannerPaths) {
-          if (alliance.isPresent() && alliance.get() == Alliance.Red) {
-            path = path.flipPath();
+      if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+        try {
+          List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
+          List<Pose2d> poses = new ArrayList<>();
+          for (PathPlannerPath path : pathPlannerPaths) {
+            if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+              path = path.flipPath();
+            }
+            poses.addAll(path.getAllPathPoints().stream()
+                .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
+                .collect(Collectors.toList()));
           }
-          poses.addAll(path.getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+          m_field.getObject("path").setPoses(poses);
+        } catch (IOException | org.json.simple.parser.ParseException e) {
+          e.printStackTrace();
         }
-        m_field.getObject("path").setPoses(poses);
-      } catch (IOException | org.json.simple.parser.ParseException e) {
-        e.printStackTrace();
-      }
       }
     }
     if (pose.isPresent()) {
@@ -109,7 +116,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    PosUtils.selectTab(0);
+    PosUtils.selectTab(1);
   }
 
   @Override
@@ -122,6 +129,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
+    PosUtils.selectTab(0);
+
   }
 
   @Override
@@ -129,7 +138,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    PosUtils.selectTab(1);
 
   }
 
