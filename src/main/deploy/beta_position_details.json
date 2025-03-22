@@ -145,9 +145,9 @@
                 },
         "depthOffset":0.3,
         "systemPositions": {
-            "elevator": 0.09,
+            "elevator": 0.025,
             "elbow": 0.87,
-            "wrist": 0.34
+            "wrist": 0.4   
         },
         "tag1": {
             "side": "left",
