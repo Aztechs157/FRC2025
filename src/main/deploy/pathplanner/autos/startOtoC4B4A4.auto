@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartAtoI4"
+                  "pathName": "startOtoC4"
                 }
               },
               {
@@ -21,7 +21,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.335
+                        "waitTime": 0.89
                       }
                     },
                     {
@@ -88,7 +88,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "I4toLS3"
+                  "pathName": "C4toRS7"
                 }
               },
               {
@@ -165,7 +165,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LS3toK4"
+                  "pathName": "RS7toB4"
                 }
               },
               {
@@ -175,7 +175,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.755
+                        "waitTime": 0.7325
                       }
                     },
                     {
@@ -242,7 +242,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "K4toLS3"
+                  "pathName": "B4toRS7"
                 }
               },
               {
@@ -319,7 +319,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LS3toL4"
+                  "pathName": "RS7toA4"
                 }
               },
               {
@@ -329,7 +329,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.77
+                        "waitTime": 0.905
                       }
                     },
                     {
@@ -396,7 +396,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "L4toLS3"
+                  "pathName": "A4toRS7"
                 }
               },
               {

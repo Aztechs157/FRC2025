@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.374643811,
-        "y": 2.792420725
+        "x": 2.9776254,
+        "y": 4.1759
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.65310339596253,
-        "y": 2.4946781438383607
+        "x": 2.6263789059512757,
+        "y": 4.226518569391148
       },
       "isLocked": false,
-      "linkedName": "F4"
+      "linkedName": "A4"
     },
     {
       "anchor": {
-        "x": 5.374643811,
-        "y": 1.978206051948191
+        "x": 1.8719999999999999,
+        "y": 4.81475
       },
       "prevControl": {
-        "x": 5.478638314142059,
-        "y": 2.211203724097294
+        "x": 2.0622366334029105,
+        "y": 4.647228428390318
       },
       "nextControl": {
-        "x": 5.272749332027482,
-        "y": 1.7499134433185661
+        "x": 1.5484748364521197,
+        "y": 5.099644885298108
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.521407097,
-        "y": 0.8481900079
+        "x": 0.827,
+        "y": 6.699431314
       },
       "prevControl": {
-        "x": 1.7991404105760487,
-        "y": 1.0502093636915293
+        "x": 0.7018079335936749,
+        "y": 6.915826661706262
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RS7"
+      "linkedName": "LS3"
     }
   ],
   "rotationTargets": [],
@@ -58,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -126.0
+    "rotation": 126.0
   },
   "reversed": false,
-  "folder": "Reef F",
+  "folder": "Reef A",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
