@@ -314,6 +314,7 @@ public class RobotContainer {
             driverController.x().onTrue(GoToAlgaeStageLow());
             driverController.y().onTrue(GoToAlgaeStageHigh());
         }
+        useAutoPosCommand.schedule();
         driverController.rightStick().and(driverController.leftStick()).toggleOnTrue(useAutoPosCommand);
 
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
