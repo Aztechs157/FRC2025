@@ -71,7 +71,7 @@
                 "systemPositions": {
                     "elevator": 0.98,
                     "elbow": 0.98,
-                    "wrist": 0.38
+                    "wrist": 0.4
                 },
                 "depthOffset": 0,
                 "horizontalOffsets": {
