@@ -194,7 +194,7 @@ public class RobotContainer {
     }
 
     public Command GoToBarge() {
-        return GoToPositionCommand(Position.BARGEINIT).andThen(GoToPositionCommand(Position.BARGEFINAL));
+        return GoToPositionCommand(Position.BARGEINIT).onlyWhile(()->elevator.getScaledPos() < 0.8).andThen(GoToPositionCommand(Position.BARGEFINAL));
     }
 
     public Command GoToCoralStationStage() {
