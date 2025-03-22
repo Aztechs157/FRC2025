@@ -239,7 +239,6 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    * @return A command to run the elevator motor
    */
   public Command elevatorManualControl(Double joystickInput) {
-    System.out.println("asdfsadf");
     return runEnd(() -> {
       runMotor(joystickInput);
     }, () -> {

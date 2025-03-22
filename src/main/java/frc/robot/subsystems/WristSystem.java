@@ -68,7 +68,6 @@ public class WristSystem extends SubsystemBase implements PosUtils {
   }
 
   public double runWithLimits(double speed) {
-    System.out.println(speed);
     if (getScaledPos() >= 1.0 - WristConstants.LIMIT_MARGIN && speed > 0) {
       return 0;
     } else if (getScaledPos() >= 0.9 - WristConstants.LIMIT_MARGIN && speed > 0) {
