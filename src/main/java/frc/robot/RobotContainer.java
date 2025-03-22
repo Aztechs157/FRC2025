@@ -194,7 +194,7 @@ public class RobotContainer {
     }
 
     public Command GoToBarge() {
-        return GoToPositionCommand(Position.BARGE);
+        return GoToPositionCommand(Position.BARGEINIT).andThen(GoToPositionCommand(Position.BARGEFINAL));
     }
 
     public Command GoToCoralStationStage() {

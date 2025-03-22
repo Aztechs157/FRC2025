@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
       RobotContainer.prettyLights.isFMS();
     }
   }
+}
 
   @Override
   public void disabledInit() {
