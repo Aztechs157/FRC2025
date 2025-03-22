@@ -165,7 +165,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LS3toK4"
+                  "pathName": "LS3toA4"
                 }
               },
               {
@@ -175,7 +175,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.755
+                        "waitTime": 0.725
                       }
                     },
                     {
@@ -242,7 +242,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "K4toLS3"
+                  "pathName": "A4toLS3"
                 }
               },
               {
@@ -319,7 +319,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LS3toL4"
+                  "pathName": "LS3toB4"
                 }
               },
               {
@@ -396,7 +396,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "L4toLS3"
+                  "pathName": "B4toLS3"
                 }
               },
               {
