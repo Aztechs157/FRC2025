@@ -3,45 +3,61 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8274646802,
-        "y": 6.699431314
+        "x": 7.3,
+        "y": 6.1666
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0143057917442937,
-        "y": 6.433748639927024
+        "x": 7.523761592698774,
+        "y": 6.055106728306557
       },
       "isLocked": false,
-      "linkedName": "LS3"
+      "linkedName": "StartA"
     },
     {
       "anchor": {
-        "x": 3.2719967711315956,
-        "y": 5.668427567750058
+        "x": 4.914,
+        "y": 6.1666
       },
       "prevControl": {
-        "x": 2.2522264988350527,
-        "y": 5.748561901756443
+        "x": 5.5216392937343555,
+        "y": 6.31336728991692
       },
       "nextControl": {
-        "x": 3.521228460317845,
-        "y": 5.648842749513252
+        "x": 4.401483858519736,
+        "y": 6.042808458045144
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.604002189,
-        "y": 5.259379275
+        "x": 2.4472500000000004,
+        "y": 4.688
       },
       "prevControl": {
-        "x": 3.4663850297794205,
-        "y": 5.468093235932319
+        "x": 2.4713172720708165,
+        "y": 5.43570082510234
+      },
+      "nextControl": {
+        "x": 2.4392070726024193,
+        "y": 4.438129410856585
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9776254,
+        "y": 4.1759
+      },
+      "prevControl": {
+        "x": 2.727848455371637,
+        "y": 4.186458311044843
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L4"
+      "linkedName": "A4"
     }
   ],
   "rotationTargets": [],
@@ -58,13 +74,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Reef L",
+  "folder": "Reef A",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

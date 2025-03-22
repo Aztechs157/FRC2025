@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartAtoI4"
+                  "pathName": "StartOtoF4"
                 }
               },
               {
@@ -21,7 +21,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.4175
+                        "waitTime": 0.335
                       }
                     },
                     {
@@ -88,7 +88,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "I4toLS3"
+                  "pathName": "F4toRS7"
                 }
               },
               {
@@ -165,7 +165,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LS3toK4"
+                  "pathName": "RS7toD4"
                 }
               },
               {
@@ -175,7 +175,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.755
+                        "waitTime": 0.688
                       }
                     },
                     {
@@ -242,7 +242,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "K4toLS3"
+                  "pathName": "D4toRS7"
                 }
               },
               {
@@ -319,7 +319,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LS3toL4"
+                  "pathName": "RS7toC4"
                 }
               },
               {
@@ -329,7 +329,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.8
+                        "waitTime": 0.6275
                       }
                     },
                     {
@@ -396,7 +396,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "L4toLS3"
+                  "pathName": "C4toRS7"
                 }
               },
               {
@@ -470,6 +470,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Usable",
+  "folder": "StartO",
   "choreoAuto": false
 }

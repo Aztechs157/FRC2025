@@ -18,8 +18,9 @@
     "Stage 4"
   ],
   "autoFolders": [
-    "Misc",
-    "Usable"
+    "StartC",
+    "StartA",
+    "StartO"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
