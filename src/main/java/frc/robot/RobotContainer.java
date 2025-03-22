@@ -233,7 +233,6 @@ public class RobotContainer {
 
     public RobotContainer() {
 
-        DataLogManager.start("/media/sda1/media/logs/RIO");
         if (isButtonBox) {
             buttonBox = new ButtonBox(1);
             operatorController = null;
