@@ -193,6 +193,10 @@ public class RobotContainer {
         return GoToPositionCommand(Position.STAGE4);
     }
 
+    public Command GoToFloorPickup() {
+        return GoToPositionCommand(Position.ALGAEFLOOR);
+    }
+
     public Command GoToBarge() {
         return GoToPositionCommand(Position.BARGEINIT).onlyWhile(()->elevator.getScaledPos() < 0.8).andThen(GoToPositionCommand(Position.BARGEFINAL));
     }
@@ -313,6 +317,7 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.AP).onTrue(GoToAlgaeStageLow());
             buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageHigh());
             buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToBarge());
+            buttonBox.buttonBinding(ButtonBoxButtons.C5).onTrue(GoToFloorPickup());
         } else {
             driverController.a().onTrue(GoToCoralStationStage());
             driverController.x().onTrue(GoToAlgaeStageLow());
