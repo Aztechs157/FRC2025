@@ -24,6 +24,7 @@ import frc.utilities.PosUtils;
 
 public class UppiesSystem extends SubsystemBase {
   private static TalonFX motor = new TalonFX(UppiesConstants.MOTOR_ID);
+  private static TalonFX motor_follower = new TalonFX(UppiesConstants.MOTOR_ID_FOLLOWER);
   private static DutyCycleEncoder encoderInput = new DutyCycleEncoder(UppiesConstants.ENCODER_ID);
 
   /**
@@ -50,6 +51,7 @@ public class UppiesSystem extends SubsystemBase {
    */
   public void runMotor(double velocity) {
     motor.set(velocity);
+    motor_follower.set(velocity);
   }
 
   /**
