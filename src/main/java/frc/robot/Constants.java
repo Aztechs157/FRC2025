@@ -239,6 +239,6 @@ public class Constants {
          * Position limits, in raw encoder units, for the left Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double MAX_POSITION = 0.683, MIN_POSITION = 0.365;
+        public static final double MAX_POSITION = 0.683, MIN_POSITION = 0.33;
     }
 }
