@@ -198,7 +198,10 @@ public class RobotContainer {
     }
 
     public Command GoToCoralStationStage() {
-        return GoToPositionCommand(Position.CORALSTATION);
+        return GoToPositionCommand(Position.BARGEINIT).onlyWhile(()->{
+            System.out.println("testing");
+            return elevator.getScaledPos() > 0.8 && wrist.getScaledPos() > 0.36;
+        }).andThen(GoToPositionCommand(Position.CORALSTATION));
     }
 
     public Command GoToAlgaeStageLow() {
