@@ -17,6 +17,9 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.ctre.phoenix6.SignalLogger;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -472,8 +475,11 @@ public class VisionSystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     var pose = getEstimatedGlobalPose();
+    
     if (pose.isPresent()) {
-      vision_field.setRobotPose(pose.get().toPose2d());
+      var p = pose.get().toPose2d();
+      vision_field.setRobotPose(p);
+      SignalLogger.writeDoubleArray("visionOdometry", new double[] {p.getX(), p.getY(), p.getRotation().getDegrees()});
     }
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
     boolean hasTag = bottomCamera.getLatestResult().hasTargets();

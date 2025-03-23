@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
@@ -249,5 +250,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+              SignalLogger.writeDouble("ElevatorPosition", getScaledPos());
+
   }
 }

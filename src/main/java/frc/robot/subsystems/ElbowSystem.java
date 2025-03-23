@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
@@ -143,5 +144,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+          SignalLogger.writeDouble("ElbowPosition", getScaledPos());
+
   }
 }

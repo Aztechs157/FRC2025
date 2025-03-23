@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import java.util.Map;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -142,5 +143,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+              SignalLogger.writeDouble("WristPosition", getScaledPos());
+
   }
 }
