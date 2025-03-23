@@ -221,6 +221,7 @@ public class Constants {
     public static class UppiesConstants {
         // IDs/Ports for the sensors/actuators. The motors uses a CAN ID
         public static final int MOTOR_ID = 30;
+        public static final int MOTOR_ID_FOLLOWER = 31;
         public static final int ENCODER_ID = 2;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
