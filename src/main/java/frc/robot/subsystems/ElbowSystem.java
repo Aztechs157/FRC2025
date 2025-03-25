@@ -14,6 +14,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -24,6 +26,7 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.utilities.PosUtils;
 
+@Logged(strategy = Strategy.OPT_OUT)
 public class ElbowSystem extends SubsystemBase implements PosUtils {
   private SparkFlex motor;
   private static DigitalInput encoderInput = new DigitalInput(ElbowConstants.ENCODER_ID);
@@ -144,7 +147,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-          SignalLogger.writeDouble("ElbowPosition", getScaledPos());
+    SignalLogger.writeDouble("ElbowPosition", getScaledPos());
 
   }
 }

@@ -15,6 +15,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -23,6 +25,7 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.WristConstants;
 import frc.utilities.PosUtils;
 
+@Logged(strategy = Strategy.OPT_OUT)
 public class WristSystem extends SubsystemBase implements PosUtils {
   private static SparkMax motor;
   private static PIDController PID;
@@ -143,7 +146,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-              SignalLogger.writeDouble("WristPosition", getScaledPos());
+    SignalLogger.writeDouble("WristPosition", getScaledPos());
 
   }
 }

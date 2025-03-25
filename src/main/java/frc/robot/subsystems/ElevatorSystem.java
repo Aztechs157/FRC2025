@@ -12,6 +12,8 @@ import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 import frc.utilities.PosUtils;
 
+@Logged(strategy = Strategy.OPT_OUT)
 public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
   private static SparkMax motor = new SparkMax(ElevatorConstants.MOTOR_ID, MotorType.kBrushless);
@@ -250,7 +253,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-              SignalLogger.writeDouble("ElevatorPosition", getScaledPos());
+    SignalLogger.writeDouble("ElevatorPosition", getScaledPos());
 
   }
 }

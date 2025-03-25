@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.Pair;
 
 /**
@@ -20,6 +23,7 @@ import edu.wpi.first.math.Pair;
  * itself is used as a tie-breaker to ensure consistency when values are
  * accessed.
  */
+@Logged(strategy = Strategy.OPT_OUT)
 public final class PriorityMap<K extends Comparable<K>, V> {
 
     private TreeMap<Pair<Integer, K>, V> valueMap = new TreeMap<Pair<Integer, K>, V>((p1, p2) -> {
@@ -151,6 +155,7 @@ public final class PriorityMap<K extends Comparable<K>, V> {
 
         return valueMap.lastEntry().getKey().getSecond();
     }
+
     public Integer firstPriority() {
         if (isEmpty()) {
             return null;
@@ -165,7 +170,6 @@ public final class PriorityMap<K extends Comparable<K>, V> {
         return valueMap.lastEntry().getKey().getFirst();
     }
 
-
     /**
      * Returns <code>true</code> if the map contains a mapping for the specified key
      * 
@@ -176,8 +180,7 @@ public final class PriorityMap<K extends Comparable<K>, V> {
     public boolean containsKey(K key) {
         return indexMap.containsKey(key);
     }
-    
-    
+
     /**
      * Returns the value to which the specified key is mapped, or <code>null</code>
      * if this map
@@ -229,6 +232,7 @@ public final class PriorityMap<K extends Comparable<K>, V> {
      * 
      * @return a shallow copy of this map
      */
+    @NotLogged
     @SuppressWarnings("unchecked")
     public PriorityMap<K, V> clone() {
         var newPriorityMap = new PriorityMap<K, V>();

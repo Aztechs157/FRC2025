@@ -8,6 +8,8 @@ import com.revrobotics.spark.SparkMax;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -15,19 +17,23 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
+@Logged(strategy = Strategy.OPT_OUT)
 public class IntakeSystem extends SubsystemBase {
   // private static SparkMax motor = new SparkMax(IntakeConstants.MOTOR_ID,
   // MotorType.kBrushless);
   final TalonFX motor = new TalonFX(IntakeConstants.MOTOR_ID);
   private static DigitalInput sensor = new DigitalInput(IntakeConstants.SENSOR_ID);
-    private boolean isBeta;
-    public static IntakeConstants constants;
-  
-    /** Creates a new IntakeSystem. 
-   * @param b */
-    public IntakeSystem(boolean isBeta) {
-      this.isBeta = isBeta;
-      Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral)
+  private boolean isBeta;
+  public static IntakeConstants constants;
+
+  /**
+   * Creates a new IntakeSystem.
+   * 
+   * @param b
+   */
+  public IntakeSystem(boolean isBeta) {
+    this.isBeta = isBeta;
+    Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral)
         .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 0);
     Shuffleboard.getTab("Sensor values").addDouble("Intake Motor Current", this::getMotorCurrent)
         .withWidget(BuiltInWidgets.kTextView).withPosition(12, 0);

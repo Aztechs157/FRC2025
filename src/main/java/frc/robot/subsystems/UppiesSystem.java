@@ -12,6 +12,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -22,6 +24,7 @@ import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
 import frc.utilities.PosUtils;
 
+@Logged(strategy = Strategy.OPT_OUT)
 public class UppiesSystem extends SubsystemBase {
   private static TalonFX motor = new TalonFX(UppiesConstants.MOTOR_ID);
   private static TalonFX motor_follower = new TalonFX(UppiesConstants.MOTOR_ID_FOLLOWER);

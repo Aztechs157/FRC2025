@@ -22,6 +22,9 @@ import com.ctre.phoenix6.SignalLogger;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,6 +45,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Robot;
 
+@Logged(strategy = Strategy.OPT_OUT)
 public class VisionSystem extends SubsystemBase {
 
   PhotonCamera topRightCamera;
@@ -87,6 +91,7 @@ public class VisionSystem extends SubsystemBase {
     blueAlliance = alliance.get() == DriverStation.Alliance.Blue;
   }
 
+  @NotLogged
   public PhotonTrackedTarget findSpeakerTag() {
     List<PhotonTrackedTarget> targets = findTargets();
     List<PhotonTrackedTarget> speakerTags = new ArrayList<>();
@@ -109,6 +114,7 @@ public class VisionSystem extends SubsystemBase {
     return bestSpeakerTarget;
   }
 
+  @NotLogged
   public PhotonTrackedTarget findAmpTag() {
     List<PhotonTrackedTarget> targets = findTargets();
     PhotonTrackedTarget ampTag = null;
@@ -148,6 +154,7 @@ public class VisionSystem extends SubsystemBase {
    * if there are no targets.
    */
 
+  @NotLogged
   public List<PhotonTrackedTarget> findTargets() {
     var visionFrame = topRightCamera.getLatestResult();
     if (visionFrame.hasTargets()) {
@@ -162,7 +169,7 @@ public class VisionSystem extends SubsystemBase {
    * Get the "best" target from the latest pipeline result. Returns null if there
    * are no targets.
    */
-
+  @NotLogged
   public PhotonTrackedTarget findBestTarget() {
 
     var resultTopRight = topRightCamera.getLatestResult();
@@ -197,6 +204,7 @@ public class VisionSystem extends SubsystemBase {
     return null;
   }
 
+  @NotLogged
   public PhotonTrackedTarget findBestTargetReef() {
 
     var resultBottom = bottomCamera.getLatestResult();
@@ -309,19 +317,21 @@ public class VisionSystem extends SubsystemBase {
   /*
    * Estimate the position of the robot relitive to the field.
    */
-
+  @NotLogged
   public Optional<EstimatedRobotPose> getEstimatedGlobalPoseLeft() {
     // poseEstimator.setReferencePose(prevRobotPose);
     var visionFrame = topRightCamera.getLatestResult();
     return poseEstimatorLeft.update(visionFrame);
   }
 
+  @NotLogged
   public Optional<EstimatedRobotPose> getEstimatedGlobalPoseRight() {
     // poseEstimator.setReferencePose(prevRobotPose);\
     var visionFrame = bottomCamera.getLatestResult();
     return poseEstimatorRight.update(visionFrame);
   }
 
+  @NotLogged
   public double getTimeStamp() {
     var resultTopRight = topRightCamera.getLatestResult();
     var resultBottom = bottomCamera.getLatestResult();
@@ -340,14 +350,18 @@ public class VisionSystem extends SubsystemBase {
     return timestamp;
   }
 
+  @NotLogged
   public Optional<Pose3d> getEstimatedGlobalPose() {
-    // var poseTopRight = poseEstimatorLeft.update(topRightCamera.getLatestResult());
+    // var poseTopRight =
+    // poseEstimatorLeft.update(topRightCamera.getLatestResult());
     var poseBottom = poseEstimatorRight.update(bottomCamera.getLatestResult());
     // if (poseTopRight.isPresent() && poseBottom.isPresent()) {
-      // return Optional.of(poseTopRight.get().estimatedPose.interpolate(poseBottom.get().estimatedPose, 0.5));
+    // return
+    // Optional.of(poseTopRight.get().estimatedPose.interpolate(poseBottom.get().estimatedPose,
+    // 0.5));
     // } else if (poseTopRight.isPresent()) {
-      // return Optional.of(poseTopRight.get().estimatedPose);
-   if (poseBottom.isPresent()) {
+    // return Optional.of(poseTopRight.get().estimatedPose);
+    if (poseBottom.isPresent()) {
       return Optional.of(poseBottom.get().estimatedPose);
     } else {
       return Optional.empty();
@@ -475,11 +489,12 @@ public class VisionSystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     var pose = getEstimatedGlobalPose();
-    
+
     if (pose.isPresent()) {
       var p = pose.get().toPose2d();
       vision_field.setRobotPose(p);
-      SignalLogger.writeDoubleArray("visionOdometry", new double[] {p.getX(), p.getY(), p.getRotation().getDegrees()});
+      SignalLogger.writeDoubleArray("visionOdometry",
+          new double[] { p.getX(), p.getY(), p.getRotation().getDegrees() });
     }
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
     boolean hasTag = bottomCamera.getLatestResult().hasTargets();

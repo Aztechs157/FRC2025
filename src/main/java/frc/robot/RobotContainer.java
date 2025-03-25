@@ -11,6 +11,13 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.EpilogueConfiguration;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
+import edu.wpi.first.epilogue.logging.EpilogueBackend;
+import edu.wpi.first.epilogue.logging.FileBackend;
+import edu.wpi.first.epilogue.logging.errors.ErrorHandler;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.net.WebServer;
@@ -25,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -69,6 +77,7 @@ import frc.robot.subsystems.VisionSystem;
 import frc.utilities.ButtonBox;
 import frc.utilities.ButtonBox.ButtonBoxButtons;
 
+@Logged(strategy = Strategy.OPT_IN)
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
     private boolean isButtonBox = true;
@@ -92,17 +101,29 @@ public class RobotContainer {
     private final CommandXboxController operatorController;
     private final ButtonBox buttonBox;
 
+    @Logged(name = "LEDs")
     public final static LEDSystem prettyLights = new LEDSystem();
 
+    @Logged(name = "drive")
     public final DriveSystem drivetrain = isBeta.get() ? BetaTunerConstants.createDrivetrain()
             : AlphaTunerConstants.createDrivetrain();
+
+    @Logged(name = "uppies")
     private final UppiesSystem uppies = new UppiesSystem(isBeta.get());
+
+    @Logged(name = "elevator")
     private final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
+    @Logged(name = "intake")
     private final IntakeSystem intake = new IntakeSystem(isBeta.get());
+    @Logged(name = "elbow")
     private final ElbowSystem elbow = new ElbowSystem(isBeta.get());
+    @Logged(name = "wrist")
     private final WristSystem wrist = new WristSystem(isBeta.get());
+    @Logged(name = "vision")
     public final VisionSystem visionSystem = new VisionSystem(prettyLights);
+
     private Command useAutoPosCommand = new WaitCommand(10).repeatedly();
+    @Logged(name = "useAutoPos")
     private Trigger useAutoPos = new Trigger(useAutoPosCommand::isScheduled);
 
     public Command UppiesUpCommand() {
@@ -198,11 +219,12 @@ public class RobotContainer {
     }
 
     public Command GoToBarge() {
-        return GoToPositionCommand(Position.BARGEINIT).onlyWhile(()->elevator.getScaledPos() < 0.8).andThen(GoToPositionCommand(Position.BARGEFINAL));
+        return GoToPositionCommand(Position.BARGEINIT).onlyWhile(() -> elevator.getScaledPos() < 0.8)
+                .andThen(GoToPositionCommand(Position.BARGEFINAL));
     }
 
     public Command GoToCoralStationStage() {
-        return GoToPositionCommand(Position.BARGEINIT).onlyWhile(()->{
+        return GoToPositionCommand(Position.BARGEINIT).onlyWhile(() -> {
             return elevator.getScaledPos() > 0.8 && wrist.getScaledPos() > 0.36;
         }).andThen(GoToPositionCommand(Position.CORALSTATION));
     }
@@ -238,6 +260,11 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        DataLogManager.start("/media/sda1/logs/RIO");
+        Epilogue.configure(config -> {
+            config.backend = new FileBackend(DataLogManager.getLog());
+            config.errorHandler = ErrorHandler.printErrorMessages();
+        });
 
         if (isButtonBox) {
             buttonBox = new ButtonBox(1);
