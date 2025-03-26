@@ -260,11 +260,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        DataLogManager.start("/media/sda1/logs/RIO");
-        Epilogue.configure(config -> {
-            config.backend = new FileBackend(DataLogManager.getLog());
-            config.errorHandler = ErrorHandler.printErrorMessages();
-        });
+        
 
         if (isButtonBox) {
             buttonBox = new ButtonBox(1);

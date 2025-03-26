@@ -17,10 +17,16 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.Logged.Strategy;
+import edu.wpi.first.epilogue.logging.FileBackend;
+import edu.wpi.first.epilogue.logging.errors.ErrorHandler;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -31,13 +37,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
-
+@Logged(strategy = Strategy.OPT_IN)
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private String autoName, newAutoName;
   private Optional<Alliance> alliance, newAlliance;
+  @Logged
   public final Field2d m_field = new Field2d();
 
+  @Logged
   private final RobotContainer m_robotContainer;
   public static boolean isFMS = false;
 
@@ -49,6 +57,12 @@ public class Robot extends TimedRobot {
   }
 
   public Robot() {
+    DataLogManager.start("/media/sda1/logs/RIO");
+        Epilogue.configure(config -> {
+            config.backend = new FileBackend(DataLogManager.getLog());
+            config.errorHandler = ErrorHandler.printErrorMessages();
+        });
+        Epilogue.bind(this);
     // startServer();
     m_robotContainer = new RobotContainer();
     Pathfinding.setPathfinder(new LocalADStar());
@@ -143,7 +157,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
   }
 
   @Override
