@@ -16,9 +16,11 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -48,11 +50,17 @@ import frc.robot.Robot;
 @Logged(strategy = Strategy.OPT_OUT)
 public class VisionSystem extends SubsystemBase {
 
+  // TODO: move to constants.java
+  final PoseStrategy poseStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
+
   PhotonCamera topRightCamera;
   PhotonCamera bottomCamera;
   AprilTagFieldLayout tagLayout;
-  PhotonPoseEstimator poseEstimatorLeft;
-  PhotonPoseEstimator poseEstimatorRight;
+  PhotonPoseEstimator poseEstimatorTopRight;
+  PhotonPoseEstimator poseEstimatorBottom;
+  EstimatedRobotPose currentEstimatedPose = new EstimatedRobotPose(new Pose3d(), getTimeStamp(), new ArrayList<>(), poseStrategy);
+  PhotonPipelineResult latestResult;
+
   private Field2d vision_field = new Field2d();
   private LEDSystem prettyLights;
 
@@ -76,14 +84,15 @@ public class VisionSystem extends SubsystemBase {
       throw new RuntimeException(exception);
     }
 
-    poseEstimatorLeft = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+    poseEstimatorTopRight = new PhotonPoseEstimator(tagLayout, poseStrategy,
         VisionConstants.TOPRIGHT_CAMERA_PLACEMENT); // TODO: decide which pose strategy to use
-    poseEstimatorRight = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+    poseEstimatorBottom = new PhotonPoseEstimator(tagLayout, poseStrategy,
         VisionConstants.BOTTOM_CAMERA_PLACEMENT); // TODO: decide which pose strategy to use
 
     Shuffleboard.getTab("vision").add("vision based field", vision_field).withWidget(BuiltInWidgets.kField);
     Shuffleboard.getTab("vision").add("Desired Position", desiredField).withWidget(BuiltInWidgets.kField);
 
+    periodic();
   }
 
   public void updateAlliance() {
@@ -92,137 +101,14 @@ public class VisionSystem extends SubsystemBase {
   }
 
   @NotLogged
-  public PhotonTrackedTarget findSpeakerTag() {
-    List<PhotonTrackedTarget> targets = findTargets();
-    List<PhotonTrackedTarget> speakerTags = new ArrayList<>();
-
-    if (!blueAlliance) {
-      for (PhotonTrackedTarget target : targets) {
-        if (target.getFiducialId() == 3 | target.getFiducialId() == 4) {
-          speakerTags.add(target);
-        }
-      }
-    } else {
-      for (PhotonTrackedTarget target : targets) {
-        if (target.getFiducialId() == 7 | target.getFiducialId() == 8) {
-          speakerTags.add(target);
-        }
-      }
-    }
-
-    PhotonTrackedTarget bestSpeakerTarget = Collections.max(targets, this::compareTargets);
-    return bestSpeakerTarget;
-  }
-
-  @NotLogged
-  public PhotonTrackedTarget findAmpTag() {
-    List<PhotonTrackedTarget> targets = findTargets();
-    PhotonTrackedTarget ampTag = null;
-
-    if (!blueAlliance) {
-      for (PhotonTrackedTarget target : targets) {
-        if (target.getFiducialId() == 5) {
-          ampTag = target;
-          break;
-        }
-      }
-    } else {
-      for (PhotonTrackedTarget target : targets) {
-        if (target.getFiducialId() == 6) {
-          ampTag = target;
-          break;
-        }
-      }
-    }
-
-    return ampTag;
-  }
-
-  public int compareTargets(PhotonTrackedTarget a, PhotonTrackedTarget b) {
-    if (a.getArea() > b.getArea()) {
-      return 1;
-    }
-    if (a.getArea() == b.getArea()) {
-      return 0;
-    } else {
-      return -1;
-    }
-  }
-
-  /*
-   * Get a list of tracked targets from the latest pipeline result. Returns null
-   * if there are no targets.
-   */
-
-  @NotLogged
-  public List<PhotonTrackedTarget> findTargets() {
-    var visionFrame = topRightCamera.getLatestResult();
-    if (visionFrame.hasTargets()) {
-      List<PhotonTrackedTarget> targets = visionFrame.getTargets();
-      return targets;
-    } else {
-      return null;
-    }
-  }
-
-  /*
-   * Get the "best" target from the latest pipeline result. Returns null if there
-   * are no targets.
-   */
-  @NotLogged
-  public PhotonTrackedTarget findBestTarget() {
-
-    var resultTopRight = topRightCamera.getLatestResult();
-    var resultBottom = bottomCamera.getLatestResult();
-    PhotonTrackedTarget targetTop = null;
-    PhotonTrackedTarget targetBottom = null;
-    double topAmbiguity = 100000;
-    double bottomAmbiguity = 100000;
-
-    if (resultTopRight.hasTargets()) {
-      targetTop = resultTopRight.getBestTarget();
-      topAmbiguity = targetTop.getPoseAmbiguity();
-    }
-    if (resultBottom.hasTargets()) {
-      targetBottom = resultBottom.getBestTarget();
-      bottomAmbiguity = targetBottom.getPoseAmbiguity();
-    }
-
-    if (topAmbiguity != 100000 && bottomAmbiguity != 100000) {
-      if (topAmbiguity > bottomAmbiguity) {
-        return targetBottom;
-      } else {
-        return targetTop;
-      }
-    }
-    if (topAmbiguity != 100000 && bottomAmbiguity == 100000) {
-      return targetTop;
-    }
-    if (bottomAmbiguity != 100000 && topAmbiguity == 100000) {
-      return targetBottom;
-    }
-    return null;
-  }
-
-  @NotLogged
   public PhotonTrackedTarget findBestTargetReef() {
+    if (latestResult.hasTargets()) {
+      var results = new ArrayList<PhotonTrackedTarget>(latestResult.getTargets());
+      results.sort((target1, target2) -> Double.compare(target1.area, target2.area));
 
-    var resultBottom = bottomCamera.getLatestResult();
-    double bestTargetArea = 0;
-    PhotonTrackedTarget bestTarget = resultBottom.getBestTarget();
-
-    if (resultBottom.hasTargets()) {
-
-      resultBottom.getTargets();
-      for (PhotonTrackedTarget target : resultBottom.getTargets()) {
-        double targetArea = target.area;
-        if (targetArea > bestTargetArea) {
-          bestTargetArea = targetArea;
-          bestTarget = target;
-        }
-      }
-      return bestTarget;
+      return results.get(results.size() - 1);
     }
+    
     return null;
   }
 
@@ -314,58 +200,32 @@ public class VisionSystem extends SubsystemBase {
     return target.getAlternateCameraToTarget();
   }
 
+  
+  // @NotLogged
+  // public Optional<EstimatedRobotPose> getEstimatedGlobalPoseTopRight() {
+  //   // TODO: if re-added, then implement like `getEstimatedGlobalPose`.
+  // }
+
+  // @NotLogged
+  // public EstimatedRobotPose getEstimatedGlobalPoseBottom() {
+  //   return getEstimatedGlobalPose();
+  // }
+
+  @NotLogged
+  public double getTimeStamp() {
+    return getEstimatedGlobalPose().timestampSeconds;
+  }
+
   /*
    * Estimate the position of the robot relitive to the field.
    */
   @NotLogged
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPoseLeft() {
-    // poseEstimator.setReferencePose(prevRobotPose);
-    var visionFrame = topRightCamera.getLatestResult();
-    return poseEstimatorLeft.update(visionFrame);
+  public EstimatedRobotPose getEstimatedGlobalPose() {
+    return currentEstimatedPose;
   }
 
-  @NotLogged
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPoseRight() {
-    // poseEstimator.setReferencePose(prevRobotPose);\
-    var visionFrame = bottomCamera.getLatestResult();
-    return poseEstimatorRight.update(visionFrame);
-  }
-
-  @NotLogged
-  public double getTimeStamp() {
-    var resultTopRight = topRightCamera.getLatestResult();
-    var resultBottom = bottomCamera.getLatestResult();
-    double timestamp = 0;
-    double topRightImageCaptureTime = 0;
-    double bottomImageCaptureTime = 0;
-
-    if (resultTopRight.hasTargets()) {
-      topRightImageCaptureTime = Timer.getFPGATimestamp() - resultTopRight.getTimestampSeconds();
-    }
-    if (resultBottom.hasTargets()) {
-      bottomImageCaptureTime = Timer.getFPGATimestamp() - resultBottom.getTimestampSeconds();
-    }
-    timestamp = Math.max(topRightImageCaptureTime, bottomImageCaptureTime);
-
-    return timestamp;
-  }
-
-  @NotLogged
-  public Optional<Pose3d> getEstimatedGlobalPose() {
-    // var poseTopRight =
-    // poseEstimatorLeft.update(topRightCamera.getLatestResult());
-    var poseBottom = poseEstimatorRight.update(bottomCamera.getLatestResult());
-    // if (poseTopRight.isPresent() && poseBottom.isPresent()) {
-    // return
-    // Optional.of(poseTopRight.get().estimatedPose.interpolate(poseBottom.get().estimatedPose,
-    // 0.5));
-    // } else if (poseTopRight.isPresent()) {
-    // return Optional.of(poseTopRight.get().estimatedPose);
-    if (poseBottom.isPresent()) {
-      return Optional.of(poseBottom.get().estimatedPose);
-    } else {
-      return Optional.empty();
-    }
+  public Pose2d getEstimatedGlobalPose2d() {
+    return getEstimatedGlobalPose().estimatedPose.toPose2d();
   }
 
   /*
@@ -485,19 +345,43 @@ public class VisionSystem extends SubsystemBase {
     topRightCamera.setLED(LEDMode);
   }
 
+  boolean hasTag = false;
+
+  void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult) {
+    latestResult = pipelineResult;
+    var newPoseBottom = poseEstimatorBottom.update(pipelineResult);
+
+    if (newPoseBottom.isPresent()) {
+      currentEstimatedPose = newPoseBottom.get();
+    }
+
+    hasTag = pipelineResult.hasTargets();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    var pose = getEstimatedGlobalPose();
-
-    if (pose.isPresent()) {
-      var p = pose.get().toPose2d();
-      vision_field.setRobotPose(p);
-      SignalLogger.writeDoubleArray("visionOdometry",
-          new double[] { p.getX(), p.getY(), p.getRotation().getDegrees() });
+    
+    List<PhotonPipelineResult> pipelineResults = bottomCamera.getAllUnreadResults();
+    
+    for (var pipelineResult: pipelineResults) {
+      updatePhotonPipelineResult(pipelineResult);
     }
+
+    // TODO: verify that periodic doesn't run faster than photonvision, which could lead to this variable being toggled
+    // true/false rapidly in succession.
+    if (pipelineResults.isEmpty()) {
+      hasTag = false;
+    }
+
+    var pose2d = getEstimatedGlobalPose().estimatedPose.toPose2d();
+    vision_field.setRobotPose(pose2d);
+    // TODO: might not be necessary?
+    SignalLogger.writeDoubleArray("visionOdometry",
+        new double[] { pose2d.getX(), pose2d.getY(), pose2d.getRotation().getDegrees() });
+
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
-    boolean hasTag = bottomCamera.getLatestResult().hasTargets();
+
     if (hasTag) {
       if (!prettyLights.hasTopPattern("Has Tag")) {
         prettyLights.addTopPattern("Has Tag", 10, pattern);
