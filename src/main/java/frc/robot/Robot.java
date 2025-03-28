@@ -57,12 +57,12 @@ public class Robot extends TimedRobot {
   }
 
   public Robot() {
-    DataLogManager.start("/media/sda1/logs/RIO");
-        Epilogue.configure(config -> {
-            config.backend = new FileBackend(DataLogManager.getLog());
-            config.errorHandler = ErrorHandler.printErrorMessages();
-        });
-        Epilogue.bind(this);
+    // DataLogManager.start("/media/sda1/logs/RIO");
+    //     Epilogue.configure(config -> {
+    //         config.backend = new FileBackend(DataLogManager.getLog());
+    //         config.errorHandler = ErrorHandler.printErrorMessages();
+    //     });
+    //     Epilogue.bind(this);
     // startServer();
     m_robotContainer = new RobotContainer();
     Pathfinding.setPathfinder(new LocalADStar());
