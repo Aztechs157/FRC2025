@@ -370,9 +370,9 @@ public class VisionSystem extends SubsystemBase {
 
     // TODO: verify that periodic doesn't run faster than photonvision, which could lead to this variable being toggled
     // true/false rapidly in succession.
-    if (pipelineResults.isEmpty()) {
-      hasTag = false;
-    }
+    // if (pipelineResults.isEmpty()) {
+    //   hasTag = false;
+    // }
 
     var pose2d = getEstimatedGlobalPose().estimatedPose.toPose2d();
     vision_field.setRobotPose(pose2d);
