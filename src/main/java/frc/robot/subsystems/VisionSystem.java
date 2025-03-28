@@ -387,13 +387,13 @@ public class VisionSystem extends SubsystemBase {
 
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
 
-    // if (hasTag) {
-    //   if (!prettyLights.hasTopPattern("Has Tag")) {
-    //     prettyLights.addTopPattern("Has Tag", 10, pattern);
-    //   }
+    if (hasTag) {
+      if (!prettyLights.hasTopPattern("Has Tag")) {
+        prettyLights.addTopPattern("Has Tag", 10, pattern);
+      }
 
-    // } else {
-    //   prettyLights.removeTopPattern("Has Tag");
-    // }
+    } else {
+      prettyLights.removeTopPattern("Has Tag");
+    }
   }
 }
