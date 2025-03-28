@@ -57,12 +57,12 @@ public class Robot extends TimedRobot {
   }
 
   public Robot() {
-    DataLogManager.start("/media/sda1/logs/RIO");
-        Epilogue.configure(config -> {
-            config.backend = new FileBackend(DataLogManager.getLog());
-            config.errorHandler = ErrorHandler.printErrorMessages();
-        });
-        Epilogue.bind(this);
+    // DataLogManager.start("/media/sda1/logs/RIO");
+    //     Epilogue.configure(config -> {
+    //         config.backend = new FileBackend(DataLogManager.getLog());
+    //         config.errorHandler = ErrorHandler.printErrorMessages();
+    //     });
+    //     Epilogue.bind(this);
     // startServer();
     m_robotContainer = new RobotContainer();
     Pathfinding.setPathfinder(new LocalADStar());
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    // m_robotContainer.updateVisionPose();
+    m_robotContainer.updateVisionPose(false);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
@@ -85,6 +85,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    m_robotContainer.updateVisionPose(true);
   }
 
   @Override

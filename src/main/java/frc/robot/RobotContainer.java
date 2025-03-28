@@ -418,7 +418,7 @@ public class RobotContainer {
         return speed * modifier;
     }
 
-    public void updateVisionPose() {
+    public void updateVisionPose(boolean reset_pose) {
         var speeds = drivetrain.getStateCopy().Speeds;
 
         var velX = Math.abs(speeds.vxMetersPerSecond); 
@@ -427,7 +427,13 @@ public class RobotContainer {
 
         if (velX <= 0.5 && velY <= 0.5 && velAngular <= Math.PI) {
             double visionTime = visionSystem.getTimeStamp();
-            drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(), visionTime);
+            if(visionTime != 0) {
+                drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(), visionTime);
+                if(reset_pose)
+                {
+                    drivetrain.resetPose(visionSystem.getEstimatedGlobalPose2d());
+                }
+            }
         }
     }
 
