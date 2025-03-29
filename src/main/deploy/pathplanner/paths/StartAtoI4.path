@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.052831004569388,
-        "y": 6.204116499008066
+        "x": 7.053112670297467,
+        "y": 6.127272574043644
       },
       "isLocked": false,
       "linkedName": "StartA"
@@ -20,12 +20,12 @@
         "y": 6.0
       },
       "prevControl": {
-        "x": 6.164402715164662,
-        "y": 6.165186132866322
+        "x": 6.176146979194241,
+        "y": 6.150800678672913
       },
       "nextControl": {
-        "x": 5.789097284835337,
-        "y": 5.834813867133678
+        "x": 5.777353020805757,
+        "y": 5.849199321327087
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.23946069
       },
       "prevControl": {
-        "x": 5.479395961231424,
-        "y": 5.460787230583298
+        "x": 5.504378858141959,
+        "y": 5.445743654538539
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,7 +64,7 @@
   "folder": "Reef I",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -153.72732125806493
   },
   "useDefaultConstraints": true
 }
