@@ -91,6 +91,19 @@
                     "left": -0,
                     "right": 0
                 }
+            },
+            "stage8": {
+                "verticalPos": 0,
+                "systemPositions": {
+                    "elevator": 0.20,
+                    "elbow": 0.69,
+                    "wrist": 0.06
+                },
+                "depthOffset": 0,
+                "horizontalOffsets": {
+                    "left": -0,
+                    "right": 0
+                }
             }
         },
 
@@ -158,7 +171,7 @@
                 },
         "depthOffset":0.3,
         "systemPositions": {
-            "elevator": 0.025,
+            "elevator": 0.072,
             "elbow": 0.87,
             "wrist": 0.4   
         },

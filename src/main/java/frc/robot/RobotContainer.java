@@ -7,6 +7,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -218,6 +219,10 @@ public class RobotContainer {
         return GoToPositionCommand(Position.ALGAEFLOOR);
     }
 
+    public Command GoToProcessor() {
+        return GoToPositionCommand(Position.ALGAEPROCESSOR);
+    }
+
     public Command GoToBarge() {
         return GoToPositionCommand(Position.BARGEINIT).onlyWhile(() -> elevator.getScaledPos() < 0.8)
                 .andThen(GoToPositionCommand(Position.BARGEFINAL));
@@ -341,6 +346,8 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.AL).onTrue(GoToAlgaeStageHigh());
             buttonBox.buttonBinding(ButtonBoxButtons.AH).onTrue(GoToBarge());
             buttonBox.buttonBinding(ButtonBoxButtons.C5).onTrue(GoToFloorPickup());
+            buttonBox.buttonBinding(ButtonBoxButtons.C4).onTrue(GoToProcessor());
+
         } else {
             driverController.a().onTrue(GoToCoralStationStage());
             driverController.x().onTrue(GoToAlgaeStageLow());
@@ -425,10 +432,10 @@ public class RobotContainer {
         var velY = Math.abs(speeds.vyMetersPerSecond); 
         var velAngular = Math.abs(speeds.omegaRadiansPerSecond);
 
-        if (velX <= 0.5 && velY <= 0.5 && velAngular <= Math.PI) {
+        if (velX <= 1 && velY <= 1 && velAngular <= Math.PI) {
             double visionTime = visionSystem.getTimeStamp();
-            if(visionTime != 0) {
-                drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(), visionTime);
+            if(visionTime != 0 && visionSystem.hasTag) {
+                drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(), Utils.fpgaToCurrentTime(visionTime));
                 if(reset_pose)
                 {
                     drivetrain.resetPose(visionSystem.getEstimatedGlobalPose2d());

@@ -350,7 +350,7 @@ public class VisionSystem extends SubsystemBase {
     topRightCamera.setLED(LEDMode);
   }
 
-  boolean hasTag = false;
+  public boolean hasTag = false;
 
   void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult) {
     latestResult = pipelineResult;

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PositionDetails {
     private final String betaJSONPath = "/beta_position_details.json";
     private final String alphaJSONPath = "/alpha_position_details.json";
-    public Stage[] corals = new Stage[8];
+    public Stage[] corals = new Stage[9];
 
     public enum Position {
         STAGE1(1),
@@ -30,6 +30,7 @@ public class PositionDetails {
         BARGEINIT(5),
         BARGEFINAL(6),
         ALGAEFLOOR(7),
+        ALGAEPROCESSOR(8),
         ALGAE1(6), // low
         ALGAE2(7), // high
         CORALSTATION(0),
@@ -84,7 +85,7 @@ public class PositionDetails {
 
             List<Stage> coralList = new ArrayList<Stage>(5);
             coralList.add(new Stage(json.get("coralStation")));
-            for (int i = 1; i <= 7; i++) {
+            for (int i = 1; i <= 8; i++) {
                 coralList.add(new Stage(json.get("reef").get("coral").get("stage" + i)));
             }
 
@@ -198,7 +199,7 @@ public class PositionDetails {
      */
     public double getElevatorPos(Position pos) {
         switch (pos) {
-            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGEINIT, BARGEFINAL, ALGAEFLOOR:
+            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGEINIT, BARGEFINAL, ALGAEFLOOR, ALGAEPROCESSOR:
                 return getElevatorPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getElevatorPosAtAlgae(pos.stageNum);
@@ -217,7 +218,7 @@ public class PositionDetails {
      */
     public double getElbowPos(Position pos) {
         switch (pos) {
-            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGEINIT, BARGEFINAL, ALGAEFLOOR:
+            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGEINIT, BARGEFINAL, ALGAEFLOOR, ALGAEPROCESSOR:
                 return getElbowPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getElbowPosAtAlgae(pos.stageNum);
@@ -235,7 +236,7 @@ public class PositionDetails {
      */
     public double getWristPos(Position pos) {
         switch (pos) {
-            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGEINIT, BARGEFINAL, ALGAEFLOOR:
+            case STAGE1, STAGE2, STAGE3, STAGE4, CORALSTATION, BARGEINIT, BARGEFINAL, ALGAEFLOOR, ALGAEPROCESSOR:
                 return getWristPosAtStage(pos.stageNum);
             case ALGAE1, ALGAE2:
                 return getWristPosAtAlgae(pos.stageNum);

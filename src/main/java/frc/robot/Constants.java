@@ -135,7 +135,7 @@ public class Constants {
          * The speed, as a percentage of total power, to run the intake motor at for the
          * specified action.
          */
-        public static final double INTAKE_MOTOR_SPEED = 0.5, PLACE_MOTOR_SPEED = 1, EJECT_MOTOR_SPEED = 1;
+        public static final double INTAKE_MOTOR_SPEED = 0.75, PLACE_MOTOR_SPEED = 1, EJECT_MOTOR_SPEED = 1;
 
         /** The time to wait before considering the action done, in seconds. */
         public static final double PLACE_TIME = 0.5, EJECT_TIME = 0.5;
@@ -229,6 +229,6 @@ public class Constants {
          * Position limits, in raw encoder units, for the left Uppies motor. In this
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
-        public static final double MAX_POSITION = 0.635, MIN_POSITION = 0.33;
+        public static final double MAX_POSITION = 0.635, MIN_POSITION = 0.373;
     }
 }
