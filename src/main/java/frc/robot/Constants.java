@@ -28,7 +28,7 @@ public class Constants {
                 new Translation3d(0.2015, 0.1920, 0.95), new Rotation3d(-Math.PI / 2, 0.44, 0));
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom";
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(0.4383, 0, 0.120), new Rotation3d(0, 0.35 , 0));
+                new Translation3d(0.5653, 0, 0.120), new Rotation3d(0, 0.35 , 0));
 
         public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
     }
@@ -111,11 +111,12 @@ public class Constants {
 
         // max is top-most for all systems, min is bottom-most for all systems
         /**
-         * Position limits, in raw encoder units. In this case, rotations. This defines
+         * Position limits, in raw encoder units. 
+         * In this case, rotations. This defines
          * our virtual limits.
          */
         public static final double ALPHA_MAX_POSITION = 2634, ALPHA_MIN_POSITION = 616;
-        public static final double BETA_MAX_POSITION = 2930, BETA_MIN_POSITION = 905;
+        public static final double BETA_MAX_POSITION = 3098, BETA_MIN_POSITION = 1105;
 
         public static final double POS_TOLERANCE = 0.01;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
