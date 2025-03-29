@@ -64,7 +64,7 @@ public class VisionSystem extends SubsystemBase {
   private Field2d vision_field = new Field2d();
   private LEDSystem prettyLights;
 
-  public Pose2d desiredPose = new Pose2d();
+  public Optional<Pose2d> desiredPose = Optional.empty();
   public Field2d desiredField = new Field2d();
 
   boolean blueAlliance = true;
@@ -325,7 +325,7 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public void setDesiredPose(Pose2d pose) {
-    desiredPose = pose;
+    desiredPose = pose==null?Optional.empty():Optional.of(pose);
     if (pose != null) {
       desiredField.setRobotPose(pose);
     } else {
