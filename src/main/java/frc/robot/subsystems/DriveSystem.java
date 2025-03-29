@@ -16,6 +16,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -43,6 +44,7 @@ import frc.robot.generated.AlphaTunerConstants.TunerSwerveDrivetrain;
 @Logged(strategy = Strategy.OPT_OUT)
 public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
+    @NotLogged
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
 
@@ -54,11 +56,15 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     private boolean m_hasAppliedOperatorPerspective = false;
 
     /** Swerve request to apply during robot-centric path following */
+    @NotLogged
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
     /* Swerve requests to apply during SysId characterization */
+    @NotLogged
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
+    @NotLogged
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
+    @NotLogged
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
     private final Field2d field = new Field2d();
 
@@ -70,6 +76,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
      * SysId routine for characterizing translation. This is used to find PID gains
      * for the drive motors.
      */
+    @NotLogged
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
             new SysIdRoutine.Config(
                     null, // Use default ramp rate (1 V/s)
@@ -86,6 +93,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
      * SysId routine for characterizing steer. This is used to find PID gains for
      * the steer motors.
      */
+    @NotLogged
     private final SysIdRoutine m_sysIdRoutineSteer = new SysIdRoutine(
             new SysIdRoutine.Config(
                     null, // Use default ramp rate (1 V/s)
@@ -105,6 +113,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
      * See the documentation of SwerveRequest.SysIdSwerveRotation for info on
      * importing the log to SysId.
      */
+    @NotLogged
     private final SysIdRoutine m_sysIdRoutineRotation = new SysIdRoutine(
             new SysIdRoutine.Config(
                     /* This is in radians per second², but SysId only supports "volts per second" */
@@ -125,6 +134,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
                     this));
 
     /* The SysId routine to test */
+    @NotLogged
     private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
     /**
@@ -374,10 +384,11 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
      * @param timestampSeconds      The timestamp of the vision measurement in
      *                              seconds.
      */
-    @Override
-    public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
-        super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
-    }
+    // @Override
+    // TODO: just dont override this
+    // public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
+    //     super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+    // }
 
     /**
      * Adds a vision measurement to the Kalman Filter. This will correct the

@@ -73,10 +73,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    // m_robotContainer.updateVisionPose();
-    var pose = m_robotContainer.visionSystem.getEstimatedGlobalPose();
-    if (pose.isPresent()) {
-      m_field.setRobotPose(pose.get().toPose2d());
+    m_robotContainer.updateVisionPose(false);
+    m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
     if (!isFMS && DriverStation.isFMSAttached()) {
@@ -84,18 +82,16 @@ public class Robot extends TimedRobot {
       RobotContainer.prettyLights.isFMS();
     }
   }
-}
 
   @Override
   public void disabledInit() {
+    m_robotContainer.updateVisionPose(true);
   }
 
   @Override
   public void disabledPeriodic() {
-    var pose = m_robotContainer.visionSystem.getEstimatedGlobalPose();
-    if (pose.isPresent()) {
-      m_field.setRobotPose(pose.get().toPose2d());
-    }
+    m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
+    
     newAlliance = DriverStation.getAlliance();
     newAutoName = m_robotContainer.getAutonomousCommand().getName();
     if (autoName != newAutoName || alliance != newAlliance) {
@@ -119,9 +115,6 @@ public class Robot extends TimedRobot {
         }
       }
     }
-    if (pose.isPresent()) {
-      m_field.setRobotPose(pose.get().toPose2d());
-    }
   }
 
   @Override
@@ -140,10 +133,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    var pose = m_robotContainer.visionSystem.getEstimatedGlobalPose();
-    if (pose.isPresent()) {
-      m_field.setRobotPose(pose.get().toPose2d());
-    }
+    m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   }
 
   @Override

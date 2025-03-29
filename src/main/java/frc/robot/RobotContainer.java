@@ -418,13 +418,22 @@ public class RobotContainer {
         return speed * modifier;
     }
 
-    public void updateVisionPose() {
-        var pose = visionSystem.getEstimatedGlobalPose();
-        if (pose.isPresent() && drivetrain.getStateCopy().Speeds.vxMetersPerSecond <= 0.5
-                && drivetrain.getStateCopy().Speeds.vyMetersPerSecond <= 0.5) {
+    public void updateVisionPose(boolean reset_pose) {
+        var speeds = drivetrain.getStateCopy().Speeds;
+
+        var velX = Math.abs(speeds.vxMetersPerSecond); 
+        var velY = Math.abs(speeds.vyMetersPerSecond); 
+        var velAngular = Math.abs(speeds.omegaRadiansPerSecond);
+
+        if (velX <= 0.5 && velY <= 0.5 && velAngular <= Math.PI) {
             double visionTime = visionSystem.getTimeStamp();
-            drivetrain.addVisionMeasurement(pose.get().toPose2d(), visionTime);
-            drivetrain.resetPose(pose.get().toPose2d());
+            if(visionTime != 0) {
+                drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(), visionTime);
+                if(reset_pose)
+                {
+                    drivetrain.resetPose(visionSystem.getEstimatedGlobalPose2d());
+                }
+            }
         }
     }
 
