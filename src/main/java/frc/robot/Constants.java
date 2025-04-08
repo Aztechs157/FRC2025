@@ -129,7 +129,7 @@ public class Constants {
         public static final int MOTOR_ID = 22;
         public static final int SENSOR_ID = 1;
         public static final double INTAKE_ALGAE_SPEED = 1, ALGAE_HOLDING_SPEED = 0.1, CORAL_HOLDING_SPEED = 0.02;
-        public static final double ALGAE_HELD_CURRENT = 40, CORAL_HELD_CURRENT = 40;
+        public static final double ALGAE_HELD_CURRENT = 40, CORAL_HELD_CURRENT = 55;
         public static final int ALGAE_HOLD_COUNTER = 25, CORAL_HOLD_COUNTER = 5;
 
         /**

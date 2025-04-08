@@ -169,7 +169,7 @@ public class RobotContainer {
     }
 
     public Command IntakeCoralCommand() {
-        return new IntakeCoral(intake);
+        return new IntakeCoralSimple(intake);
     }
 
     public Command IntakeAlgaeCommand() {
@@ -252,12 +252,12 @@ public class RobotContainer {
         return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
     }
 
-    public Command DriveToReefPoseRight() {
-        return new SetTargetTag(visionSystem, false, Position.STAGE2, positionDetails)
+    public Command DriveToReefPoseRight(Position pos) {
+        return new SetTargetTag(visionSystem, false, pos, positionDetails)
                 .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
-    public Command DriveToReefPoseLeft() {
+    public Command DriveToReefPoseLeft(Position pos) {
         return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails)
                 .andThen(new DriveToPose(drivetrain, visionSystem));
     }
@@ -291,8 +291,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
         NamedCommands.registerCommand("GoToAlgaeStageHigh", GoToAlgaeStageHigh());
 
-        NamedCommands.registerCommand("GoToReefLeft", DriveToReefPoseLeft());
-        NamedCommands.registerCommand("GoToReefRight", DriveToReefPoseRight());
+        NamedCommands.registerCommand("GoToReefLeft", DriveToReefPoseLeft(Position.STAGE2));
+        NamedCommands.registerCommand("GoToReefRight", DriveToReefPoseRight(Position.STAGE2));
 
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
@@ -353,7 +353,7 @@ public class RobotContainer {
             driverController.x().onTrue(GoToAlgaeStageLow());
             driverController.y().onTrue(GoToAlgaeStageHigh());
         }
-        // useAutoPosCommand.schedule();
+        useAutoPosCommand.schedule();
         driverController.rightStick().and(driverController.leftStick()).toggleOnTrue(useAutoPosCommand);
 
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -377,22 +377,22 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
 
             buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
-            buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft());
+            buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE2));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
-            buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE3));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
-            buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE4));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
-            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
+            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE2));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(GoToStage3());
-            buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
+            buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE3));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
-            buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight());
+            buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE4));
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
             operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());
@@ -406,13 +406,13 @@ public class RobotContainer {
 
             operatorController.a().onTrue(GoToStage1());
             operatorController.x().onTrue(GoToStage2());
-            operatorController.x().and(useAutoPos).onTrue(DriveToReefPoseLeft());
+            operatorController.x().and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE2));
             operatorController.b().onTrue(GoToStage3());
-            operatorController.b().and(useAutoPos).onTrue(DriveToReefPoseRight());
+            operatorController.b().and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE2));
 
             operatorController.y().and(operatorController.back().negate()).onTrue(GoToStage4());
             operatorController.y().and(operatorController.back().negate()).and(useAutoPos)
-                    .onTrue(DriveToReefPoseRight());
+                    .onTrue(DriveToReefPoseRight(Position.STAGE2));
             operatorController.y().and(operatorController.back().onTrue(GoToBarge()));
 
         }
