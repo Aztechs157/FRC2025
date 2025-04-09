@@ -37,10 +37,9 @@ public class UppiesSystem extends SubsystemBase {
    */
   public UppiesSystem(boolean b) {
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Pos", this::getPos)
-        .withWidget(BuiltInWidgets.kTextView).withPosition(0, 3);
+        .withWidget(BuiltInWidgets.kTextView);
     Shuffleboard.getTab("Sensor values").addDouble("Uppies Scaled Pos", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
-        .withPosition(1, 3).withSize(2, 1);
+        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1));
   }
 
   /**

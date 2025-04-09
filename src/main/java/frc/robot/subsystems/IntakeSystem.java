@@ -34,9 +34,9 @@ public class IntakeSystem extends SubsystemBase {
   public IntakeSystem(boolean isBeta) {
     this.isBeta = isBeta;
     Shuffleboard.getTab("Sensor values").addBoolean("Intake Sensor", this::hasCoral)
-        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 0);
+        .withWidget(BuiltInWidgets.kBooleanBox);
     Shuffleboard.getTab("Sensor values").addDouble("Intake Motor Current", this::getMotorCurrent)
-        .withWidget(BuiltInWidgets.kTextView).withPosition(12, 0);
+        .withWidget(BuiltInWidgets.kTextView);
   }
 
   /**

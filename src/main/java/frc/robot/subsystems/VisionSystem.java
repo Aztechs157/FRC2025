@@ -58,7 +58,8 @@ public class VisionSystem extends SubsystemBase {
   AprilTagFieldLayout tagLayout;
   PhotonPoseEstimator poseEstimatorTopRight;
   PhotonPoseEstimator poseEstimatorBottom;
-  EstimatedRobotPose currentEstimatedPose = new EstimatedRobotPose(new Pose3d(), getTimeStamp(), new ArrayList<>(), poseStrategy);
+  EstimatedRobotPose currentEstimatedPose = new EstimatedRobotPose(new Pose3d(), getTimeStamp(), new ArrayList<>(),
+      poseStrategy);
   PhotonPipelineResult latestResult;
 
   private Field2d vision_field = new Field2d();
@@ -91,7 +92,8 @@ public class VisionSystem extends SubsystemBase {
 
     Shuffleboard.getTab("vision").add("vision based field", vision_field).withWidget(BuiltInWidgets.kField);
     Shuffleboard.getTab("vision").add("Desired Position", desiredField).withWidget(BuiltInWidgets.kField);
-
+    Shuffleboard.getTab("vision").addDouble("bumper to tag", this::getDistanceToTag)
+        .withWidget(BuiltInWidgets.kNumberBar);
     periodic();
   }
 
@@ -108,8 +110,21 @@ public class VisionSystem extends SubsystemBase {
 
       return results.get(results.size() - 1);
     }
-    
+
     return null;
+  }
+
+  public double getDistanceToTag() {
+    if (hasTag) {
+      var tagID = latestResult.targets.get(0).fiducialId;
+      var tagPos = tagLayout.getTagPose(tagID).get();
+      var estimatedPos = getEstimatedGlobalPose2d();
+      var distance = estimatedPos.getTranslation().getDistance(tagPos.toPose2d().getTranslation());
+      var bumperLen = 0.4572;
+      return distance - bumperLen;
+    }
+
+    return 0;
   }
 
   /*
@@ -200,23 +215,21 @@ public class VisionSystem extends SubsystemBase {
     return target.getAlternateCameraToTarget();
   }
 
-  
   // @NotLogged
   // public Optional<EstimatedRobotPose> getEstimatedGlobalPoseTopRight() {
-  //   // TODO: if re-added, then implement like `getEstimatedGlobalPose`.
+  // // TODO: if re-added, then implement like `getEstimatedGlobalPose`.
   // }
 
   // @NotLogged
   // public EstimatedRobotPose getEstimatedGlobalPoseBottom() {
-  //   return getEstimatedGlobalPose();
+  // return getEstimatedGlobalPose();
   // }
 
   @NotLogged
   public double getTimeStamp() {
     if (getEstimatedGlobalPose() != null) {
-      return getEstimatedGlobalPose().timestampSeconds;  
-    }
-    else {
+      return getEstimatedGlobalPose().timestampSeconds;
+    } else {
       return 0.0;
     }
   }
@@ -325,7 +338,7 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public void setDesiredPose(Pose2d pose) {
-    desiredPose = pose==null?Optional.empty():Optional.of(pose);
+    desiredPose = pose == null ? Optional.empty() : Optional.of(pose);
     if (pose != null) {
       desiredField.setRobotPose(pose);
     } else {
@@ -366,17 +379,18 @@ public class VisionSystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+
     List<PhotonPipelineResult> pipelineResults = bottomCamera.getAllUnreadResults();
-    
-    for (var pipelineResult: pipelineResults) {
+
+    for (var pipelineResult : pipelineResults) {
       updatePhotonPipelineResult(pipelineResult);
     }
 
-    // TODO: verify that periodic doesn't run faster than photonvision, which could lead to this variable being toggled
+    // TODO: verify that periodic doesn't run faster than photonvision, which could
+    // lead to this variable being toggled
     // true/false rapidly in succession.
     // if (pipelineResults.isEmpty()) {
-    //   hasTag = false;
+    // hasTag = false;
     // }
 
     var pose2d = getEstimatedGlobalPose().estimatedPose.toPose2d();
