@@ -49,13 +49,11 @@ public class WristSystem extends SubsystemBase implements PosUtils {
     startingPos = isBeta ? 0.54 : 0.4;
     motor = new SparkMax(WristConstants.MOTOR_ID, MotorType.kBrushless);
     PID = WristConstants.PID;
-    Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView)
-        .withPosition(0, 2);
+    Shuffleboard.getTab("Sensor values").addDouble("Wrist Encoder", this::getPos).withWidget(BuiltInWidgets.kTextView);
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Wrist Encoder", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1))
-        .withPosition(1, 2).withSize(2, 1);
+        .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1));
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Motor Velocity", this::getMotorVelocity)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 3);
+        .withWidget(BuiltInWidgets.kGraph);
   }
 
   /**

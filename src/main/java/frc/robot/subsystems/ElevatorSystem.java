@@ -51,24 +51,23 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public ElevatorSystem(boolean isBeta) {
     this.isBeta = isBeta;
-    Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView)
-        .withPosition(0, 0);
+    Shuffleboard.getTab("Sensor values").addDouble("Elevator Pot", this::getPos).withWidget(BuiltInWidgets.kTextView);
     Shuffleboard.getTab("Sensor values").addDouble("Scaled Elevator Pot", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kTextView).withPosition(1, 0).withSize(2, 1);
+        .withWidget(BuiltInWidgets.kTextView);
 
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Bottom Limit Switch", this::atBottom)
-        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 0);
+        .withWidget(BuiltInWidgets.kBooleanBox);
     Shuffleboard.getTab("Sensor values").addBoolean("Elevator Top Limit Switch", this::atTop)
-        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(3, 1);
+        .withWidget(BuiltInWidgets.kBooleanBox);
     Shuffleboard.getTab("Sensor values").addDouble("Elevator Motor Velocity", this::getMotorVelocity)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(9, 0);
+        .withWidget(BuiltInWidgets.kGraph);
 
     shuffleboardFeedforwardSetpoint = Shuffleboard.getTab("Elevator Feedforward").add("Feedforward Setpoint", 0)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(0, 0).getEntry();
+        .withWidget(BuiltInWidgets.kGraph).getEntry();
     shuffleboardFeedforwardVel = Shuffleboard.getTab("Elevator Feedforward").add("Feedforward Velocity", 0)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(3, 0).getEntry();
+        .withWidget(BuiltInWidgets.kGraph).getEntry();
     Shuffleboard.getTab("Elevator Feedforward").addDouble("Scaled Elevator Pot 2", this::getScaledPos)
-        .withWidget(BuiltInWidgets.kGraph).withPosition(6, 0);
+        .withWidget(BuiltInWidgets.kGraph);
 
     if (isBeta) {
       ElevatorConstants.BETA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE,

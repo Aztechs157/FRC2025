@@ -265,7 +265,6 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        
 
         if (isButtonBox) {
             buttonBox = new ButtonBox(1);
@@ -297,7 +296,7 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser("New Auto");
         SmartDashboard.putData("Auto Chooser", autoChooser);
-        Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get).withPosition(0, 7);
+        Shuffleboard.getTab("Sensor values").addBoolean("isBeta", isBeta::get);
         Shuffleboard.getTab("Sensor values").addBoolean("useAutoPosition", useAutoPos);
 
     }
@@ -377,22 +376,28 @@ public class RobotContainer {
             buttonBox.buttonBinding(ButtonBoxButtons.R1, false).onTrue(GoToStage1());
 
             buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).onTrue(GoToStage2());
-            buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE2));
+            buttonBox.buttonBinding(ButtonBoxButtons.R2L, false).and(useAutoPos)
+                    .onTrue(DriveToReefPoseLeft(Position.STAGE2));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).onTrue(GoToStage3());
-            buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE3));
+            buttonBox.buttonBinding(ButtonBoxButtons.R3L, false).and(useAutoPos)
+                    .onTrue(DriveToReefPoseLeft(Position.STAGE3));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).onTrue(GoToStage4());
-            buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).and(useAutoPos).onTrue(DriveToReefPoseLeft(Position.STAGE4));
+            buttonBox.buttonBinding(ButtonBoxButtons.R4L, false).and(useAutoPos)
+                    .onTrue(DriveToReefPoseLeft(Position.STAGE4));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).onTrue(GoToStage2());
-            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE2));
+            buttonBox.buttonBinding(ButtonBoxButtons.R2R, false).and(useAutoPos)
+                    .onTrue(DriveToReefPoseRight(Position.STAGE2));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).onTrue(GoToStage3());
-            buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE3));
+            buttonBox.buttonBinding(ButtonBoxButtons.R3R, false).and(useAutoPos)
+                    .onTrue(DriveToReefPoseRight(Position.STAGE3));
 
             buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).onTrue(GoToStage4());
-            buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos).onTrue(DriveToReefPoseRight(Position.STAGE4));
+            buttonBox.buttonBinding(ButtonBoxButtons.R4R, false).and(useAutoPos)
+                    .onTrue(DriveToReefPoseRight(Position.STAGE4));
         } else {
             operatorController.povUp().and(operatorController.start()).toggleOnTrue(ElevatorStallCommand());
             operatorController.povUp().and(operatorController.start().negate()).whileTrue(ElevatorUpCommand());
@@ -428,16 +433,16 @@ public class RobotContainer {
     public void updateVisionPose(boolean reset_pose) {
         var speeds = drivetrain.getStateCopy().Speeds;
 
-        var velX = Math.abs(speeds.vxMetersPerSecond); 
-        var velY = Math.abs(speeds.vyMetersPerSecond); 
+        var velX = Math.abs(speeds.vxMetersPerSecond);
+        var velY = Math.abs(speeds.vyMetersPerSecond);
         var velAngular = Math.abs(speeds.omegaRadiansPerSecond);
 
         if (velX <= 1 && velY <= 1 && velAngular <= Math.PI) {
             double visionTime = visionSystem.getTimeStamp();
-            if(visionTime != 0 && visionSystem.hasTag) {
-                drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(), Utils.fpgaToCurrentTime(visionTime));
-                if(reset_pose)
-                {
+            if (visionTime != 0 && visionSystem.hasTag) {
+                drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(),
+                        Utils.fpgaToCurrentTime(visionTime));
+                if (reset_pose) {
                     drivetrain.resetPose(visionSystem.getEstimatedGlobalPose2d());
                 }
             }
