@@ -42,7 +42,7 @@ public class IntakeAlgae extends Command {
       intakeSystem.run(0);
     } else {
       intakeSystem.run(IntakeConstants.ALGAE_HOLDING_SPEED);
-      RobotContainer.prettyLights.addMidPattern("Has Algae", 10, LEDPattern.solid(Color.kGreen));
+      RobotContainer.prettyLights.addBotPattern("Has Algae", 10, LEDPattern.solid(Color.kGreen));
     }
   }
 

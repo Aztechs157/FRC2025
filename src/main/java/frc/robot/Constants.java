@@ -232,4 +232,13 @@ public class Constants {
          */
         public static final double MAX_POSITION = 0.635, MIN_POSITION = 0.373;
     }
+
+    public static class LEDConstants {
+        // The PMW port the strip is plugged into on the RIO.
+        public static final int PMW_PORT = 9;
+        // The amount of diodes per section of the strip (not the total amount).
+        public static final int STRIP_LENGTH = 18;
+        // Distance between each diode in millimeters (60led/m strip)
+        public static final double DISTANCE_PER_LED = 15;
+    }
 }
