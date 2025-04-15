@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
   @Logged
   private final RobotContainer m_robotContainer;
   public static boolean isFMS = false;
+  public static boolean isEStop = false;
 
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
@@ -80,6 +81,11 @@ public class Robot extends TimedRobot {
     if (!isFMS && DriverStation.isFMSAttached()) {
       isFMS = true;
       RobotContainer.prettyLights.isFMS();
+    }
+    // hopefully does the same thing as the isFMS checker.
+    if (!isEStop && DriverStation.isEStopped()){
+      isEStop = true;
+      RobotContainer.prettyLights.isEStop();
     }
   }
 

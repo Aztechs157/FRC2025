@@ -63,6 +63,16 @@ public class LEDSystem extends SubsystemBase {
     fullPatterns.replace("Assabet Scroll", assabetScroll);
   }
 
+  /* for now, im using the same method as the fms checker, 
+   * but i would like to know why we're making a method 
+   * instead of just using DriverStation's isFMSAttached.
+   */
+  public void isEStop(){
+    LEDPattern unpleasant = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kSpringGreen, Color.kMagenta, Color.kSaddleBrown);
+    // hopefully runs the pattern in place of the default scrolly pattern
+    fullPatterns.replace("Assabet Scroll", unpleasant);
+  }
+
   // full
   public void addPattern(String name, int priority, LEDPattern pattern) {
     fullPatterns.put(name, priority, pattern);
@@ -110,7 +120,6 @@ public class LEDSystem extends SubsystemBase {
     if (botPatterns.firstPriority() != null && botPatterns.firstPriority() <= fullPatterns.firstPriority()) {
       botPatterns.firstValue().applyTo(botBuffer);
     }
-
 
     if (topPatterns.firstPriority() != null && topPatterns.firstPriority() <= fullPatterns.firstPriority()) {
       topPatterns.firstValue().applyTo(topBuffer);
