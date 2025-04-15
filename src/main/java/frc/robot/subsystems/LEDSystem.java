@@ -70,7 +70,7 @@ public class LEDSystem extends SubsystemBase {
   public void isEStop(){
     LEDPattern unpleasant = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kSpringGreen, Color.kMagenta, Color.kSaddleBrown);
     // hopefully runs the pattern in place of the default scrolly pattern
-    fullPatterns.replace("Assabet Scroll", unpleasant);
+    addPattern("unpleasant", 1, unpleasant);
   }
 
   // full
