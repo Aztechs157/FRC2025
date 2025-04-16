@@ -74,9 +74,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
           ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
       Shuffleboard.getTab("Elevator Feedforward").addBoolean("Is ClosedLoop Running?", this::isClosedLoopRunning)
           .withWidget(BuiltInWidgets.kBooleanBox);
+      Shuffleboard.getTab("PID Tuning").add("Elevator PID", ElevatorConstants.BETA_NEW_PID).withWidget(BuiltInWidgets.kPIDController);
     } else {
       ElevatorConstants.ALPHA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE,
           ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
+      Shuffleboard.getTab("PID Tuning").add("Elevator PID",ElevatorConstants.ALPHA_NEW_PID).withWidget(BuiltInWidgets.kPIDController);
     }
 
   }
