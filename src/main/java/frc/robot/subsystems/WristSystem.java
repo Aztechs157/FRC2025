@@ -54,6 +54,7 @@ public class WristSystem extends SubsystemBase implements PosUtils {
         .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1));
     Shuffleboard.getTab("Sensor values").addDouble("Wrist Motor Velocity", this::getMotorVelocity)
         .withWidget(BuiltInWidgets.kGraph);
+    Shuffleboard.getTab("PID Tuning").add("Wrist PID", WristConstants.PID).withWidget(BuiltInWidgets.kPIDController);
   }
 
   /**

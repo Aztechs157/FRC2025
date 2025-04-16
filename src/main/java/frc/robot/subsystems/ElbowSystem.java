@@ -51,6 +51,7 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
         .withWidget(BuiltInWidgets.kNumberBar).withProperties(Map.of("min", 0, "center", 0, "max", 1));
     Shuffleboard.getTab("Sensor values").addDouble("Elbow Motor Velocity", this::getMotorVelocity)
         .withWidget(BuiltInWidgets.kGraph);
+    Shuffleboard.getTab("PID Tuning").add("Elbow PID", ElbowConstants.PID).withWidget(BuiltInWidgets.kPIDController);
   }
 
   /**
