@@ -81,6 +81,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
       Shuffleboard.getTab("PID Tuning").add("Elevator PID",ElevatorConstants.ALPHA_NEW_PID).withWidget(BuiltInWidgets.kPIDController);
     }
 
+    Shuffleboard.getTab("test").addDouble("Elevator Output", this::getMotorOutput).withWidget(BuiltInWidgets.kNumberBar);
+
   }
 
   /**
@@ -148,6 +150,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public double getMotorVelocity() {
     return motor.getEncoder().getVelocity();
+  }
+
+  public double getMotorOutput() {
+    return motor.getAppliedOutput();
   }
 
   /**

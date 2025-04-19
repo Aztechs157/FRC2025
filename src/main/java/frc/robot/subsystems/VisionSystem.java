@@ -120,7 +120,7 @@ public class VisionSystem extends SubsystemBase {
       var tagPos = tagLayout.getTagPose(tagID).get();
       var estimatedPos = getEstimatedGlobalPose2d();
       var distance = estimatedPos.getTranslation().getDistance(tagPos.toPose2d().getTranslation());
-      var bumperLen = 0.4572;
+      var bumperLen = 0.45085;
       return distance - bumperLen;
     }
 
@@ -365,14 +365,15 @@ public class VisionSystem extends SubsystemBase {
 
   public boolean hasTag = false;
 
-  void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult) {
+  void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult, boolean useTopRight) {
     latestResult = pipelineResult;
-    var newPoseBottom = poseEstimatorBottom.update(pipelineResult);
-
-    if (newPoseBottom.isPresent()) {
-      currentEstimatedPose = newPoseBottom.get();
+    var newPose = poseEstimatorBottom.update(pipelineResult);
+    if(useTopRight) {
+      newPose = poseEstimatorTopRight.update(pipelineResult);
     }
-
+    if (newPose.isPresent()) {
+      currentEstimatedPose = newPose.get();
+    }
     hasTag = pipelineResult.hasTargets();
   }
 
@@ -380,11 +381,21 @@ public class VisionSystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    List<PhotonPipelineResult> pipelineResults = bottomCamera.getAllUnreadResults();
-
-    for (var pipelineResult : pipelineResults) {
-      updatePhotonPipelineResult(pipelineResult);
+    List<PhotonPipelineResult> pipelineResultsBottom = bottomCamera.getAllUnreadResults();
+    List<PhotonPipelineResult> pipelineResultsTopRight = topRightCamera.getAllUnreadResults();
+    boolean useTopRight = false;
+    if (pipelineResultsBottom.isEmpty()) {
+      useTopRight = true;
+      for (var pipelineResult : pipelineResultsTopRight) {
+        updatePhotonPipelineResult(pipelineResult, useTopRight);
+      }
     }
+    else {
+      for (var pipelineResult : pipelineResultsBottom) {
+        updatePhotonPipelineResult(pipelineResult, useTopRight);
+      }
+    }
+   
 
     // TODO: verify that periodic doesn't run faster than photonvision, which could
     // lead to this variable being toggled
