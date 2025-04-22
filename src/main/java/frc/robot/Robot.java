@@ -35,8 +35,11 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.RobotController;
+
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
+
 @Logged(strategy = Strategy.OPT_IN)
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -78,14 +81,20 @@ public class Robot extends TimedRobot {
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+
     if (!isFMS && DriverStation.isFMSAttached()) {
       isFMS = true;
       RobotContainer.prettyLights.isFMS();
     }
-    // hopefully does the same thing as the isFMS checker.
+  
     if (!isEStop && DriverStation.isEStopped()){
       isEStop = true;
       RobotContainer.prettyLights.isEStop();
+    }
+    // hopefully sets the strip to flashing red when the battery drops below a set voltage
+    // if this works, make that voltage a constant
+    if(RobotController.getBatteryVoltage() < 12.0){
+      RobotContainer.prettyLights.batteryLow();
     }
   }
 

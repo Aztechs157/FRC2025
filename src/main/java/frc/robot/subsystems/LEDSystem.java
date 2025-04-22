@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.Logged.Strategy;
@@ -44,8 +45,7 @@ public class LEDSystem extends SubsystemBase {
     prettyLights.setLength(LEDConstants.STRIP_LENGTH);
 
     prettyLights.start();
-    // test pattern which makes the lights evil and 190 themed
-    LEDPattern test = LEDPattern.solid(Color.kRed);
+
     // fun assabet-y pattern
     LEDPattern assabet = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGold, Color.kBlue);
     // the same one but scrolling
@@ -56,8 +56,8 @@ public class LEDSystem extends SubsystemBase {
   }
 
   public void isFMS() {
+    // runs the idle pattern without lowering the brightness, only when connected to an FMS.
     LEDPattern assabet = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGold, Color.kBlue);
-    // runs the pattern without lowering the brightness, only when connected to an FMS.
     LEDPattern assabetScroll = assabet.scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
     fullPatterns.replace("Assabet Scroll", assabetScroll);
@@ -65,12 +65,20 @@ public class LEDSystem extends SubsystemBase {
 
   /* for now, im using the same method as the fms checker, 
    * but i would like to know why we're making a method 
-   * instead of just using DriverStation's isFMSAttached.
+   * instead of just using DriverStation's isFMSAttached directly.
    */
   public void isEStop(){
+    // make this pattern less pleasant
     LEDPattern unpleasant = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kSpringGreen, Color.kMagenta, Color.kSaddleBrown);
-    // hopefully runs the pattern in place of the default scrolly pattern
+    // runs the pattern in place of the default scrolly pattern upon being e-stopped.
     addPattern("unpleasant", 1, unpleasant);
+  }
+
+  public void batteryLow(){
+    // this pattern is run when the battery drops below a certain voltage
+    LEDPattern low = LEDPattern.solid(Color.kRed);
+    LEDPattern redFlash = low.blink(Seconds.of(0.5));
+    addPattern("Battery Low", 1, redFlash);
   }
 
   // full
