@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
   public static boolean isFMS = false;
   public static boolean isEStop = false;
+  public static boolean isBatteryLow = false;
 
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
@@ -93,9 +94,14 @@ public class Robot extends TimedRobot {
     }
     // hopefully sets the strip to flashing red when the battery drops below a set voltage
     // if this works, make that voltage a constant
-    if(RobotController.getBatteryVoltage() < 12.0){
-      RobotContainer.prettyLights.batteryLow();
+    if(RobotController.getBatteryVoltage() < 12){
+      isBatteryLow = true;
+    } else {
+      isBatteryLow = false;
     }
+    // this one is outside so that the pattern can be removed once the voltage goes back up
+    RobotContainer.prettyLights.batteryLow(isBatteryLow);
+    
   }
 
   @Override

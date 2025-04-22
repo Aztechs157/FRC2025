@@ -74,11 +74,16 @@ public class LEDSystem extends SubsystemBase {
     addPattern("unpleasant", 1, unpleasant);
   }
 
-  public void batteryLow(){
+  public void batteryLow(boolean isLow){
     // this pattern is run when the battery drops below a certain voltage
     LEDPattern low = LEDPattern.solid(Color.kRed);
     LEDPattern redFlash = low.blink(Seconds.of(0.5));
-    addPattern("Battery Low", 1, redFlash);
+    if(isLow){
+      addPattern("Battery Low", 1, redFlash);
+    } else {
+      removePattern("Battery Low");
+    }
+    
   }
 
   // full
