@@ -131,7 +131,7 @@ public class Constants {
         public static final int SENSOR_ID = 1;
         public static final double INTAKE_ALGAE_SPEED = 1, ALGAE_HOLDING_SPEED = 0.1, CORAL_HOLDING_SPEED = 0.02;
         public static final double ALGAE_HELD_CURRENT = 40, CORAL_HELD_CURRENT = 55;
-        public static final int ALGAE_HOLD_COUNTER = 25, CORAL_HOLD_COUNTER = 5;
+        public static final int ALGAE_HOLD_COUNTER = 10, CORAL_HOLD_COUNTER = 5;
 
         /**
          * The speed, as a percentage of total power, to run the intake motor at for the

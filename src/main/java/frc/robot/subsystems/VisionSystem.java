@@ -115,7 +115,7 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public double getDistanceToTag() {
-    if (hasTag) {
+    if (hasTopTag || hasBotTag) {
       var tagID = latestResult.targets.get(0).fiducialId;
       var tagPos = tagLayout.getTagPose(tagID).get();
       var estimatedPos = getEstimatedGlobalPose2d();
@@ -363,18 +363,21 @@ public class VisionSystem extends SubsystemBase {
     topRightCamera.setLED(LEDMode);
   }
 
-  public boolean hasTag = false;
+  public boolean hasBotTag = false;
+  public boolean hasTopTag = false;
+
 
   void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult, boolean useTopRight) {
     latestResult = pipelineResult;
     var newPose = poseEstimatorBottom.update(pipelineResult);
     if(useTopRight) {
       newPose = poseEstimatorTopRight.update(pipelineResult);
+      hasTopTag = pipelineResult.hasTargets();
     }
     if (newPose.isPresent()) {
       currentEstimatedPose = newPose.get();
     }
-    hasTag = pipelineResult.hasTargets();
+    hasBotTag = pipelineResult.hasTargets();
   }
 
   @Override
@@ -412,7 +415,7 @@ public class VisionSystem extends SubsystemBase {
 
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
 
-    if (hasTag) {
+    if (hasBotTag) {
       if (!prettyLights.hasTopPattern("Has Tag")) {
         prettyLights.addTopPattern("Has Tag", 10, pattern);
       }

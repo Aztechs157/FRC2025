@@ -439,7 +439,7 @@ public class RobotContainer {
 
         if (velX <= 1 && velY <= 1 && velAngular <= Math.PI) {
             double visionTime = visionSystem.getTimeStamp();
-            if (visionTime != 0 && visionSystem.hasTag) {
+            if (visionTime != 0 && (visionSystem.hasBotTag || visionSystem.hasTopTag)) {
                 drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(),
                         Utils.fpgaToCurrentTime(visionTime));
                 if (reset_pose) {
