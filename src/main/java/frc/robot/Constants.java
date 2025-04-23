@@ -25,7 +25,7 @@ public class Constants {
     public class VisionConstants {
         public static final String TOPRIGHT_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_TopRight";
         public static final Transform3d TOPRIGHT_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(0.203414, 0.196768, 0.958612), new Rotation3d(-Math.PI / 2, 0, 0).rotateBy(new Rotation3d(0, -0.436332,0)));
+                new Translation3d(0.203414, -0.196768, 0.958612), new Rotation3d(0, -0.436332, 0));
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom";
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
                 new Translation3d(0.2602992, 0, 0.126), new Rotation3d(0, -0.349066 , 0)); //new Translation3d(0.5653, 0, 0.120), new Rotation3d(0, 0.35 , 0) Gets us really close to correct
