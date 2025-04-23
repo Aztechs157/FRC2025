@@ -50,6 +50,9 @@ import frc.robot.Robot;
 @Logged(strategy = Strategy.OPT_OUT)
 public class VisionSystem extends SubsystemBase {
 
+  public boolean hasBotTag = false;
+  public boolean hasTopTag = false;
+
   // TODO: move to constants.java
   final PoseStrategy poseStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
@@ -363,10 +366,6 @@ public class VisionSystem extends SubsystemBase {
     topRightCamera.setLED(LEDMode);
   }
 
-  public boolean hasBotTag = false;
-  public boolean hasTopTag = false;
-
-
   void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult, boolean useTopRight) {
     latestResult = pipelineResult;
     var newPose = poseEstimatorBottom.update(pipelineResult);
@@ -415,7 +414,7 @@ public class VisionSystem extends SubsystemBase {
 
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
 
-    if (hasBotTag) {
+    if (hasBotTag || hasTopTag) {
       if (!prettyLights.hasTopPattern("Has Tag")) {
         prettyLights.addTopPattern("Has Tag", 10, pattern);
       }
