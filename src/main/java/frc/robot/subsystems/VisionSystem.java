@@ -121,7 +121,7 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public double getDistanceToTag() {
-    if (hasTag) {
+    if (hasTopTag || hasBotTag) {
       var tagID = latestResult.targets.get(0).fiducialId;
       var tagPos = tagLayout.getTagPose(tagID).get();
       var estimatedPos = getEstimatedGlobalPose2d();
