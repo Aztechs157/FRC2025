@@ -50,6 +50,7 @@ import frc.robot.Robot;
 @Logged(strategy = Strategy.OPT_OUT)
 public class VisionSystem extends SubsystemBase {
 
+  public boolean hasTag = false;
   public boolean hasBotTag = false;
   public boolean hasTopTag = false;
 
@@ -118,7 +119,7 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public double getDistanceToTag() {
-    if (hasTopTag || hasBotTag) {
+    if (hasTag) {
       var tagID = latestResult.targets.get(0).fiducialId;
       var tagPos = tagLayout.getTagPose(tagID).get();
       var estimatedPos = getEstimatedGlobalPose2d();
@@ -368,15 +369,18 @@ public class VisionSystem extends SubsystemBase {
 
   void updatePhotonPipelineResult(PhotonPipelineResult pipelineResult, boolean useTopRight) {
     latestResult = pipelineResult;
-    var newPose = poseEstimatorBottom.update(pipelineResult);
     if(useTopRight) {
-      newPose = poseEstimatorTopRight.update(pipelineResult);
-      hasTopTag = pipelineResult.hasTargets();
+      var newPose = poseEstimatorTopRight.update(pipelineResult);
+      if (newPose.isPresent()) {
+        currentEstimatedPose = newPose.get();
+      }
     }
-    if (newPose.isPresent()) {
-      currentEstimatedPose = newPose.get();
+    else {
+      var newPose = poseEstimatorBottom.update(pipelineResult);
+      if (newPose.isPresent()) {
+        currentEstimatedPose = newPose.get();
+      }
     }
-    hasBotTag = pipelineResult.hasTargets();
   }
 
   @Override
@@ -385,19 +389,30 @@ public class VisionSystem extends SubsystemBase {
 
     List<PhotonPipelineResult> pipelineResultsBottom = bottomCamera.getAllUnreadResults();
     List<PhotonPipelineResult> pipelineResultsTopRight = topRightCamera.getAllUnreadResults();
-    boolean useTopRight = false;
-    if (pipelineResultsBottom.isEmpty()) {
-      useTopRight = true;
-      for (var pipelineResult : pipelineResultsTopRight) {
-        updatePhotonPipelineResult(pipelineResult, useTopRight);
+
+    if(!pipelineResultsBottom.isEmpty()) {
+      if(pipelineResultsBottom.get(0).hasTargets()) {
+        hasBotTag = true;
+        for (var pipelineResult : pipelineResultsBottom) {
+            updatePhotonPipelineResult(pipelineResult, false);
+        }
+      }
+      else {
+        hasBotTag = false;
+        if(!pipelineResultsTopRight.isEmpty()) {
+          if(pipelineResultsTopRight.get(0).hasTargets()) {
+            hasTopTag = true;
+            for (var pipelineResult : pipelineResultsTopRight) {
+              updatePhotonPipelineResult(pipelineResult, true);
+            }
+        }
+        else {
+          hasTopTag = false;
+        }
       }
     }
-    else {
-      for (var pipelineResult : pipelineResultsBottom) {
-        updatePhotonPipelineResult(pipelineResult, useTopRight);
-      }
-    }
-   
+  }
+  hasTag = hasBotTag || hasTopTag;
 
     // TODO: verify that periodic doesn't run faster than photonvision, which could
     // lead to this variable being toggled
@@ -414,7 +429,7 @@ public class VisionSystem extends SubsystemBase {
 
     LEDPattern pattern = LEDPattern.solid(Color.kGreen);
 
-    if (hasBotTag || hasTopTag) {
+    if (hasTag) {
       if (!prettyLights.hasTopPattern("Has Tag")) {
         prettyLights.addTopPattern("Has Tag", 10, pattern);
       }
