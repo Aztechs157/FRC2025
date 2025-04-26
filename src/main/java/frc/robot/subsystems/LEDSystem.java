@@ -25,6 +25,7 @@ import frc.robot.Constants.LEDConstants;
 public class LEDSystem extends SubsystemBase {
   private PriorityMap<String, LEDPattern> fullPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> topPatterns = new PriorityMap<String, LEDPattern>();
+  private PriorityMap<String, LEDPattern> midPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> botPatterns = new PriorityMap<String, LEDPattern>();
   
 
@@ -32,6 +33,7 @@ public class LEDSystem extends SubsystemBase {
   AddressableLEDBuffer prettyLightsBuffer;
 
   AddressableLEDBufferView topBuffer;
+  AddressableLEDBufferView midBuffer;
   AddressableLEDBufferView botBuffer;
 
   /** Creates a new LEDSystem. */
@@ -114,6 +116,19 @@ public class LEDSystem extends SubsystemBase {
     return botPatterns.containsKey(name);
   }
 
+  // mid
+  public void addMidPattern(String name, int priority, LEDPattern pattern) {
+    midPatterns.put(name, priority, pattern);
+  }
+
+  public LEDPattern removeMidPattern(String name) {
+    return botPatterns.remove(name);
+  }
+
+  public boolean hasMidPattern(String name) {
+    return botPatterns.containsKey(name);
+  }
+
   // top
   public void addTopPattern(String name, int priority, LEDPattern pattern) {
     topPatterns.put(name, priority, pattern);
@@ -136,6 +151,9 @@ public class LEDSystem extends SubsystemBase {
       botPatterns.firstValue().applyTo(botBuffer);
     }
 
+    if (midPatterns.firstPriority() != null && midPatterns.firstPriority() <= fullPatterns.firstPriority()) {
+      midPatterns.firstValue().applyTo(midBuffer);
+    }
 
     if (topPatterns.firstPriority() != null && topPatterns.firstPriority() <= fullPatterns.firstPriority()) {
       topPatterns.firstValue().applyTo(topBuffer);
