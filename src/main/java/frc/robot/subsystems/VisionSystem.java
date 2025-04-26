@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -426,15 +428,23 @@ public class VisionSystem extends SubsystemBase {
     // TODO: might not be necessary?
     SignalLogger.writeDoubleArray("visionOdometry",
         new double[] { pose2d.getX(), pose2d.getY(), pose2d.getRotation().getDegrees() });
-
-    LEDPattern pattern = LEDPattern.solid(Color.kGreen);
+    
+    LEDPattern tagSeen = LEDPattern.solid(Color.kGreen);
+    LEDPattern tooClose = tagSeen.blink(Seconds.of(0.5));
 
     if (hasTag) {
       if (!prettyLights.hasTopPattern("Has Tag")) {
-        prettyLights.addTopPattern("Has Tag", 10, pattern);
+        // Flashing green pattern when the robot is too close to auto align.
+        if(getDistanceToTag() <= VisionConstants.MIN_DISTANCE_TO_TAG) {
+          prettyLights.addTopPattern("Has Tag Too Close", 9, tooClose);
+        } else {
+          // Solid green pattern when the robot is at a far enough distance to auto align
+          prettyLights.addTopPattern("Has Tag", 10, tagSeen);
+        }
       }
 
     } else {
+      prettyLights.removeTopPattern("Has Tag Too Close");
       prettyLights.removeTopPattern("Has Tag");
     }
   }
