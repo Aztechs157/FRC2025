@@ -42,7 +42,7 @@ public class IntakeCoral extends Command {
       intakeSystem.run(0);
     } else {
       intakeSystem.run(IntakeConstants.CORAL_HOLDING_SPEED);
-      RobotContainer.prettyLights.addBotPattern("Has Coral", 11, LEDPattern.solid(Color.kOrange));
+      RobotContainer.prettyLights.addMidPattern("Has Coral", 11, LEDPattern.solid(Color.kOrange));
     }
   }
 

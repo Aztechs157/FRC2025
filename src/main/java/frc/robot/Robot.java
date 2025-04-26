@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.RobotController;
-
+import frc.robot.Constants.LEDConstants;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
 
@@ -92,9 +92,8 @@ public class Robot extends TimedRobot {
       isEStop = true;
       RobotContainer.prettyLights.isEStop();
     }
-    // hopefully sets the strip to flashing red when the battery drops below a set voltage
-    // if this works, make that voltage a constant
-    if(RobotController.getBatteryVoltage() < 12){
+
+    if(RobotController.getBatteryVoltage() < LEDConstants.BATTERY_WARNING_VOLTAGE){
       isBatteryLow = true;
     } else {
       isBatteryLow = false;

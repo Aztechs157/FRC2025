@@ -25,12 +25,15 @@ import frc.robot.Constants.LEDConstants;
 public class LEDSystem extends SubsystemBase {
   private PriorityMap<String, LEDPattern> fullPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> topPatterns = new PriorityMap<String, LEDPattern>();
+  private PriorityMap<String, LEDPattern> midPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> botPatterns = new PriorityMap<String, LEDPattern>();
+  
 
   AddressableLED prettyLights;
   AddressableLEDBuffer prettyLightsBuffer;
 
   AddressableLEDBufferView topBuffer;
+  AddressableLEDBufferView midBuffer;
   AddressableLEDBufferView botBuffer;
 
   /** Creates a new LEDSystem. */
@@ -39,8 +42,9 @@ public class LEDSystem extends SubsystemBase {
     prettyLights = new AddressableLED(LEDConstants.PMW_PORT);
     prettyLightsBuffer = new AddressableLEDBuffer(LEDConstants.STRIP_LENGTH);
 
-    topBuffer = prettyLightsBuffer.createView(9, 17);
-    botBuffer = prettyLightsBuffer.createView(0, 8);
+    topBuffer = prettyLightsBuffer.createView(12, 17);
+    midBuffer = prettyLightsBuffer.createView(6, 11);
+    botBuffer = prettyLightsBuffer.createView(0, 5);
 
     prettyLights.setLength(LEDConstants.STRIP_LENGTH);
 
@@ -79,9 +83,9 @@ public class LEDSystem extends SubsystemBase {
     LEDPattern low = LEDPattern.solid(Color.kRed);
     LEDPattern redFlash = low.blink(Seconds.of(0.5));
     if(isLow){
-      addPattern("Battery Low", 1, redFlash);
+      addBotPattern("Battery Low", 1, redFlash);
     } else {
-      removePattern("Battery Low");
+      removeBotPattern("Battery Low");
     }
     
   }
@@ -112,6 +116,19 @@ public class LEDSystem extends SubsystemBase {
     return botPatterns.containsKey(name);
   }
 
+  // mid
+  public void addMidPattern(String name, int priority, LEDPattern pattern) {
+    midPatterns.put(name, priority, pattern);
+  }
+
+  public LEDPattern removeMidPattern(String name) {
+    return botPatterns.remove(name);
+  }
+
+  public boolean hasMidPattern(String name) {
+    return botPatterns.containsKey(name);
+  }
+
   // top
   public void addTopPattern(String name, int priority, LEDPattern pattern) {
     topPatterns.put(name, priority, pattern);
@@ -132,6 +149,10 @@ public class LEDSystem extends SubsystemBase {
 
     if (botPatterns.firstPriority() != null && botPatterns.firstPriority() <= fullPatterns.firstPriority()) {
       botPatterns.firstValue().applyTo(botBuffer);
+    }
+
+    if (midPatterns.firstPriority() != null && midPatterns.firstPriority() <= fullPatterns.firstPriority()) {
+      midPatterns.firstValue().applyTo(midBuffer);
     }
 
     if (topPatterns.firstPriority() != null && topPatterns.firstPriority() <= fullPatterns.firstPriority()) {

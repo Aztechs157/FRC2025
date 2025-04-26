@@ -241,5 +241,7 @@ public class Constants {
         public static final int STRIP_LENGTH = 18;
         // Distance between each diode in millimeters (60led/m strip)
         public static final double DISTANCE_PER_LED = 15;
+        // The voltage at which the battery warning lights will flash.
+        public static final double BATTERY_WARNING_VOLTAGE = 12.0;
     }
 }
