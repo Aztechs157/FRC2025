@@ -27,8 +27,8 @@ public class PlaceCoral extends Command {
   public void initialize() {
     intakeSystem.run(-IntakeConstants.PLACE_MOTOR_SPEED);
     timer.start();
-    RobotContainer.prettyLights.removeBotPattern("Has Coral");
-    RobotContainer.prettyLights.removeBotPattern("Has Algae");
+    RobotContainer.prettyLights.removeMidPattern("Has Coral");
+    RobotContainer.prettyLights.removeMidPattern("Has Algae");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
