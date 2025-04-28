@@ -252,14 +252,20 @@ public class RobotContainer {
         return new ElbowGoToPosition(elbow, positionDetails, Position.STAGE2);
     }
 
+    public Command driveToPose(DriveSystem driveSystem, VisionSystem visionSystem) {
+        return driveSystem.defer(() -> driveSystem.driveToPose(visionSystem.desiredPose.get()).onlyIf(visionSystem.desiredPose::isPresent))
+        // .onlyWhile(()->driveSystem.atTargetPose(visionSystem.desiredPose.get()));
+        ;
+    }
+
     public Command DriveToReefPoseRight(Position pos) {
         return new SetTargetTag(visionSystem, false, pos, positionDetails)
-                .andThen(new DriveToPose(drivetrain, visionSystem));
+                .andThen(driveToPose(drivetrain, visionSystem));
     }
 
     public Command DriveToReefPoseLeft(Position pos) {
         return new SetTargetTag(visionSystem, true, pos, positionDetails)
-                .andThen(new DriveToPose(drivetrain, visionSystem));
+                .andThen(driveToPose(drivetrain, visionSystem));
     }
 
     private final SendableChooser<Command> autoChooser;
