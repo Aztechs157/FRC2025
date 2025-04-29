@@ -122,11 +122,11 @@ public class LEDSystem extends SubsystemBase {
   }
 
   public LEDPattern removeMidPattern(String name) {
-    return botPatterns.remove(name);
+    return midPatterns.remove(name);
   }
 
   public boolean hasMidPattern(String name) {
-    return botPatterns.containsKey(name);
+    return midPatterns.containsKey(name);
   }
 
   // top
