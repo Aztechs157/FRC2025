@@ -4,6 +4,8 @@
 
 package frc.robot.commands.intake_commands;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +29,8 @@ public class IntakeCoral extends Command {
   @Override
   public void initialize() {
     holdCounter = 0;
+    LEDPattern intakeRunning = LEDPattern.solid(Color.kPurple).blink(Seconds.of(0.25));
+    RobotContainer.prettyLights.addMidPattern("Intake Running (Coral)", 11, intakeRunning);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,6 +42,7 @@ public class IntakeCoral extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.prettyLights.removeMidPattern("Intake Running (Coral)");
     if (interrupted) {
       intakeSystem.run(0);
     } else {
