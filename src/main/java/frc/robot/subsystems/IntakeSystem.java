@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.IntakeConstants;
 
 @Logged(strategy = Strategy.OPT_OUT)
@@ -65,5 +66,9 @@ public class IntakeSystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // hopefully will remove the pattern if the coral sensor drops
+    if(!hasCoral()){
+      RobotContainer.prettyLights.removeMidPattern("Has Coral");
+    }
   }
 }
