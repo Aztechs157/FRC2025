@@ -28,12 +28,16 @@ public class Constants {
                 new Translation3d(0.203414, -0.196768, 0.958612), new Rotation3d(0, -0.436332, 0));
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom";
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(0.2602992, 0, 0.126), new Rotation3d(0, -0.349066 , 0)); //new Translation3d(0.5653, 0, 0.120), new Rotation3d(0, 0.35 , 0) Gets us really close to correct
+                new Translation3d(0.2602992, 0, 0.126), new Rotation3d(0, -0.349066, 0)); // new Translation3d(0.5653,
+                                                                                          // 0, 0.120), new
+                                                                                          // Rotation3d(0, 0.35 , 0)
+                                                                                          // Gets us really close to
+                                                                                          // correct
 
-                
         public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
-        // How close the robot can be (bumper to tag, in meters) before losing the ability to auto-align.
-        public static final double MIN_DISTANCE_TO_TAG = 0.72;
+        // How close the robot can be (bumper to tag, in meters) before losing the
+        // ability to auto-align.
+        public static final double MIN_DISTANCE_TO_TAG = 0.8;
     }
 
     public static class LoggingConstants {
@@ -114,7 +118,7 @@ public class Constants {
 
         // max is top-most for all systems, min is bottom-most for all systems
         /**
-         * Position limits, in raw encoder units. 
+         * Position limits, in raw encoder units.
          * In this case, rotations. This defines
          * our virtual limits.
          */
