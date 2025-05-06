@@ -4,7 +4,11 @@
 
 package frc.robot.commands.intake_commands;
 
+import static edu.wpi.first.units.Units.Seconds;
+
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.IntakeConstants;
@@ -29,6 +33,9 @@ public class PlaceCoralSimple extends Command {
     timer.start();
     RobotContainer.prettyLights.removeMidPattern("Has Coral");
     RobotContainer.prettyLights.removeMidPattern("Has Algae");
+
+    LEDPattern outtaking = LEDPattern.solid(Color.kCyan).blink(Seconds.of(0.25));
+    RobotContainer.prettyLights.addMidPattern("Outtaking", 10, outtaking);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,8 +46,8 @@ public class PlaceCoralSimple extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.prettyLights.removeMidPattern("Outtaking");
     intakeSystem.run(0);
-
   }
 
   // Returns true when the command should end.

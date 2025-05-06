@@ -16,12 +16,15 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.RobotContainer;
 import frc.utilities.PosUtils;
 
 @Logged(strategy = Strategy.OPT_OUT)
@@ -119,5 +122,11 @@ public class UppiesSystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (getScaledPos() >= 1.0 - UppiesConstants.LIMIT_MARGIN) {
+      LEDPattern uppy = LEDPattern.solid(Color.kWhiteSmoke);
+      RobotContainer.prettyLights.addMidPattern("Uppies Deployed", 7, uppy);
+    } else {
+      RobotContainer.prettyLights.removeMidPattern("Uppies Deployed");
+    }
   }
 }

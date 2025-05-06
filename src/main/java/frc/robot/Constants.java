@@ -29,9 +29,11 @@ public class Constants {
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom";
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
                 new Translation3d(0.2602992, 0, 0.126), new Rotation3d(0, -0.349066 , 0)); //new Translation3d(0.5653, 0, 0.120), new Rotation3d(0, 0.35 , 0) Gets us really close to correct
-
                 
         public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
+        // How close the robot can be (bumper to tag, in meters) before losing the
+        // ability to auto-align.
+        public static final double MIN_DISTANCE_TO_TAG = 0.8;
     }
 
     public static class LoggingConstants {
@@ -112,7 +114,7 @@ public class Constants {
 
         // max is top-most for all systems, min is bottom-most for all systems
         /**
-         * Position limits, in raw encoder units. 
+         * Position limits, in raw encoder units.
          * In this case, rotations. This defines
          * our virtual limits.
          */
@@ -232,5 +234,16 @@ public class Constants {
          * case, the raw encoder unit is rotations. This defines our virtual limits.
          */
         public static final double MAX_POSITION = 0.635, MIN_POSITION = 0.373;
+    }
+
+    public static class LEDConstants {
+        // The PMW port the strip is plugged into on the RIO.
+        public static final int PMW_PORT = 9;
+        // The amount of diodes per section of the strip (not the total amount).
+        public static final int STRIP_LENGTH = 18;
+        // Distance between each diode in millimeters (60led/m strip)
+        public static final double DISTANCE_PER_LED = 15;
+        // The voltage at which the battery warning lights will flash.
+        public static final double BATTERY_WARNING_VOLTAGE = 11.5;
     }
 }

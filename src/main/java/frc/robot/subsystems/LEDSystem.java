@@ -6,27 +6,28 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.Logged.Strategy;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.utilities.PriorityMap;
+import frc.robot.Constants.LEDConstants;
 
 @Logged(strategy = Strategy.OPT_OUT)
 public class LEDSystem extends SubsystemBase {
-  private static final int pmwPort = 9;
-  private static final int stripLength = 18;
-  private static final double distancePerLED = 15;
-  // private ElevatorSystem elevator;
   private PriorityMap<String, LEDPattern> fullPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> topPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> midPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> botPatterns = new PriorityMap<String, LEDPattern>();
+  
 
   AddressableLED prettyLights;
   AddressableLEDBuffer prettyLightsBuffer;
@@ -38,37 +39,55 @@ public class LEDSystem extends SubsystemBase {
   /** Creates a new LEDSystem. */
   public LEDSystem() {
 
-    // this.elevator = elevator;
-    prettyLights = new AddressableLED(pmwPort);
-    prettyLightsBuffer = new AddressableLEDBuffer(stripLength);
+    prettyLights = new AddressableLED(LEDConstants.PMW_PORT);
+    prettyLightsBuffer = new AddressableLEDBuffer(LEDConstants.STRIP_LENGTH);
 
     topBuffer = prettyLightsBuffer.createView(12, 17);
     midBuffer = prettyLightsBuffer.createView(6, 11);
-    botBuffer = prettyLightsBuffer.createView(5, 0);
+    botBuffer = prettyLightsBuffer.createView(0, 5);
 
-    prettyLights.setLength(stripLength);
-    // sets the data? figure out what this does soon.
+    prettyLights.setLength(LEDConstants.STRIP_LENGTH);
+
     prettyLights.start();
-    // test pattern which makes the lights evil and 190 themed
-    LEDPattern test = LEDPattern.solid(Color.kRed);
+
     // fun assabet-y pattern
     LEDPattern assabet = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGold, Color.kBlue);
-
+    // the same one but scrolling
     LEDPattern assabetScroll = assabet.scrollAtRelativeSpeed(Percent.per(Second).of(25))
         .atBrightness(Percent.of(20));
-    // assabetScroll.atBrightness(Percent.of(0.2));
-    // applies that test pattern to the strip
-    // test.applyTo(prettyLightsBuffer);
     addPattern("Assabet Scroll", 157, assabetScroll);
 
   }
 
   public void isFMS() {
+    // runs the idle pattern without lowering the brightness, only when connected to an FMS.
     LEDPattern assabet = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGold, Color.kBlue);
-
     LEDPattern assabetScroll = assabet.scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
     fullPatterns.replace("Assabet Scroll", assabetScroll);
+  }
+
+  /* for now, im using the same method as the fms checker, 
+   * but i would like to know why we're making a method 
+   * instead of just using DriverStation's isFMSAttached directly.
+   */
+  public void isEStop(){
+    // make this pattern less pleasant
+    LEDPattern unpleasant = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kSpringGreen, Color.kMagenta, Color.kSaddleBrown);
+    // runs the pattern in place of the default scrolly pattern upon being e-stopped.
+    addPattern("unpleasant", 1, unpleasant);
+  }
+
+  public void batteryLow(boolean isLow){
+    // this pattern is run when the battery drops below a certain voltage
+    LEDPattern low = LEDPattern.solid(Color.kRed);
+    LEDPattern redFlash = low.blink(Seconds.of(0.5));
+    if(isLow){
+      addBotPattern("Battery Low", 1, redFlash);
+    } else {
+      removeBotPattern("Battery Low");
+    }
+    
   }
 
   // full
@@ -140,17 +159,6 @@ public class LEDSystem extends SubsystemBase {
       topPatterns.firstValue().applyTo(topBuffer);
     }
 
-    // if (!useBotPattern && !useTopPattern) {
-    // fullPatterns.firstValue().applyTo(prettyLightsBuffer);
-    // } else if (useBotPattern && !useTopPattern) {
-    // fullPatterns.firstValue().applyTo(topBuffer);
-    // } else if (useTopPattern && !useBotPattern) {
-    // fullPatterns.firstValue().applyTo(botBuffer);
-    // }
-    // This method will be called once per scheduler run
-
-    // LEDPattern elevatorProgress = LEDPattern.progressMaskLayer(() ->
-    // elevator.getScaledPos() / 1);
     prettyLights.setData(prettyLightsBuffer);
   }
 }

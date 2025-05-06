@@ -35,8 +35,11 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
+
 @Logged(strategy = Strategy.OPT_IN)
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -48,6 +51,8 @@ public class Robot extends TimedRobot {
   @Logged
   private final RobotContainer m_robotContainer;
   public static boolean isFMS = false;
+  public static boolean isEStop = false;
+  public static boolean isBatteryLow = false;
 
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
@@ -77,10 +82,25 @@ public class Robot extends TimedRobot {
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+
     if (!isFMS && DriverStation.isFMSAttached()) {
       isFMS = true;
       RobotContainer.prettyLights.isFMS();
     }
+  
+    if (!isEStop && DriverStation.isEStopped()){
+      isEStop = true;
+      RobotContainer.prettyLights.isEStop();
+    }
+
+    if(RobotController.getBatteryVoltage() < LEDConstants.BATTERY_WARNING_VOLTAGE){
+      isBatteryLow = true;
+    } else {
+      isBatteryLow = false;
+    }
+    // this one is outside so that the pattern can be removed once the voltage goes back up
+    RobotContainer.prettyLights.batteryLow(isBatteryLow);
+    
   }
 
   @Override

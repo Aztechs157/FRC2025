@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intake_commands;
 
+import static edu.wpi.first.units.Units.Seconds;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +28,9 @@ public class IntakeCoralSimple extends Command {
   @Override
   public void initialize() {
     holdCounter = 0;
+    //i'm not sure how well a continuously updating pattern (ie blinking) will work if only added on initialize but i guess we'll see
+    LEDPattern intakeRunning = LEDPattern.solid(Color.kOrange).blink(Seconds.of(0.25));
+    RobotContainer.prettyLights.addMidPattern("Intake Running (Coral)", 11, intakeRunning);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,6 +42,7 @@ public class IntakeCoralSimple extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.prettyLights.removeMidPattern("Intake Running (Coral)");
     if (interrupted) {
       intakeSystem.run(0);
     } else {
