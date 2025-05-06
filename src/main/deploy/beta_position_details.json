@@ -10,8 +10,8 @@
                 },
                 "depthOffset": 0.464,
                 "horizontalOffsets": {
-                    "left": -0.15,
-                    "right": 0.15 
+                    "left": -0.175,
+                    "right": 0.175 
                 }
             },
             "stage2": {
@@ -21,10 +21,11 @@
                     "elbow": 0.82,
                     "wrist": 0.12
                 },
-                "depthOffset": 0.7,
+
+                "depthOffset": 0.675,
                 "horizontalOffsets": {
-                    "left": -0.15,
-                    "right": 0.15
+                    "left": -0.175,
+                    "right": 0.175
                 }
             },
             "stage3": {
@@ -34,10 +35,11 @@
                     "elbow": 0.82,
                     "wrist": 0.11
                 },
-                "depthOffset": 0.7,
+
+                "depthOffset": 0.675,
                 "horizontalOffsets": {
-                    "left": -0.15,
-                    "right": 0.15
+                    "left": -0.175,
+                    "right": 0.175
                 }
             },
             "stage4": {
@@ -47,10 +49,11 @@
                     "elbow": 0.92,
                     "wrist": 0.01
                 },
-                "depthOffset": 0.45,
+
+                "depthOffset": 0.525,
                 "horizontalOffsets": {
-                    "left": -0.15,
-                    "right": 0.15
+                    "left": -0.175,
+                    "right": 0.175
                 }
             },
             "stage5": {

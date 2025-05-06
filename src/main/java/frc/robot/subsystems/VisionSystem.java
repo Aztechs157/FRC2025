@@ -121,13 +121,15 @@ public class VisionSystem extends SubsystemBase {
   }
 
   public double getDistanceToTag() {
-    if (hasTopTag || hasBotTag) {
-      var tagID = latestResult.targets.get(0).fiducialId;
-      var tagPos = tagLayout.getTagPose(tagID).get();
-      var estimatedPos = getEstimatedGlobalPose2d();
-      var distance = estimatedPos.getTranslation().getDistance(tagPos.toPose2d().getTranslation());
-      var bumperLen = 0.45085;
-      return distance - bumperLen;
+    if (hasTag) {
+      if (latestResult.targets.size() > 0) {
+        var tagID = latestResult.targets.get(0).fiducialId;
+        var tagPos = tagLayout.getTagPose(tagID).get();
+        var estimatedPos = getEstimatedGlobalPose2d();
+        var distance = estimatedPos.getTranslation().getDistance(tagPos.toPose2d().getTranslation());
+        var bumperLen = 0.45085;
+        return distance - bumperLen;
+      }
     }
 
     return 0;

@@ -5,7 +5,6 @@
 package frc.robot.commands.intake_commands;
 
 import static edu.wpi.first.units.Units.Seconds;
-
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,7 +47,6 @@ public class IntakeCoralSimple extends Command {
       intakeSystem.run(0);
     } else {
       intakeSystem.run(IntakeConstants.CORAL_HOLDING_SPEED);
-      // why is this a lower priority than the algae pattern?
       RobotContainer.prettyLights.addMidPattern("Has Coral", 11, LEDPattern.solid(Color.kOrange));
     }
   }
