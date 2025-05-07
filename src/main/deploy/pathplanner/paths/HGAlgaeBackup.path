@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 5.846,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 6.511331300796603,
+        "y": 4.030020684954853
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "HGAlgae"
     },
     {
       "anchor": {
-        "x": 5.103336189,
-        "y": 5.38946069
+        "x": 6.25,
+        "y": 4.0
       },
       "prevControl": {
-        "x": 4.103336189,
-        "y": 5.38946069
+        "x": 5.606101842029584,
+        "y": 3.9823235844818905
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "J4"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Reef J",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

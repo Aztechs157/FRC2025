@@ -277,7 +277,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ElevatorStall", ElevatorStallCommand());
 
         NamedCommands.registerCommand("IntakeCoral", IntakeCoralCommand());
-        NamedCommands.registerCommand("Intake_Algae", IntakeAlgaeCommand());
+        NamedCommands.registerCommand("IntakeAlgae", IntakeAlgaeCommand());
         NamedCommands.registerCommand("PlaceCoral", PlaceCoralCommand());
         NamedCommands.registerCommand("ExitStartingPosition", exitStartingPosition());
 
