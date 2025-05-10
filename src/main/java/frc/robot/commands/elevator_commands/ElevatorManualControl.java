@@ -12,6 +12,7 @@ public class ElevatorManualControl extends Command {
 
   private final ElevatorSystem elevatorSystem;
   private final double commandValue;
+
   /** Creates a new elevatorUp. */
   public ElevatorManualControl(final ElevatorSystem elevatorSystem, double commandValue) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,7 +24,8 @@ public class ElevatorManualControl extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

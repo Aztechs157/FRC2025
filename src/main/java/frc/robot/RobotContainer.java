@@ -258,7 +258,7 @@ public class RobotContainer {
     }
 
     public Command DriveToReefPoseLeft(Position pos) {
-        return new SetTargetTag(visionSystem, true, pos, positionDetails)
+        return new SetTargetTag(visionSystem, true, Position.STAGE2, positionDetails)
                 .andThen(new DriveToPose(drivetrain, visionSystem));
     }
 
@@ -285,6 +285,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToStage2", GoToStage2());
         NamedCommands.registerCommand("GoToStage3", GoToStage3());
         NamedCommands.registerCommand("GoToStage4", GoToStage4());
+        NamedCommands.registerCommand("GoToBarge", GoToBarge());
 
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
