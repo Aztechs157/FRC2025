@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.25,
+        "x": 6.5,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.3145225001369445,
-        "y": 3.7934396639920434
+        "x": 6.679548010029301,
+        "y": 3.7261914131779577
       },
       "isLocked": false,
       "linkedName": "HGAlgaeBackup"
@@ -20,8 +20,8 @@
         "y": 5.624
       },
       "prevControl": {
-        "x": 6.925096729918798,
-        "y": 5.5822729983666095
+        "x": 6.448843527476203,
+        "y": 5.378510205847421
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,12 +33,12 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.57,
-    "maxAcceleration": 1.57,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

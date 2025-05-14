@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.846,
+        "x": 5.825,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.511331300796603,
-        "y": 4.030020684954853
+        "x": 6.557636307149686,
+        "y": 4.0026789458927245
       },
       "isLocked": false,
       "linkedName": "HGAlgae"
     },
     {
       "anchor": {
-        "x": 6.25,
+        "x": 6.5,
         "y": 4.0
       },
       "prevControl": {
-        "x": 5.606101842029584,
-        "y": 3.9823235844818905
+        "x": 5.936107559326996,
+        "y": 3.998425386910628
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.57,
-    "maxAcceleration": 1.57,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

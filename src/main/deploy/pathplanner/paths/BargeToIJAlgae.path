@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.317466970955218,
-        "y": 5.687910503279657
+        "x": 5.502356557377048,
+        "y": 6.236731557377048
       },
       "isLocked": false,
       "linkedName": "ScoreBarge"
     },
     {
       "anchor": {
-        "x": 5.4226461038961045,
-        "y": 5.520738636363636
+        "x": 5.175,
+        "y": 5.175
       },
       "prevControl": {
-        "x": 5.172920728774573,
-        "y": 5.509023815818257
+        "x": 5.46639344262295,
+        "y": 6.272694672131147
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "IJAlgae"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -117.8070415315011
+    "rotation": -119.74488129694231
   },
   "reversed": false,
   "folder": null,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

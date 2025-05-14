@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.25,
-        "y": 4.176
+        "x": 5.3,
+        "y": 5.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.504852919690069,
-        "y": 4.216809602903151
+        "x": 5.615509944806419,
+        "y": 5.585719083902886
       },
       "isLocked": false,
-      "linkedName": "backup"
+      "linkedName": "IJAlgaeBackup"
     },
     {
       "anchor": {
-        "x": 5.825,
-        "y": 4.0
+        "x": 7.733,
+        "y": 5.624
       },
       "prevControl": {
-        "x": 5.585215049037268,
-        "y": 3.929266858603621
+        "x": 5.996329351422346,
+        "y": 4.653272021860401
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "HGAlgae"
+      "linkedName": "ScoreBarge"
     }
   ],
   "rotationTargets": [],
@@ -38,17 +38,17 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.74488129694231
   },
   "useDefaultConstraints": false
 }

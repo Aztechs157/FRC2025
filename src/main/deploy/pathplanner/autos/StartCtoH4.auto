@@ -30,7 +30,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.357
                 }
               },
               {
@@ -43,12 +43,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "H4Backup"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -56,6 +50,12 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 1.0
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "H4Backup"
                 }
               },
               {
@@ -130,25 +130,6 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "GoToCoralStationStage"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
                 "type": "path",
                 "data": {
                   "pathName": "HGAlgaeBackupToBarge"
@@ -164,19 +145,13 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.357
                 }
               },
               {
@@ -193,15 +168,92 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "BargeToIJAlgae"
+                  "commands": [
+                    {
+                      "type": "deadline",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "BargeToIJAlgae"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "GoToAlgaeStageHigh"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "deadline",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "IJAlgaeBackup"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "GoToAlgaeStageHigh"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "GoToAlgaeStageHigh"
+                  "name": "IntakeAlgae"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "IJAlgaeBackupToBarge"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToBarge"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.357
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PlaceCoral"
                 }
               }
             ]
