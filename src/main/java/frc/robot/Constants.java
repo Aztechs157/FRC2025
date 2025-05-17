@@ -28,8 +28,12 @@ public class Constants {
                 new Translation3d(0.203414, -0.196768, 0.958612), new Rotation3d(0, -0.436332, 0));
         public static final String BOTTOM_CAMERA_NICKNAME = "Microsoft_LifeCam_HD-3000_Bottom";
         public static final Transform3d BOTTOM_CAMERA_PLACEMENT = new Transform3d(
-                new Translation3d(0.2602992, 0, 0.126), new Rotation3d(0, -0.349066 , 0)); //new Translation3d(0.5653, 0, 0.120), new Rotation3d(0, 0.35 , 0) Gets us really close to correct
-                
+                new Translation3d(0.2602992, 0, 0.126), new Rotation3d(0, -0.349066, 0)); // new Translation3d(0.5653,
+                                                                                          // 0, 0.120), new
+                                                                                          // Rotation3d(0, 0.35 , 0)
+                                                                                          // Gets us really close to
+                                                                                          // correct
+
         public static final PIDController AIMING_PID = new PIDController(0.05, 0, 0.01);
         // How close the robot can be (bumper to tag, in meters) before losing the
         // ability to auto-align.
@@ -196,7 +200,8 @@ public class Constants {
          * our virtual limits. The minimum position is when the elbow is at the top.
          */
         public static final double ALPHA_MAX_POSITION = 0.08, ALPHA_MIN_POSITION = 0.545;
-        public static final double BETA_MAX_POSITION = 0.827, BETA_MIN_POSITION = 0.271;
+        // Original values: BETA_MAX = 0.827, BETA_MIN = 0.271
+        public static final double BETA_MAX_POSITION = 0.839, BETA_MIN_POSITION = 0.283;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;
