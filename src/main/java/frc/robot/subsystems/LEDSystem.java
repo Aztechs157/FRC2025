@@ -27,7 +27,6 @@ public class LEDSystem extends SubsystemBase {
   private PriorityMap<String, LEDPattern> topPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> midPatterns = new PriorityMap<String, LEDPattern>();
   private PriorityMap<String, LEDPattern> botPatterns = new PriorityMap<String, LEDPattern>();
-  
 
   AddressableLED prettyLights;
   AddressableLEDBuffer prettyLightsBuffer;
@@ -60,34 +59,38 @@ public class LEDSystem extends SubsystemBase {
   }
 
   public void isFMS() {
-    // runs the idle pattern without lowering the brightness, only when connected to an FMS.
+    // runs the idle pattern without lowering the brightness, only when connected to
+    // an FMS.
     LEDPattern assabet = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGold, Color.kBlue);
     LEDPattern assabetScroll = assabet.scrollAtRelativeSpeed(Percent.per(Second).of(25));
 
     fullPatterns.replace("Assabet Scroll", assabetScroll);
   }
 
-  /* for now, im using the same method as the fms checker, 
-   * but i would like to know why we're making a method 
+  /*
+   * for now, im using the same method as the fms checker,
+   * but i would like to know why we're making a method
    * instead of just using DriverStation's isFMSAttached directly.
    */
-  public void isEStop(){
+  public void isEStop() {
     // make this pattern less pleasant
-    LEDPattern unpleasant = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kSpringGreen, Color.kMagenta, Color.kSaddleBrown);
-    // runs the pattern in place of the default scrolly pattern upon being e-stopped.
+    LEDPattern unpleasant = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kSpringGreen,
+        Color.kMagenta, Color.kSaddleBrown);
+    // runs the pattern in place of the default scrolly pattern upon being
+    // e-stopped.
     addPattern("unpleasant", 1, unpleasant);
   }
 
-  public void batteryLow(boolean isLow){
+  public void batteryLow(boolean isLow) {
     // this pattern is run when the battery drops below a certain voltage
     LEDPattern low = LEDPattern.solid(Color.kRed);
     LEDPattern redFlash = low.blink(Seconds.of(0.5));
-    if(isLow){
+    if (isLow) {
       addBotPattern("Battery Low", 1, redFlash);
     } else {
       removeBotPattern("Battery Low");
     }
-    
+
   }
 
   // full
