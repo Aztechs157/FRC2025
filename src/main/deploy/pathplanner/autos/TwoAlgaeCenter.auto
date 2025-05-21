@@ -258,6 +258,25 @@
               }
             ]
           }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Barge2ToCoralStation"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToCoralStationStage"
+                }
+              }
+            ]
+          }
         }
       ]
     }

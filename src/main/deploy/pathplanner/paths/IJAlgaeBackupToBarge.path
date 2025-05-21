@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.3,
-        "y": 5.4
+        "x": 5.62575,
+        "y": 5.9555
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.615509944806419,
-        "y": 5.585719083902886
+        "x": 6.0840000000000005,
+        "y": 6.3942499999999995
       },
       "isLocked": false,
       "linkedName": "IJAlgaeBackup"
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 7.733,
-        "y": 5.624
+        "y": 6.624
       },
       "prevControl": {
-        "x": 5.996329351422346,
-        "y": 4.653272021860401
+        "x": 6.249750000000001,
+        "y": 6.735499999999999
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ScoreBarge"
+      "linkedName": "Barge2"
     }
   ],
   "rotationTargets": [],

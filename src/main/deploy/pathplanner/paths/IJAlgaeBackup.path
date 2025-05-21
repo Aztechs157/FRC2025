@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.411547007566748,
-        "y": 5.268512840385858
+        "x": 5.577307715143061,
+        "y": 5.929377706526172
       },
       "isLocked": false,
       "linkedName": "IJAlgae"
     },
     {
       "anchor": {
-        "x": 5.3,
-        "y": 5.4
+        "x": 5.62575,
+        "y": 5.9555
       },
       "prevControl": {
-        "x": 4.968687635153466,
-        "y": 5.37357495526104
+        "x": 5.517203792184207,
+        "y": 5.7302940481052715
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,7 +38,7 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": -119.99999999999999
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

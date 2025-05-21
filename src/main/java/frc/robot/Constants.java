@@ -123,7 +123,7 @@ public class Constants {
          * our virtual limits.
          */
         public static final double ALPHA_MAX_POSITION = 2634, ALPHA_MIN_POSITION = 616;
-        public static final double BETA_MAX_POSITION = 3098, BETA_MIN_POSITION = 1105;
+        public static final double BETA_MAX_POSITION = 3150, BETA_MIN_POSITION = 1157;
 
         public static final double POS_TOLERANCE = 0.01;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;

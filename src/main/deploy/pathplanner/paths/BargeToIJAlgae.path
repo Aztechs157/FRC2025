@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.502356557377048,
-        "y": 6.236731557377048
+        "x": 5.8152557584350975,
+        "y": 6.53595079938211
       },
       "isLocked": false,
       "linkedName": "ScoreBarge"
@@ -20,8 +20,8 @@
         "y": 5.175
       },
       "prevControl": {
-        "x": 5.44139344262295,
-        "y": 6.272694672131147
+        "x": 5.877133632151226,
+        "y": 6.257500367659528
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.57,
-    "maxAcceleration": 1.57,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

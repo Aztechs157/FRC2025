@@ -278,7 +278,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     public Command driveToPose(Pose2d pose) {
         // Create the constraints to use while pathfinding
         PathConstraints constraints = new PathConstraints(
-                3, 1,
+                3.57, 1.57,
                 Units.degreesToRadians(540),
                 Units.degreesToRadians(720));
 
@@ -386,8 +386,10 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
      */
     // @Override
     // TODO: just dont override this
-    // public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
-    //     super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+    // public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double
+    // timestampSeconds) {
+    // super.addVisionMeasurement(visionRobotPoseMeters,
+    // Utils.fpgaToCurrentTime(timestampSeconds));
     // }
 
     /**

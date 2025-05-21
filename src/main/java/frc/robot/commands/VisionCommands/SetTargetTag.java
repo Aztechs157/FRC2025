@@ -32,46 +32,51 @@ public class SetTargetTag extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double offsetDistanceX = 0;
-    double offsetDistanceY = 0;
-    var bestTag = visionSystem.findBestTargetReef();
-    if (bestTag != null) {
-      int tagID = bestTag.fiducialId;
-      Pose2d targetTag = visionSystem.getTagPose(tagID).get().toPose2d();
-      switch (location) {
-        case ALGAE1, ALGAE2:
-          break;
-        case BASE:
-          break;
-        case CORALSTATION:
-          break;
-        case STAGE1, STAGE2, STAGE3, STAGE4:
-          switch (tagID) {
-            case 6, 7, 8, 9, 10, 11:
-            case 17, 18, 19, 20, 21, 22:
-              if (isLeft) {
-                offsetDistanceY = details.getLeftOffsetAtStage(location.stageNum);
-              } else {
-                offsetDistanceY = details.getRightOffsetAtStage(location.stageNum);
-              }
-              offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
-              break;
-          }
-          break;
-        default:
-          break;
+    try {
+      double offsetDistanceX = 0;
+      double offsetDistanceY = 0;
+      var bestTag = visionSystem.findBestTargetReef();
+      if (bestTag != null) {
+        int tagID = bestTag.fiducialId;
+        Pose2d targetTag = visionSystem.getTagPose(tagID).get().toPose2d();
+        switch (location) {
+          case ALGAE1, ALGAE2:
+            break;
+          case BASE:
+            break;
+          case CORALSTATION:
+            break;
+          case STAGE1, STAGE2, STAGE3, STAGE4:
+            switch (tagID) {
+              case 6, 7, 8, 9, 10, 11:
+              case 17, 18, 19, 20, 21, 22:
+                if (isLeft) {
+                  offsetDistanceY = details.getLeftOffsetAtStage(location.stageNum);
+                } else {
+                  offsetDistanceY = details.getRightOffsetAtStage(location.stageNum);
+                }
+                offsetDistanceX = details.getDepthOffsetAtStage(location.stageNum);
+                break;
+            }
+            break;
+          default:
+            break;
 
-      }
+        }
 
-      if (offsetDistanceX != 0) {
-        Pose2d adjustedPose = targetTag.plus(new Transform2d(offsetDistanceX, offsetDistanceY, Rotation2d.kPi));
-        visionSystem.setDesiredPose(adjustedPose);
+        if (offsetDistanceX != 0) {
+          Pose2d adjustedPose = targetTag.plus(new Transform2d(offsetDistanceX, offsetDistanceY, Rotation2d.kPi));
+          visionSystem.setDesiredPose(adjustedPose);
+        } else {
+          visionSystem.setDesiredPose(null);
+        }
+
       } else {
         visionSystem.setDesiredPose(null);
       }
-
-    } else {
-      visionSystem.setDesiredPose(null);
+    } catch (Exception e) {
+      System.out.println("Never Saw a Tag, View Tag or Disable Auto-Positioning");
+      System.out.println(e);
     }
 
   }
