@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.3,
-        "y": 4.0
+        "x": 5.319208,
+        "y": 5.12
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.603638177689532,
-        "y": 3.947732628309483
+        "x": 5.563897106223394,
+        "y": 5.536096402334573
       },
       "isLocked": false,
-      "linkedName": "StartCenter"
+      "linkedName": "I4"
     },
     {
       "anchor": {
-        "x": 5.857,
-        "y": 4.201
+        "x": 5.617329545454545,
+        "y": 5.6299512987012985
       },
       "prevControl": {
-        "x": 6.107,
-        "y": 4.201
+        "x": 5.358587901477268,
+        "y": 5.173861885025265
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "H4"
+      "linkedName": "I4Backup"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.5,
+    "maxVelocity": 3.57,
     "maxAcceleration": 1.57,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Reef I",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.99999999999999
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

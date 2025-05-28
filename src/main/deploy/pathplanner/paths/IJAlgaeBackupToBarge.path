@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.62575,
-        "y": 5.9555
+        "x": 5.607832792207793,
+        "y": 5.957589285714286
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.0840000000000005,
-        "y": 6.3942499999999995
+        "x": 6.066082792207793,
+        "y": 6.396339285714285
       },
       "isLocked": false,
       "linkedName": "IJAlgaeBackup"
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.74488129694231
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": false
 }

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.3,
-        "y": 6.1666
+        "x": 7.089326298701297,
+        "y": 6.185511363636363
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.053112670297467,
-        "y": 6.127272574043644
+        "x": 6.842439122647419,
+        "y": 6.146182973125931
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "StartAlliance"
     },
     {
       "anchor": {
@@ -36,8 +36,8 @@
         "y": 5.12
       },
       "prevControl": {
-        "x": 5.460443047141959,
-        "y": 5.326282964538539
+        "x": 5.46044304714196,
+        "y": 5.32628296453854
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,7 +64,7 @@
   "folder": "Reef I",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -153.72732125806493
+    "rotation": -151.84931141182517
   },
   "useDefaultConstraints": true
 }

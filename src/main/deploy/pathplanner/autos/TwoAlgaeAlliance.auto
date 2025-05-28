@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartCenterToH4"
+                  "pathName": "StartAtoI4"
                 }
               },
               {
@@ -49,13 +49,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "H4Backup"
+                  "pathName": "I4Backup"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "GoToAlgaeStageLow"
+                  "name": "GoToAlgaeStageHigh"
                 }
               }
             ]
@@ -76,103 +76,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "H4BacktoHA"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "GoToAlgaeStageLow"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "deadline",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "HGAlgaeBackup"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "GoToAlgaeStageLow"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeAlgae"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "HGAlgaeBackupToBarge"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "GoToBarge"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.357
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PlaceCoral"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "deadline",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "BargeToIJAlgae"
+                              "pathName": "I4BackuptoIJA"
                             }
                           },
                           {
@@ -222,7 +126,103 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "IJAlgaeBackupToBarge"
+                  "pathName": "IJAlgaeBackupToBarge1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GoToBarge"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.357
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PlaceCoral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "deadline",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "BargeToLKAlgae"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "GoToAlgaeStageLow"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "deadline",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "LKAlgaeBackup"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "GoToAlgaeStageLow"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAlgae"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LKAlgaeBackupToBarge"
                 }
               },
               {
@@ -276,6 +276,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "StartC",
+  "folder": "StartA",
   "choreoAuto": false
 }

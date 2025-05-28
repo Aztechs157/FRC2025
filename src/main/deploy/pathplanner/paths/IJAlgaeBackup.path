@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.577307715143061,
-        "y": 5.929377706526172
+        "x": 5.702274011614335,
+        "y": 6.091275629376572
       },
       "isLocked": false,
       "linkedName": "IJAlgae"
     },
     {
       "anchor": {
-        "x": 5.62575,
-        "y": 5.9555
+        "x": 5.607832792207793,
+        "y": 5.957589285714286
       },
       "prevControl": {
-        "x": 5.517203792184207,
-        "y": 5.7302940481052715
+        "x": 5.459921883664963,
+        "y": 5.756039383372372
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.74488129694231
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": null,

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.3,
-        "y": 4.0
+        "x": 3.328612012987013,
+        "y": 5.948092532467532
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.603638177689532,
-        "y": 3.947732628309483
+        "x": 3.5949144907560773,
+        "y": 5.979165065901071
       },
       "isLocked": false,
-      "linkedName": "StartCenter"
+      "linkedName": "LKAlgaeBackup"
     },
     {
       "anchor": {
-        "x": 5.857,
-        "y": 4.201
+        "x": 7.733,
+        "y": 6.624
       },
       "prevControl": {
-        "x": 6.107,
-        "y": 4.201
+        "x": 6.330736327741251,
+        "y": 6.343040941216943
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "H4"
+      "linkedName": "Barge2"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 1.57,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": false
 }
