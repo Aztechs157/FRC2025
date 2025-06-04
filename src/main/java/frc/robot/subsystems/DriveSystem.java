@@ -278,7 +278,7 @@ public class DriveSystem extends TunerSwerveDrivetrain implements Subsystem {
     public Command driveToPose(Pose2d pose) {
         // Create the constraints to use while pathfinding
         PathConstraints constraints = new PathConstraints(
-                3.57, 1.57,
+                3, 1.5,
                 Units.degreesToRadians(540),
                 Units.degreesToRadians(720));
 

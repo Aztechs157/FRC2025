@@ -63,11 +63,11 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     DataLogManager.start("/media/sda1/logs/RIO");
-        Epilogue.configure(config -> {
-            config.backend = new FileBackend(DataLogManager.getLog());
-            config.errorHandler = ErrorHandler.printErrorMessages();
-        });
-        Epilogue.bind(this);
+    Epilogue.configure(config -> {
+      config.backend = new FileBackend(DataLogManager.getLog());
+      config.errorHandler = ErrorHandler.printErrorMessages();
+    });
+    Epilogue.bind(this);
     startServer();
     m_robotContainer = new RobotContainer();
     Pathfinding.setPathfinder(new LocalADStar());
@@ -80,27 +80,28 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     m_robotContainer.updateVisionPose(false);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
-  
+
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
 
     if (!isFMS && DriverStation.isFMSAttached()) {
       isFMS = true;
       RobotContainer.prettyLights.isFMS();
     }
-  
-    if (!isEStop && DriverStation.isEStopped()){
+
+    if (!isEStop && DriverStation.isEStopped()) {
       isEStop = true;
       RobotContainer.prettyLights.isEStop();
     }
 
-    if(RobotController.getBatteryVoltage() < LEDConstants.BATTERY_WARNING_VOLTAGE){
+    if (RobotController.getBatteryVoltage() < LEDConstants.BATTERY_WARNING_VOLTAGE) {
       isBatteryLow = true;
     } else {
       isBatteryLow = false;
     }
-    // this one is outside so that the pattern can be removed once the voltage goes back up
+    // this one is outside so that the pattern can be removed once the voltage goes
+    // back up
     RobotContainer.prettyLights.batteryLow(isBatteryLow);
-    
+
   }
 
   @Override
@@ -111,7 +112,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
-    
+
     newAlliance = DriverStation.getAlliance();
     newAutoName = m_robotContainer.getAutonomousCommand().getName();
     if (autoName != newAutoName || alliance != newAlliance) {
@@ -153,6 +154,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    m_robotContainer.updateVisionPose(false);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   }
 
@@ -171,6 +173,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    m_robotContainer.updateVisionPose(false);
   }
 
   @Override
