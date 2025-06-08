@@ -123,7 +123,7 @@ public class Constants {
          * our virtual limits.
          */
         public static final double ALPHA_MAX_POSITION = 2634, ALPHA_MIN_POSITION = 616;
-        public static final double BETA_MAX_POSITION = 3150, BETA_MIN_POSITION = 1157;
+        public static final double BETA_MAX_POSITION = 3185, BETA_MIN_POSITION = 1192;
 
         public static final double POS_TOLERANCE = 0.01;
         public static final double MOTOR_VELOCITY_TOLERANCE = 0.2;
@@ -168,7 +168,7 @@ public class Constants {
          * our virtual limits.
          */
         public static final double ALPHA_MAX_POSITION = 0.4, ALPHA_MIN_POSITION = 0.748;
-        public static final double BETA_MAX_POSITION = 0.825, BETA_MIN_POSITION = 0.444;
+        public static final double BETA_MAX_POSITION = 0.82, BETA_MIN_POSITION = 0.418;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;
@@ -201,7 +201,7 @@ public class Constants {
          */
         public static final double ALPHA_MAX_POSITION = 0.08, ALPHA_MIN_POSITION = 0.545;
         // Original values: BETA_MAX = 0.827, BETA_MIN = 0.271
-        public static final double BETA_MAX_POSITION = 0.839, BETA_MIN_POSITION = 0.283;
+        public static final double BETA_MAX_POSITION = 0.83, BETA_MIN_POSITION = 0.274;
 
         /** The velocity for the manual speed control, in percentage of motor power. */
         public static final double MANUAL_CONTROL_SPEED = 0.25;
