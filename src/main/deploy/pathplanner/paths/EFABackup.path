@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.15,
+        "y": 2.875
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.315601754794432,
+        "y": 2.594788726623027
+      },
+      "isLocked": false,
+      "linkedName": "EFAlgae"
+    },
+    {
+      "anchor": {
+        "x": 5.617274259964452,
+        "y": 2.0999244079617188
+      },
+      "prevControl": {
+        "x": 5.445828650243667,
+        "y": 2.4126560713896685
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "F4Backup"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.57,
+    "maxAcceleration": 1.57,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "useDefaultConstraints": true
+}
