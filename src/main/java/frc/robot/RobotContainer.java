@@ -72,7 +72,6 @@ import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.ElbowSystem;
 import frc.robot.subsystems.WristSystem;
-// import frc.robot.subsystems.VisionSystem;
 import frc.robot.subsystems.UppiesSystem;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.ButtonBox;
@@ -82,11 +81,11 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
     private boolean isButtonBox = true;
-    private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
-                                                                                       // top
+    private double MaxSpeed = BetaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
+                                                                                      // top
     // speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
-                                                                                      // max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 1 rotation per second
+                                                                                   // max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()

@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    m_robotContainer.updateVisionPose(false);
+    // m_robotContainer.updateVisionPose(true);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
 
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
@@ -111,6 +111,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    m_robotContainer.updateVisionPose(true);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
 
     newAlliance = DriverStation.getAlliance();
@@ -154,7 +155,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    m_robotContainer.updateVisionPose(false);
+    // m_robotContainer.updateVisionPose(false);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
   }
 
