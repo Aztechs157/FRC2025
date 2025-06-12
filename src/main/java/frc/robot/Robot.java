@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.configs.AudioConfigs;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -36,6 +39,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.RobotController;
+
 import frc.robot.Constants.LEDConstants;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
@@ -54,6 +58,11 @@ public class Robot extends TimedRobot {
   public static boolean isEStop = false;
   public static boolean isBatteryLow = false;
 
+  // creates an orchestra, for playing .chrp music files over our motors
+  public static Orchestra jukebox = new Orchestra();
+  // creates audio config, for enabling play when disabled
+  private AudioConfigs soundSettings = new AudioConfigs();
+  
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
     String path = Filesystem.getDeployDirectory().getPath() + "\\ElasticLayout";
@@ -73,6 +82,15 @@ public class Robot extends TimedRobot {
     Pathfinding.setPathfinder(new LocalADStar());
     PathfindingCommand.warmupCommand().schedule();
     SmartDashboard.putData("Field", m_field);
+
+    soundSettings.AllowMusicDurDisable = true;
+    // adds all of the swerve pod motors as instruments for playing music via the orchestra (jukebox)
+    for(int i = 0; i<4; i++){
+      jukebox.addInstrument(m_robotContainer.drivetrain.getModule(i).getDriveMotor(), 0);
+      jukebox.addInstrument(m_robotContainer.drivetrain.getModule(i).getSteerMotor(), 1);
+    }
+    // adds the thing to the jukebox
+    jukebox.loadMusic("BuddyHollyRiff.chrp");
   }
 
   @Override
@@ -91,6 +109,13 @@ public class Robot extends TimedRobot {
     if (!isEStop && DriverStation.isEStopped()) {
       isEStop = true;
       RobotContainer.prettyLights.isEStop();
+      // for patrick
+      if(!isFMS){
+        jukebox.stop();
+        jukebox.loadMusic("WTTBPchrp.chrp");
+        jukebox.play();
+      }
+      
     }
 
     if (RobotController.getBatteryVoltage() < LEDConstants.BATTERY_WARNING_VOLTAGE) {
@@ -169,6 +194,12 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    if(!isFMS){
+      // hopefully plays the music when the robot is enabled (when not connected to an fms)
+      // TODO: figure out how to bind this to a button in RobotContainer later
+      jukebox.play();
+    }
+    
   }
 
   @Override
