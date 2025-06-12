@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
       // for patrick
       if(!isFMS){
         jukebox.stop();
-        jukebox.loadMusic("WTTBPchrp.chrp");
+        jukebox.loadMusic("blackParade.chrp");
         jukebox.play();
       }
       
