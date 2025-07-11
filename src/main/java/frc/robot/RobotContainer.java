@@ -81,11 +81,11 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
     private boolean isButtonBox = true;
-    private boolean rookieMode = false; // for people new to drive team
-    private boolean superRookieMode = false; // for demos and such
+    private boolean rookieMode = true; // for people new to drive team
+    private boolean superRookieMode = true; // for demos and such (overrides rookieMode)
     private double MaxSpeed = BetaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
                                                                                       // top speed
-    
+
     private double MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 1 rotation per second
                                                                                    // max angular velocity
 
@@ -268,7 +268,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         // adjusts drive speed based on if the robot is in rookie mode
-        if(superRookieMode) {
+        if (superRookieMode) {
             rookieMode = false;
             MaxSpeed = MaxSpeed * 0.25;
         } else if (rookieMode) {
