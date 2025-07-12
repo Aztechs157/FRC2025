@@ -57,12 +57,13 @@ public class Robot extends TimedRobot {
   public static boolean isFMS = false;
   public static boolean isEStop = false;
   public static boolean isBatteryLow = false;
+  public static int musicTimer = 0;
 
   // creates an orchestra, for playing .chrp music files over our motors
   public static Orchestra jukebox = new Orchestra();
   // creates audio config, for enabling play when disabled
   private AudioConfigs soundSettings = new AudioConfigs();
-  
+
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
     String path = Filesystem.getDeployDirectory().getPath() + "\\ElasticLayout";
@@ -84,8 +85,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Field", m_field);
 
     soundSettings.AllowMusicDurDisable = true;
-    // adds all of the swerve pod motors as instruments for playing music via the orchestra (jukebox)
-    for(int i = 0; i<4; i++){
+    // adds all of the swerve pod motors as instruments for playing music via the
+    // orchestra (jukebox)
+    for (int i = 0; i < 4; i++) {
       jukebox.addInstrument(m_robotContainer.drivetrain.getModule(i).getDriveMotor(), 0);
       jukebox.addInstrument(m_robotContainer.drivetrain.getModule(i).getSteerMotor(), 1);
     }
@@ -110,12 +112,12 @@ public class Robot extends TimedRobot {
       isEStop = true;
       RobotContainer.prettyLights.isEStop();
       // for patrick
-      if(!isFMS){
-        jukebox.stop();
+      if (!isFMS) {
+        jukebox.pause();
         jukebox.loadMusic("blackParade.chrp");
         jukebox.play();
       }
-      
+
     }
 
     if (RobotController.getBatteryVoltage() < LEDConstants.BATTERY_WARNING_VOLTAGE) {
@@ -194,17 +196,25 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    if(!isFMS){
-      // hopefully plays the music when the robot is enabled (when not connected to an fms)
-      // TODO: figure out how to bind this to a button in RobotContainer later
-      jukebox.play();
-    }
-    
+
   }
 
   @Override
   public void teleopPeriodic() {
     m_robotContainer.updateVisionPose(false);
+    if (!isFMS) {
+      // hopefully plays the music when the robot is enabled (when not connected to an
+      // fms)
+      // TODO: figure out how to bind this to a button in RobotContainer later
+      if (musicTimer == 0) {
+        jukebox.play();
+      }
+      if (musicTimer == 500) {
+        jukebox.pause();
+      }
+
+      musicTimer++;
+    }
   }
 
   @Override
