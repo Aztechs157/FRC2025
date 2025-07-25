@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
     PathfindingCommand.warmupCommand().schedule();
     SmartDashboard.putData("Field", m_field);
 
-    soundSettings.AllowMusicDurDisable = true;
+    soundSettings.withAllowMusicDurDisable(!isFMS);
     // adds all of the swerve pod motors as instruments for playing music via the
     // orchestra (jukebox)
     for (int i = 0; i < 4; i++) {
@@ -112,11 +112,6 @@ public class Robot extends TimedRobot {
       isEStop = true;
       RobotContainer.prettyLights.isEStop();
       // for patrick
-      if (!isFMS) {
-        jukebox.pause();
-        jukebox.loadMusic("blackParade.chrp");
-        jukebox.play();
-      }
 
     }
 
@@ -209,7 +204,7 @@ public class Robot extends TimedRobot {
       if (musicTimer == 0) {
         jukebox.play();
       }
-      if (musicTimer == 500) {
+      if (musicTimer == 250) {
         jukebox.pause();
       }
 
@@ -219,6 +214,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopExit() {
+    if (!isFMS) {
+      jukebox.loadMusic("blackParade.chrp");
+      jukebox.play();
+    }
   }
 
   @Override
