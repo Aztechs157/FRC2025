@@ -198,8 +198,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_robotContainer.updateVisionPose(false);
     if (!isFMS) {
-      // hopefully plays the music when the robot is enabled (when not connected to an
-      // fms)
+      // Plays the music when the robot is enabled (when not connected to an fms)
       // TODO: figure out how to bind this to a button in RobotContainer later
       if (musicTimer == 0) {
         jukebox.play();
@@ -214,10 +213,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopExit() {
-    if (!isFMS) {
-      jukebox.loadMusic("blackParade.chrp");
-      jukebox.play();
-    }
   }
 
   @Override
