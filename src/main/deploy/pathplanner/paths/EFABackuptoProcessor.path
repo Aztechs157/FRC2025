@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.617,
+        "x": 5.617274259964452,
         "y": 2.0999244079617188
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.42805160802456,
-        "y": 2.4254072721341777
+        "x": 5.9915988453481965,
+        "y": 1.779797342816422
       },
       "isLocked": false,
       "linkedName": "F4Backup"
     },
     {
       "anchor": {
-        "x": 5.15,
-        "y": 2.875
+        "x": 6.0,
+        "y": 0.9861168032786872
       },
       "prevControl": {
-        "x": 5.301980303885131,
-        "y": 2.586492883395789
+        "x": 5.985471443506996,
+        "y": 1.3998984286619838
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "EFAlgae"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,

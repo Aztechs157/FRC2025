@@ -72,7 +72,6 @@ import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.ElbowSystem;
 import frc.robot.subsystems.WristSystem;
-// import frc.robot.subsystems.VisionSystem;
 import frc.robot.subsystems.UppiesSystem;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.ButtonBox;
@@ -82,10 +81,13 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
     private boolean isButtonBox = true;
-    private double MaxSpeed = AlphaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
-                                                                                       // speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
-                                                                                      // max angular velocity
+    private boolean rookieMode = true; // for people new to drive team
+    private boolean superRookieMode = true; // for demos and such (overrides rookieMode)
+    private double MaxSpeed = BetaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
+                                                                                      // top speed
+
+    private double MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 1 rotation per second
+                                                                                   // max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -265,6 +267,13 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        // adjusts drive speed based on if the robot is in rookie mode
+        if (superRookieMode) {
+            rookieMode = false;
+            MaxSpeed = MaxSpeed * 0.25;
+        } else if (rookieMode) {
+            MaxSpeed = MaxSpeed * 0.5;
+        }
 
         if (isButtonBox) {
             buttonBox = new ButtonBox(1);
@@ -286,6 +295,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("GoToStage3", GoToStage3());
         NamedCommands.registerCommand("GoToStage4", GoToStage4());
         NamedCommands.registerCommand("GoToBarge", GoToBarge());
+        NamedCommands.registerCommand("GoToProcessor", GoToProcessor());
 
         NamedCommands.registerCommand("GoToCoralStationStage", GoToCoralStationStage());
         NamedCommands.registerCommand("GoToAlgaeStageLow", GoToAlgaeStageLow());
