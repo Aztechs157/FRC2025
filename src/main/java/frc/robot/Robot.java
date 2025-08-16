@@ -10,6 +10,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -23,6 +30,7 @@ import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.epilogue.logging.FileBackend;
 import edu.wpi.first.epilogue.logging.errors.ErrorHandler;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -41,7 +49,7 @@ import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
 
 @Logged(strategy = Strategy.OPT_IN)
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private String autoName, newAutoName;
   private Optional<Alliance> alliance, newAlliance;
@@ -62,6 +70,20 @@ public class Robot extends TimedRobot {
   }
 
   public Robot() {
+
+    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    if (isReal()) {
+      Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+      Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+    } else {
+      setUseTiming(false); // Run as fast as possible
+      String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+      Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+      Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+    }
+
+    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
+                    // be added.
     DataLogManager.start("/media/sda1/logs/RIO");
     Epilogue.configure(config -> {
       config.backend = new FileBackend(DataLogManager.getLog());
@@ -77,6 +99,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+
+    Logger.recordOutput("ZeroedComponentPoses",
+        new Pose3d[] { new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d() });
+
     CommandScheduler.getInstance().run();
     // m_robotContainer.updateVisionPose(true);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
