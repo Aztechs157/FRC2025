@@ -251,4 +251,11 @@ public class Constants {
         // The voltage at which the battery warning lights will flash.
         public static final double BATTERY_WARNING_VOLTAGE = 11.5;
     }
+
+    public static class ModifierConstants { 
+        // When true, reduces drive speed by 50%.
+        public static final boolean ROOKIE_MODE = true;
+        // When true, reduces drive speed by 75% and disables auto positioning. Overrides ROOKIE_MODE.
+        public static final boolean DEMO_MODE = true;
+    }
 }

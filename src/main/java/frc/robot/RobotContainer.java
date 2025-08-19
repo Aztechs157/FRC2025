@@ -45,6 +45,7 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.ModifierConstants;
 import frc.robot.commands.VisionCommands.DriveToPose;
 import frc.robot.commands.VisionCommands.SetTargetTag;
 import frc.robot.commands.elbow_commands.ElbowGoToPosition;
@@ -81,8 +82,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
     private boolean isButtonBox = true;
-    private boolean rookieMode = true; // for people new to drive team
-    private boolean superRookieMode = true; // for demos and such (overrides rookieMode)
+    
     private double MaxSpeed = BetaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
                                                                                       // top speed
 
@@ -267,11 +267,10 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        // adjusts drive speed based on if the robot is in rookie mode
-        if (superRookieMode) {
-            rookieMode = false;
+        // Adjusts drive speed based on if the robot is in rookie/demo mode.
+        if (ModifierConstants.DEMO_MODE) {
             MaxSpeed = MaxSpeed * 0.25;
-        } else if (rookieMode) {
+        } else if (ModifierConstants.ROOKIE_MODE) {
             MaxSpeed = MaxSpeed * 0.5;
         }
 
@@ -363,7 +362,11 @@ public class RobotContainer {
             driverController.x().onTrue(GoToAlgaeStageLow());
             driverController.y().onTrue(GoToAlgaeStageHigh());
         }
-        useAutoPosCommand.schedule();
+        // Only enables auto positioning by default if demo mode is inactive.
+        if(!ModifierConstants.DEMO_MODE){
+            useAutoPosCommand.schedule();
+        }
+
         driverController.rightStick().and(driverController.leftStick()).toggleOnTrue(useAutoPosCommand);
 
         driverController.b().whileTrue(drivetrain.applyRequest(() -> brake));
