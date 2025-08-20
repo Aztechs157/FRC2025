@@ -363,6 +363,8 @@ public class RobotContainer {
             driverController.y().onTrue(GoToAlgaeStageHigh());
         }
         // Only enables auto positioning by default if demo mode is inactive.
+        // TODO: Test this on physical robot.
+        // Works in simulator under various cases (only rookie mode, only demo mode, both, neither).
         if(!ModifierConstants.DEMO_MODE){
             useAutoPosCommand.schedule();
         }
