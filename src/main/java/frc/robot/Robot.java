@@ -25,6 +25,7 @@ import edu.wpi.first.epilogue.logging.errors.ErrorHandler;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
@@ -39,7 +40,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.RobotController;
+
 import frc.robot.Constants.LEDConstants;
+import frc.robot.subsystems.UppiesSystem;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
 
@@ -66,7 +69,8 @@ public class Robot extends TimedRobot {
   // creates a publisher to send zeroed Pose3d values to NT for model calibration.
   public static StructArrayPublisher<Pose3d> zeroedPoses = NetworkTableInstance.getDefault()
   .getStructArrayTopic("ZeroedComponentPoses", Pose3d.struct).publish();
-
+  public static StructArrayPublisher<Pose3d> finalPoses = NetworkTableInstance.getDefault()
+  .getStructArrayTopic("FinalComponentPoses", Pose3d.struct).publish();
   public Robot() {
     DataLogManager.start("/media/sda1/logs/RIO");
     Epilogue.configure(config -> {
@@ -84,8 +88,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // publishes zeroed component poses to NT
+    // note to self, rotation3d uses radians.
     zeroedPoses.set(new Pose3d[] {new Pose3d(), new Pose3d(), 
-      new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d(),});
+      new Pose3d(), new Pose3d(), new Pose3d()});
+    finalPoses.set(new Pose3d[] {new Pose3d(), new Pose3d(), 
+      new Pose3d(), new Pose3d(), new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0.0, m_robotContainer.uppies.getScaledPosAngle(), 0.0))});
     
     CommandScheduler.getInstance().run();
     // m_robotContainer.updateVisionPose(true);

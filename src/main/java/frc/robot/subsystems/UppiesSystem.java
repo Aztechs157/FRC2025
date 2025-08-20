@@ -109,6 +109,12 @@ public class UppiesSystem extends SubsystemBase {
         1.0);
   }
 
+  public double getScaledPosAngle() {
+    // returns uppies position scaled between the rough angles of the system, but as radians.
+    return PosUtils.mapRange(getPos(), UppiesConstants.MIN_POSITION, UppiesConstants.MAX_POSITION, -0.2, 
+    -2);
+  }
+
   public boolean atPosition(double position) {
     boolean reached = false;
     if ((getScaledPos() - UppiesConstants.LIMIT_MARGIN) <= position) {

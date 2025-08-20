@@ -112,7 +112,7 @@ public class RobotContainer {
             : AlphaTunerConstants.createDrivetrain();
 
     @Logged(name = "uppies")
-    private final UppiesSystem uppies = new UppiesSystem(isBeta.get());
+    public final UppiesSystem uppies = new UppiesSystem(isBeta.get());
 
     @Logged(name = "elevator")
     private final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
