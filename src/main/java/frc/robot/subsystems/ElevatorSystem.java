@@ -179,6 +179,36 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
           0.0, 1.0);
     }
   }
+  /**
+   * Returns the rough current position of the Elevator in meters for AdvantageScope model use.
+   * 
+   * @return The current value of the encoder, as the carriage's distance from the base of the elevator.
+   */
+  public double getCarriagePosMeters() {
+    if (isBeta) {
+      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
+          1.4285);
+    } else {
+      return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
+          0.0, 1.4285);
+    }
+  }
+
+  /**
+   * Returns the rough current position of the Elevator in meters for AdvantageScope model use.
+   * 
+   * @return The current value of the encoder, as the carriage's distance from the base of the elevator.
+   */
+  public double getStageTwoPosMeters() {
+    if (isBeta) {
+      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
+          0.765);
+    } else {
+      return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
+          0.0, 0.765);
+    }
+  }
+
 
   /**
    * Checks if the elevator is at the specified limit switch.

@@ -112,6 +112,14 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
           1.0);
     }
   }
+  public double getScaledPosAngle() {
+    if (isBeta) {
+      return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MAX_POSITION, ElbowConstants.BETA_MIN_POSITION, -1.43, 1.0);
+    } else {
+      return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MAX_POSITION, ElbowConstants.ALPHA_MIN_POSITION, -1.43,
+          1.0);
+    }
+  }
 
   /**
    * Checks if the motor position is within tolerance (as set in Constants) of the

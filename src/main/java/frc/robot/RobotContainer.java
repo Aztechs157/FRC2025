@@ -115,7 +115,7 @@ public class RobotContainer {
     public final UppiesSystem uppies = new UppiesSystem(isBeta.get());
 
     @Logged(name = "elevator")
-    private final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
+    public final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
     @Logged(name = "intake")
     private final IntakeSystem intake = new IntakeSystem(isBeta.get());
     @Logged(name = "elbow")

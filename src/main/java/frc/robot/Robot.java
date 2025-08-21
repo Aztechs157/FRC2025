@@ -91,8 +91,26 @@ public class Robot extends TimedRobot {
     // note to self, rotation3d uses radians.
     zeroedPoses.set(new Pose3d[] {new Pose3d(), new Pose3d(), 
       new Pose3d(), new Pose3d(), new Pose3d()});
-    finalPoses.set(new Pose3d[] {new Pose3d(), new Pose3d(), 
-      new Pose3d(), new Pose3d(), new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0.0, m_robotContainer.uppies.getScaledPosAngle(), 0.0))});
+    // these will look really funny simulated because we aren't simulating 
+    // encoders (or really anything besides the drivetrain but that was
+    // prebaked) yet. will work better on real robot.
+     
+    finalPoses.set(new Pose3d[] {
+      // elevator stage 2 
+      new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()), 
+      // carriage 
+      new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()), 
+      // elbow and arm
+      new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, -1.43, 0)), 
+      // wrist and end effector
+      // TODO: figure out how to make this position based on the endpoint of the arm.
+      // logically, it should be doable? i think this is forward kinematics
+      // transform3d seemingly lets you move something relative to another something. look into that.
+      // TODO: also make a wrist angle getter
+      new Pose3d(0.725, 0.0, 0.35 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, 0, 0)), 
+      // climber
+      new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
+    });
     
     CommandScheduler.getInstance().run();
     // m_robotContainer.updateVisionPose(true);
