@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
@@ -66,11 +67,13 @@ public class Robot extends TimedRobot {
     WebServer.start(5800, path);
     // PortForwarder.add(5800, "localhost", 5900);
   }
+
   // creates a publisher to send zeroed Pose3d values to NT for model calibration.
   public static StructArrayPublisher<Pose3d> zeroedPoses = NetworkTableInstance.getDefault()
-  .getStructArrayTopic("ZeroedComponentPoses", Pose3d.struct).publish();
+      .getStructArrayTopic("ZeroedComponentPoses", Pose3d.struct).publish();
   public static StructArrayPublisher<Pose3d> finalPoses = NetworkTableInstance.getDefault()
-  .getStructArrayTopic("FinalComponentPoses", Pose3d.struct).publish();
+      .getStructArrayTopic("FinalComponentPoses", Pose3d.struct).publish();
+
   public Robot() {
     DataLogManager.start("/media/sda1/logs/RIO");
     Epilogue.configure(config -> {
@@ -89,29 +92,34 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     // publishes zeroed component poses to NT
     // note to self, rotation3d uses radians.
-    zeroedPoses.set(new Pose3d[] {new Pose3d(), new Pose3d(), 
-      new Pose3d(), new Pose3d(), new Pose3d()});
-    // these will look really funny simulated because we aren't simulating 
+    zeroedPoses.set(new Pose3d[] { new Pose3d(), new Pose3d(),
+        new Pose3d(), new Pose3d(), new Pose3d() });
+    // these will look really funny simulated because we aren't simulating
     // encoders (or really anything besides the drivetrain but that was
     // prebaked) yet. will work better on real robot.
-     
+
     finalPoses.set(new Pose3d[] {
-      // elevator stage 2 
-      new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()), 
-      // carriage 
-      new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()), 
-      // elbow and arm
-      new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, -1.43, 0)), 
-      // wrist and end effector
-      // TODO: figure out how to make this position based on the endpoint of the arm.
-      // logically, it should be doable? i think this is forward kinematics
-      // transform3d seemingly lets you move something relative to another something. look into that.
-      // TODO: also make a wrist angle getter
-      new Pose3d(0.725, 0.0, 0.35 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, 0, 0)), 
-      // climber
-      new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
+        // elevator stage 2
+        new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()),
+        // carriage
+        new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()),
+        // elbow and arm
+        new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(),
+            new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)),
+        // wrist and end effector
+        // TODO: figure out how to make this position based on the endpoint of the arm.
+        // logically, it should be doable? i think this is forward kinematics
+        // transform3d seemingly lets you move something relative to another something.
+        // look into that.
+        // TODO: also make a wrist angle getter
+        new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, 0, 0))
+            .transformBy(new Transform3d(0.411 * Math.cos(m_robotContainer.elbow.getScaledPosAngle()), 0,
+                -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()), new Rotation3d(0, 0, 0))),
+        // TODO: Make arm length a constant
+        // climber
+        new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
     });
-    
+
     CommandScheduler.getInstance().run();
     // m_robotContainer.updateVisionPose(true);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
