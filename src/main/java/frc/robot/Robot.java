@@ -106,16 +106,10 @@ public class Robot extends TimedRobot {
         // elbow and arm
         new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(),
             new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)),
-        // wrist and end effector
-        // TODO: figure out how to make this position based on the endpoint of the arm.
-        // logically, it should be doable? i think this is forward kinematics
-        // transform3d seemingly lets you move something relative to another something.
-        // look into that.
-        // TODO: also make a wrist angle getter
+        // wrist and intake
         new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, 0, 0))
             .transformBy(new Transform3d(0.411 * Math.cos(m_robotContainer.elbow.getScaledPosAngle()), 0,
-                -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()), new Rotation3d(0, 0, 0))),
-        // TODO: Make arm length a constant
+                -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()), new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
         // climber
         new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
     });

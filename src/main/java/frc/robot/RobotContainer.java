@@ -121,7 +121,7 @@ public class RobotContainer {
     @Logged(name = "elbow")
     public final ElbowSystem elbow = new ElbowSystem(isBeta.get());
     @Logged(name = "wrist")
-    private final WristSystem wrist = new WristSystem(isBeta.get());
+    public final WristSystem wrist = new WristSystem(isBeta.get());
     @Logged(name = "vision")
     public final VisionSystem visionSystem = new VisionSystem(prettyLights);
 

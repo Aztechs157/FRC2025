@@ -112,6 +112,11 @@ public class WristSystem extends SubsystemBase implements PosUtils {
         isBeta ? WristConstants.BETA_MAX_POSITION : WristConstants.ALPHA_MAX_POSITION, 0.0, 1.0);
   }
 
+  public double getScaledPosAngle() {
+    return PosUtils.mapRange(getPos(), isBeta ? WristConstants.BETA_MAX_POSITION : WristConstants.ALPHA_MAX_POSITION,
+        isBeta ? WristConstants.BETA_MIN_POSITION : WristConstants.ALPHA_MIN_POSITION, -0.7, 2.6);
+  }
+
   /**
    * Checks if the motor position is within tolerance (as set in Constants) of the
    * desired position, and is moving towards the desired position.
