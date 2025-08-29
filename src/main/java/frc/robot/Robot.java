@@ -107,9 +107,11 @@ public class Robot extends TimedRobot {
         new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(),
             new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)),
         // wrist and intake
-        new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d(0, 0, 0))
+        new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())
             .transformBy(new Transform3d(0.411 * Math.cos(m_robotContainer.elbow.getScaledPosAngle()), 0,
-                -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()), new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
+                -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()),
+                new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)))
+            .transformBy(new Transform3d(0, 0, 0, new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
         // climber
         new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
     });
