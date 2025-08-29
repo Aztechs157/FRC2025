@@ -82,7 +82,7 @@ import frc.utilities.ButtonBox.ButtonBoxButtons;
 public class RobotContainer {
     private DigitalInput isBeta = new DigitalInput(5);
     private boolean isButtonBox = true;
-    
+
     private double MaxSpeed = BetaTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired
                                                                                       // top speed
 
@@ -267,6 +267,8 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        SmartDashboard.putBoolean("Rookie Mode", ModifierConstants.ROOKIE_MODE);
+        SmartDashboard.putBoolean("Demo Mode", ModifierConstants.DEMO_MODE);
         // Adjusts drive speed based on if the robot is in rookie/demo mode.
         if (ModifierConstants.DEMO_MODE) {
             MaxSpeed = MaxSpeed * 0.25;
@@ -364,8 +366,9 @@ public class RobotContainer {
         }
         // Only enables auto positioning by default if demo mode is inactive.
         // TODO: Test this on physical robot.
-        // Works in simulator under various cases (only rookie mode, only demo mode, both, neither).
-        if(!ModifierConstants.DEMO_MODE){
+        // Works in simulator under various cases (only rookie mode, only demo mode,
+        // both, neither).
+        if (!ModifierConstants.DEMO_MODE) {
             useAutoPosCommand.schedule();
         }
 
