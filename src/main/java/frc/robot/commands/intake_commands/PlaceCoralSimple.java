@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ModifierConstants;
 import frc.robot.subsystems.IntakeSystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -29,7 +30,12 @@ public class PlaceCoralSimple extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeSystem.run(-IntakeConstants.PLACE_MOTOR_SPEED);
+    if (ModifierConstants.DEMO_MODE) {
+      this.intakeSystem.run(-IntakeConstants.PLACE_MOTOR_SPEED * 0.25);
+    } else {
+      this.intakeSystem.run(-IntakeConstants.PLACE_MOTOR_SPEED);
+    }
+
     timer.start();
     RobotContainer.prettyLights.removeMidPattern("Has Coral");
     RobotContainer.prettyLights.removeMidPattern("Has Algae");
