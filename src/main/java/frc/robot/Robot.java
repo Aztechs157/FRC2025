@@ -60,6 +60,10 @@ public class Robot extends TimedRobot {
   public static boolean isFMS = false;
   public static boolean isEStop = false;
   public static boolean isBatteryLow = false;
+  @Logged
+  public static Pose3d[] zeroArray = new Pose3d[5];
+  @Logged
+  public static Pose3d[] finalArray = new Pose3d[5];
 
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
@@ -90,15 +94,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // publishes zeroed component poses to NT
-    // note to self, rotation3d uses radians.
-    zeroedPoses.set(new Pose3d[] { new Pose3d(), new Pose3d(),
-        new Pose3d(), new Pose3d(), new Pose3d() });
-    // these will look really funny simulated because we aren't simulating
-    // encoders (or really anything besides the drivetrain but that was
-    // prebaked) yet. will work better on real robot.
+    zeroArray = new Pose3d[] { new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d() };
 
-    finalPoses.set(new Pose3d[] {
+    finalArray = new Pose3d[] {
         // elevator stage 2
         new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()),
         // carriage
@@ -114,7 +112,11 @@ public class Robot extends TimedRobot {
             .transformBy(new Transform3d(0, 0, 0, new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
         // climber
         new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
-    });
+    };
+    // publishes component poses to NT
+    // note to self, rotation3d uses radians.
+    zeroedPoses.set(zeroArray);
+    finalPoses.set(finalArray);
 
     CommandScheduler.getInstance().run();
     // m_robotContainer.updateVisionPose(true);

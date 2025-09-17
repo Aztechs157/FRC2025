@@ -74,14 +74,17 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
           ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
       Shuffleboard.getTab("Elevator Feedforward").addBoolean("Is ClosedLoop Running?", this::isClosedLoopRunning)
           .withWidget(BuiltInWidgets.kBooleanBox);
-      Shuffleboard.getTab("PID Tuning").add("Elevator PID", ElevatorConstants.BETA_NEW_PID).withWidget(BuiltInWidgets.kPIDController);
+      Shuffleboard.getTab("PID Tuning").add("Elevator PID", ElevatorConstants.BETA_NEW_PID)
+          .withWidget(BuiltInWidgets.kPIDController);
     } else {
       ElevatorConstants.ALPHA_NEW_PID.setTolerance(ElevatorConstants.POS_TOLERANCE,
           ElevatorConstants.MOTOR_VELOCITY_TOLERANCE);
-      Shuffleboard.getTab("PID Tuning").add("Elevator PID",ElevatorConstants.ALPHA_NEW_PID).withWidget(BuiltInWidgets.kPIDController);
+      Shuffleboard.getTab("PID Tuning").add("Elevator PID", ElevatorConstants.ALPHA_NEW_PID)
+          .withWidget(BuiltInWidgets.kPIDController);
     }
 
-    Shuffleboard.getTab("test").addDouble("Elevator Output", this::getMotorOutput).withWidget(BuiltInWidgets.kNumberBar);
+    Shuffleboard.getTab("test").addDouble("Elevator Output", this::getMotorOutput)
+        .withWidget(BuiltInWidgets.kNumberBar);
 
   }
 
@@ -179,36 +182,40 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
           0.0, 1.0);
     }
   }
+
   /**
-   * Returns the rough current position of the Elevator in meters for AdvantageScope model use.
+   * Returns the rough current position of the Elevator in meters for
+   * AdvantageScope model use.
    * 
-   * @return The current value of the encoder, as the carriage's distance from the base of the elevator.
+   * @return The current value of the encoder, as the carriage's distance from the
+   *         base of the elevator.
    */
   public double getCarriagePosMeters() {
     if (isBeta) {
       return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
-          1.4285);
+          1.3285);
     } else {
       return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
-          0.0, 1.4285);
+          0.0, 1.3285);
     }
   }
 
   /**
-   * Returns the rough current position of the Elevator in meters for AdvantageScope model use.
+   * Returns the rough current position of the Elevator in meters for
+   * AdvantageScope model use.
    * 
-   * @return The current value of the encoder, as the carriage's distance from the base of the elevator.
+   * @return The current value of the encoder, as the carriage's distance from the
+   *         base of the elevator.
    */
   public double getStageTwoPosMeters() {
     if (isBeta) {
       return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
-          0.765);
+          0.665);
     } else {
       return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
-          0.0, 0.765);
+          0.0, 0.665);
     }
   }
-
 
   /**
    * Checks if the elevator is at the specified limit switch.
