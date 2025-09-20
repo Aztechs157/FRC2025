@@ -272,6 +272,7 @@ public class RobotContainer {
         // Adjusts drive speed based on if the robot is in rookie/demo mode.
         if (ModifierConstants.DEMO_MODE) {
             MaxSpeed = MaxSpeed * 0.25;
+            MaxAngularRate = MaxAngularRate * 0.25;
         } else if (ModifierConstants.ROOKIE_MODE) {
             MaxSpeed = MaxSpeed * 0.5;
         }
