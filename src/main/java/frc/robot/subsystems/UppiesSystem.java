@@ -109,8 +109,12 @@ public class UppiesSystem extends SubsystemBase {
         1.0);
   }
 
+  /**
+   * Gets the current angle of Uppies for AdvantageScope model use.
+   * 
+   * @return - the uppies encoder value, scaled to radians
+   */
   public double getScaledPosAngle() {
-    // returns uppies position scaled between the rough angles of the system, but as radians.
     return PosUtils.mapRange(getPos(), UppiesConstants.MIN_POSITION, UppiesConstants.MAX_POSITION, -0.2, 
     -2);
   }

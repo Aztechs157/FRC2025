@@ -114,7 +114,6 @@ public class Robot extends TimedRobot {
         new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
     };
     // publishes component poses to NT
-    // note to self, rotation3d uses radians.
     zeroedPoses.set(zeroArray);
     finalPoses.set(finalArray);
 

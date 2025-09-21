@@ -184,7 +184,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Returns the rough current position of the Elevator in meters for
+   * Gets the current position of the Elevator in meters for
    * AdvantageScope model use.
    * 
    * @return The current value of the encoder, as the carriage's distance from the
@@ -201,10 +201,10 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Returns the rough current position of the Elevator in meters for
+   * Gets the current position of the Elevator in meters for
    * AdvantageScope model use.
    * 
-   * @return The current value of the encoder, as the carriage's distance from the
+   * @return The current value of the encoder, as the stage two's distance from the
    *         base of the elevator.
    */
   public double getStageTwoPosMeters() {
