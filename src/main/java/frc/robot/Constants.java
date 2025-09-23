@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -250,5 +251,12 @@ public class Constants {
         public static final double DISTANCE_PER_LED = 15;
         // The voltage at which the battery warning lights will flash.
         public static final double BATTERY_WARNING_VOLTAGE = 11.5;
+    }
+
+    public static class ModelConstants {
+        
+        public static final Pose3d ELEVATOR_OFFSET = new Pose3d(0.1905, 0.0, 0.26, new Rotation3d());
+        public static final Pose3d ELBOW_OFFSET = new Pose3d(0.26, 0.0, 0.29, new Rotation3d());
+        public static final Pose3d UPPIES_OFFSET = new Pose3d(-0.28, 0.0, 0.38, new Rotation3d());
     }
 }

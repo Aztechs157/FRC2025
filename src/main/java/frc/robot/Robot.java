@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.RobotController;
 
 import frc.robot.Constants.LEDConstants;
+import frc.robot.Constants.ModelConstants;
 import frc.robot.subsystems.UppiesSystem;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
@@ -98,7 +99,11 @@ public class Robot extends TimedRobot {
 
     finalArray = new Pose3d[] {
         // elevator stage 2
+        // old
         new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()),
+        // new
+        ModelConstants.ELEVATOR_OFFSET.transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getStageTwoPosMeters(),
+            new Rotation3d())),
         // carriage
         new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()),
         // elbow and arm
