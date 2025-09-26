@@ -113,9 +113,9 @@ public class WristSystem extends SubsystemBase implements PosUtils {
   }
 
    /**
-   * Returns the current position of the Wrist relative to the Arm for AdvantageScope model use.
+   * Returns the current position of the Wrist for AdvantageScope model use.
    * 
-   * @return The current value of the encoder, as a rotation in radians.
+   * @return The current value of the encoder, as a rotation in radians, relative to the Wrist's physical limits.
    */
   public double getScaledPosAngle() {
     return PosUtils.mapRange(getPos(), isBeta ? WristConstants.BETA_MAX_POSITION : WristConstants.ALPHA_MAX_POSITION,

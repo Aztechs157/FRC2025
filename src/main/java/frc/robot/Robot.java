@@ -95,20 +95,23 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    // TODO: do we need to keep this if the model is sufficiently calibrated?
     zeroArray = new Pose3d[] { new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d() };
 
     finalArray = new Pose3d[] {
         // elevator stage 2
-        // old
-        new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()),
-        // new
+        // new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()),
         ModelConstants.ELEVATOR_OFFSET.transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getStageTwoPosMeters(),
             new Rotation3d())),
         // carriage
-        new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()),
+        // new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()),
+        ModelConstants.ELEVATOR_OFFSET.transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())),
         // elbow and arm
-        new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(),
-            new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)),
+        ModelConstants.ELBOW_OFFSET.transformBy(new Transform3d(0, 0, 0,
+            new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0))),
+            
+        // new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(),
+        //     new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)),
         // wrist and intake
         new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())
             .transformBy(new Transform3d(0.411 * Math.cos(m_robotContainer.elbow.getScaledPosAngle()), 0,
