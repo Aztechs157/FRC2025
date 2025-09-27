@@ -95,34 +95,38 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // TODO: do we need to keep this if the model is sufficiently calibrated?
-    zeroArray = new Pose3d[] { new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d(), new Pose3d() };
+    // these are just for model calibration
+    // zeroArray = new Pose3d[] { new Pose3d(), new Pose3d(),
+    // new Pose3d(), new Pose3d(), new Pose3d() };
+    // zeroedPoses.set(zeroArray);
 
     finalArray = new Pose3d[] {
         // elevator stage 2
-        // new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d()),
-        ModelConstants.ELEVATOR_OFFSET.transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getStageTwoPosMeters(),
-            new Rotation3d())),
+        ModelConstants.ELEVATOR_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d())),
+
         // carriage
-        // new Pose3d(0.1905, 0.0, 0.26 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()),
-        ModelConstants.ELEVATOR_OFFSET.transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())),
+        ModelConstants.ELEVATOR_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())),
+
         // elbow and arm
-        ModelConstants.ELBOW_OFFSET.transformBy(new Transform3d(0, 0, 0,
-            new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0))),
-            
-        // new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(),
-        //     new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)),
+        ModelConstants.ELBOW_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(),
+                new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0))),
+
         // wrist and intake
-        new Pose3d(0.26, 0.0, 0.29 + m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())
+        ModelConstants.ELBOW_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()))
             .transformBy(new Transform3d(0.411 * Math.cos(m_robotContainer.elbow.getScaledPosAngle()), 0,
                 -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()),
                 new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)))
             .transformBy(new Transform3d(0, 0, 0, new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
-        // climber
-        new Pose3d(-0.28, 0.0, 0.38, new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))
+
+        // uppies
+        ModelConstants.UPPIES_OFFSET.transformBy(new Transform3d(0, 0, 0,
+            new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))),
     };
     // publishes component poses to NT
-    zeroedPoses.set(zeroArray);
     finalPoses.set(finalArray);
 
     CommandScheduler.getInstance().run();

@@ -114,13 +114,16 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
   }
 
   /**
-   * Gets the current angle of the elbow relative to the elevator for AdvantageScope model use.
+   * Gets the current angle of the elbow relative to the elevator for
+   * AdvantageScope model use.
    * 
-   * @return The current value of the encoder, scaled to radians
+   * @return The current value of the encoder, scaled to radians, relative to its
+   *         physical limits.
    */
   public double getScaledPosAngle() {
     if (isBeta) {
-      return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MAX_POSITION, ElbowConstants.BETA_MIN_POSITION, -1.43, 1.0);
+      return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MAX_POSITION, ElbowConstants.BETA_MIN_POSITION, -1.43,
+          1.0);
     } else {
       return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MAX_POSITION, ElbowConstants.ALPHA_MIN_POSITION, -1.43,
           1.0);
