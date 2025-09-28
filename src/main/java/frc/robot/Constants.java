@@ -254,7 +254,8 @@ public class Constants {
     }
 
     public static class ModelConstants {
-        
+        // Offsets of each major subsytem, in meters, relative to 
+        // robot center (floor), for use with the AdvantageScope model.
         public static final Pose3d ELEVATOR_OFFSET = new Pose3d(0.1905, 0.0, 0.26, new Rotation3d());
         public static final Pose3d ELBOW_OFFSET = new Pose3d(0.26, 0.0, 0.29, new Rotation3d());
         public static final Pose3d UPPIES_OFFSET = new Pose3d(-0.28, 0.0, 0.38, new Rotation3d());

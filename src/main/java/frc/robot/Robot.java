@@ -123,8 +123,9 @@ public class Robot extends TimedRobot {
             .transformBy(new Transform3d(0, 0, 0, new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
 
         // uppies
-        ModelConstants.UPPIES_OFFSET.transformBy(new Transform3d(0, 0, 0,
-            new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))),
+        ModelConstants.UPPIES_OFFSET
+            .transformBy(new Transform3d(0, 0, 0,
+                new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))),
     };
     // publishes component poses to NT
     finalPoses.set(finalArray);
