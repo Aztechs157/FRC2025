@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.ModelConstants;
 import frc.utilities.PosUtils;
 
 @Logged(strategy = Strategy.OPT_OUT)
@@ -192,11 +193,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public double getCarriagePosMeters() {
     if (isBeta) {
-      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
-          1.3285);
+      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 
+          0.0, ModelConstants.CARRIAGE_MAX_HEIGHT);
     } else {
       return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
-          0.0, 1.3285);
+          0.0, ModelConstants.CARRIAGE_MAX_HEIGHT);
     }
   }
 
@@ -209,11 +210,11 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
    */
   public double getStageTwoPosMeters() {
     if (isBeta) {
-      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 0.0,
-          0.665);
+      return PosUtils.mapRange(getPos(), ElevatorConstants.BETA_MIN_POSITION, ElevatorConstants.BETA_MAX_POSITION, 
+          0.0, ModelConstants.STAGE_TWO_MAX_HEIGHT);
     } else {
       return PosUtils.mapRange(getPos(), ElevatorConstants.ALPHA_MIN_POSITION, ElevatorConstants.ALPHA_MAX_POSITION,
-          0.0, 0.665);
+          0.0, ModelConstants.STAGE_TWO_MAX_HEIGHT);
     }
   }
 

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.ModelConstants;
 import frc.utilities.PosUtils;
 
 @Logged(strategy = Strategy.OPT_OUT)
@@ -120,13 +121,15 @@ public class ElbowSystem extends SubsystemBase implements PosUtils {
    * @return The current value of the encoder, scaled to radians, relative to its
    *         physical limits.
    */
+
+   // TODO: check if we can just do min->max instead for consistency?
   public double getScaledPosAngle() {
     if (isBeta) {
-      return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MAX_POSITION, ElbowConstants.BETA_MIN_POSITION, -1.43,
-          1.0);
+      return PosUtils.mapRange(getPos(), ElbowConstants.BETA_MAX_POSITION, ElbowConstants.BETA_MIN_POSITION, 
+         ModelConstants.ELBOW_MAX_ANGLE, ModelConstants.ELBOW_MIN_ANGLE);
     } else {
-      return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MAX_POSITION, ElbowConstants.ALPHA_MIN_POSITION, -1.43,
-          1.0);
+      return PosUtils.mapRange(getPos(), ElbowConstants.ALPHA_MAX_POSITION, ElbowConstants.ALPHA_MIN_POSITION, 
+          ModelConstants.ELBOW_MAX_ANGLE, ModelConstants.ELBOW_MIN_ANGLE);
     }
   }
 

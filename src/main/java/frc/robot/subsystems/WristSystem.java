@@ -21,8 +21,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.ElbowConstants;
+import frc.robot.Constants.ModelConstants;
 import frc.robot.Constants.WristConstants;
+
 import frc.utilities.PosUtils;
 
 @Logged(strategy = Strategy.OPT_OUT)
@@ -117,9 +120,11 @@ public class WristSystem extends SubsystemBase implements PosUtils {
    * 
    * @return The current value of the encoder, as a rotation in radians, relative to the Wrist's physical limits.
    */
+  // TODO: check if this can be min->max instead for consistency
+  // TODO: also see if we can convert the other getters to use this alpha/beta logic?
   public double getScaledPosAngle() {
     return PosUtils.mapRange(getPos(), isBeta ? WristConstants.BETA_MAX_POSITION : WristConstants.ALPHA_MAX_POSITION,
-        isBeta ? WristConstants.BETA_MIN_POSITION : WristConstants.ALPHA_MIN_POSITION, -0.7, 2.6);
+        isBeta ? WristConstants.BETA_MIN_POSITION : WristConstants.ALPHA_MIN_POSITION, ModelConstants.WRIST_MAX_ANGLE, ModelConstants.WRIST_MIN_ANGLE);
   }
 
   /**
