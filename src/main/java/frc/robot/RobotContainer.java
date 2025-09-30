@@ -112,16 +112,16 @@ public class RobotContainer {
             : AlphaTunerConstants.createDrivetrain();
 
     @Logged(name = "uppies")
-    private final UppiesSystem uppies = new UppiesSystem(isBeta.get());
+    public final UppiesSystem uppies = new UppiesSystem(isBeta.get());
 
     @Logged(name = "elevator")
-    private final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
+    public final ElevatorSystem elevator = new ElevatorSystem(isBeta.get());
     @Logged(name = "intake")
     private final IntakeSystem intake = new IntakeSystem(isBeta.get());
     @Logged(name = "elbow")
-    private final ElbowSystem elbow = new ElbowSystem(isBeta.get());
+    public final ElbowSystem elbow = new ElbowSystem(isBeta.get());
     @Logged(name = "wrist")
-    private final WristSystem wrist = new WristSystem(isBeta.get());
+    public final WristSystem wrist = new WristSystem(isBeta.get());
     @Logged(name = "vision")
     public final VisionSystem visionSystem = new VisionSystem(prettyLights);
 

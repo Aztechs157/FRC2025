@@ -21,10 +21,13 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.ElbowConstants;
+import frc.robot.Constants.ModelConstants;
 import frc.robot.Constants.UppiesConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.RobotContainer;
+
 import frc.utilities.PosUtils;
 
 @Logged(strategy = Strategy.OPT_OUT)
@@ -107,6 +110,16 @@ public class UppiesSystem extends SubsystemBase {
   public double getScaledPos() {
     return PosUtils.mapRange(getPos(), UppiesConstants.MIN_POSITION, UppiesConstants.MAX_POSITION, 0.0,
         1.0);
+  }
+
+  /**
+   * Gets the current angle of Uppies for AdvantageScope model use.
+   * 
+   * @return - the uppies encoder value, scaled to radians, relative to its physical limits
+   */
+  public double getScaledPosAngle() {
+    return PosUtils.mapRange(getPos(), UppiesConstants.MIN_POSITION, UppiesConstants.MAX_POSITION, 
+        ModelConstants.UPPIES_MIN_ANGLE, ModelConstants.UPPIES_MAX_ANGLE);
   }
 
   public boolean atPosition(double position) {

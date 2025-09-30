@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -259,6 +260,22 @@ public class Constants {
         public static final double DISTANCE_PER_LED = 15;
         // The voltage at which the battery warning lights will flash.
         public static final double BATTERY_WARNING_VOLTAGE = 11.5;
+    }
+
+    public static class ModelConstants {
+        // Offsets of each major subsytem, in meters, relative to 
+        // robot center (floor), for use with the AdvantageScope model.
+        public static final Pose3d ELEVATOR_OFFSET = new Pose3d(0.1905, 0.0, 0.26, new Rotation3d());
+        public static final Pose3d ELBOW_OFFSET = new Pose3d(0.26, 0.0, 0.29, new Rotation3d());
+        public static final Pose3d UPPIES_OFFSET = new Pose3d(-0.28, 0.0, 0.38, new Rotation3d());
+        /** Maximum height, in meters, for each component of the elevator. */
+        public static final double CARRIAGE_MAX_HEIGHT = 1.3285, STAGE_TWO_MAX_HEIGHT = 0.665;
+        /** Angle limits, in radians, of the elbow. */
+        public static final double ELBOW_MAX_ANGLE = -1.43, ELBOW_MIN_ANGLE = 1.0;
+        /** Angle limits, in radians, of the climber. */
+        public static final double UPPIES_MIN_ANGLE = -0.2, UPPIES_MAX_ANGLE = -2;
+        /** Angle limits, in radians, of the wrist. */
+        public static final double WRIST_MIN_ANGLE = 2.6, WRIST_MAX_ANGLE = -0.7;        
     }
 
 }

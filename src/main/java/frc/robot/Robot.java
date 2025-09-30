@@ -23,8 +23,13 @@ import edu.wpi.first.epilogue.Logged.Strategy;
 import edu.wpi.first.epilogue.logging.FileBackend;
 import edu.wpi.first.epilogue.logging.errors.ErrorHandler;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.net.WebServer;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -36,7 +41,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.RobotController;
+
 import frc.robot.Constants.LEDConstants;
+import frc.robot.Constants.ModelConstants;
+import frc.robot.subsystems.UppiesSystem;
 import frc.robot.subsystems.VisionSystem;
 import frc.utilities.PosUtils;
 
@@ -53,6 +61,10 @@ public class Robot extends TimedRobot {
   public static boolean isFMS = false;
   public static boolean isEStop = false;
   public static boolean isBatteryLow = false;
+  @Logged
+  public static Pose3d[] zeroArray = new Pose3d[5];
+  @Logged
+  public static Pose3d[] finalArray = new Pose3d[5];
 
   static void startServer() {
     System.out.println("I AM STARTING WEBSERVER =======================================================");
@@ -60,6 +72,12 @@ public class Robot extends TimedRobot {
     WebServer.start(5800, path);
     // PortForwarder.add(5800, "localhost", 5900);
   }
+
+  // creates a publisher to send zeroed Pose3d values to NT for model calibration.
+  public static StructArrayPublisher<Pose3d> zeroedPoses = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("ZeroedComponentPoses", Pose3d.struct).publish();
+  public static StructArrayPublisher<Pose3d> finalPoses = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("FinalComponentPoses", Pose3d.struct).publish();
 
   public Robot() {
     DataLogManager.start("/media/sda1/logs/RIO");
@@ -77,6 +95,41 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    // these are just for model calibration
+    // zeroArray = new Pose3d[] { new Pose3d(), new Pose3d(),
+    // new Pose3d(), new Pose3d(), new Pose3d() };
+    // zeroedPoses.set(zeroArray);
+
+    finalArray = new Pose3d[] {
+        // elevator stage 2
+        ModelConstants.ELEVATOR_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d())),
+
+        // carriage
+        ModelConstants.ELEVATOR_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())),
+
+        // elbow and arm
+        ModelConstants.ELBOW_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(),
+                new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0))),
+
+        // wrist and intake
+        ModelConstants.ELBOW_OFFSET
+            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d()))
+            .transformBy(new Transform3d(0.411 * Math.cos(m_robotContainer.elbow.getScaledPosAngle()), 0,
+                -0.411 * Math.sin(m_robotContainer.elbow.getScaledPosAngle()),
+                new Rotation3d(0, m_robotContainer.elbow.getScaledPosAngle(), 0)))
+            .transformBy(new Transform3d(0, 0, 0, new Rotation3d(0, m_robotContainer.wrist.getScaledPosAngle(), 0))),
+
+        // uppies
+        ModelConstants.UPPIES_OFFSET
+            .transformBy(new Transform3d(0, 0, 0,
+                new Rotation3d(0, m_robotContainer.uppies.getScaledPosAngle(), 0))),
+    };
+    // publishes component poses to NT
+    finalPoses.set(finalArray);
+
     CommandScheduler.getInstance().run();
     // m_robotContainer.updateVisionPose(true);
     m_field.setRobotPose(m_robotContainer.visionSystem.getEstimatedGlobalPose2d());
