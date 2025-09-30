@@ -10,6 +10,15 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class Constants {
+
+    public static class ModifierConstants {
+        // When true, reduces drive speed by 50%.
+        public static final boolean ROOKIE_MODE = true;
+        // When true, reduces drive speed by 75% and disables auto positioning.
+        // Overrides ROOKIE_MODE.
+        public static final boolean DEMO_MODE = true;
+    }
+
     public static class ControllerConstants {
 
         // Ports for the Joysticks, as set in Driver Station
@@ -268,4 +277,5 @@ public class Constants {
         /** Angle limits, in radians, of the wrist. */
         public static final double WRIST_MIN_ANGLE = 2.6, WRIST_MAX_ANGLE = -0.7;        
     }
+
 }
