@@ -44,6 +44,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.UppiesConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.ModifierConstants;
 import frc.robot.commands.VisionCommands.DriveToPose;
@@ -457,7 +458,7 @@ public class RobotContainer {
         var velY = Math.abs(speeds.vyMetersPerSecond);
         var velAngular = Math.abs(speeds.omegaRadiansPerSecond);
 
-        if (velX <= 1 && velY <= 1 && velAngular <= Math.PI) {
+        if (velX <= VisionConstants.SPEED_LIMIT && velY <= VisionConstants.SPEED_LIMIT && velAngular <= Math.PI) {
             double visionTime = visionSystem.getTimeStamp();
             if (visionTime != 0 && (visionSystem.hasTag)) {
                 drivetrain.addVisionMeasurement(visionSystem.getEstimatedGlobalPose2d(),

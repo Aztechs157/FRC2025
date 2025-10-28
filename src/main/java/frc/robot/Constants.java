@@ -13,10 +13,11 @@ public class Constants {
 
     public static class ModifierConstants {
         // When true, reduces drive speed by 50%.
-        public static final boolean ROOKIE_MODE = true;
-        // When true, reduces drive speed by 75% and disables auto positioning.
+        public static final boolean ROOKIE_MODE = false;
+        // When true, reduces drive and rotation speed by 75%, and disables auto
+        // positioning.
         // Overrides ROOKIE_MODE.
-        public static final boolean DEMO_MODE = true;
+        public static final boolean DEMO_MODE = false;
     }
 
     public static class ControllerConstants {
@@ -48,6 +49,8 @@ public class Constants {
         // How close the robot can be (bumper to tag, in meters) before losing the
         // ability to auto-align.
         public static final double MIN_DISTANCE_TO_TAG = 0.8;
+        /** The cutoff velocity, in meters per second, for vision-based pose updates. */
+        public static final double SPEED_LIMIT = 3.0;
     }
 
     public static class LoggingConstants {
@@ -263,7 +266,7 @@ public class Constants {
     }
 
     public static class ModelConstants {
-        // Offsets of each major subsytem, in meters, relative to 
+        // Offsets of each major subsytem, in meters, relative to
         // robot center (floor), for use with the AdvantageScope model.
         public static final Pose3d ELEVATOR_OFFSET = new Pose3d(0.1905, 0.0, 0.26, new Rotation3d());
         public static final Pose3d ELBOW_OFFSET = new Pose3d(0.26, 0.0, 0.29, new Rotation3d());
@@ -275,7 +278,7 @@ public class Constants {
         /** Angle limits, in radians, of the climber. */
         public static final double UPPIES_MIN_ANGLE = -0.2, UPPIES_MAX_ANGLE = -2;
         /** Angle limits, in radians, of the wrist. */
-        public static final double WRIST_MIN_ANGLE = 2.6, WRIST_MAX_ANGLE = -0.7;        
+        public static final double WRIST_MIN_ANGLE = 2.6, WRIST_MAX_ANGLE = -0.7;
     }
 
 }
