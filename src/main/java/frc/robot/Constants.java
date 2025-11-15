@@ -263,7 +263,7 @@ public class Constants {
     }
 
     public static class ModelConstants {
-        // Offsets of each major subsytem, in meters, relative to 
+        // Offsets of each major subsytem, in meters, relative to
         // robot center (floor), for use with the AdvantageScope model.
         public static final Pose3d ELEVATOR_OFFSET = new Pose3d(0.1905, 0.0, 0.26, new Rotation3d());
         public static final Pose3d ELBOW_OFFSET = new Pose3d(0.26, 0.0, 0.29, new Rotation3d());
@@ -275,7 +275,7 @@ public class Constants {
         /** Angle limits, in radians, of the climber. */
         public static final double UPPIES_MIN_ANGLE = -0.2, UPPIES_MAX_ANGLE = -2;
         /** Angle limits, in radians, of the wrist. */
-        public static final double WRIST_MIN_ANGLE = 2.6, WRIST_MAX_ANGLE = -0.7;        
+        public static final double WRIST_MIN_ANGLE = 2.25, WRIST_MAX_ANGLE = -1.05;
     }
 
 }
