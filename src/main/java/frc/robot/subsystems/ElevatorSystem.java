@@ -41,6 +41,7 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private boolean isBeta;
   public boolean isClosedLoopRunning = false;
 
+  // TODO: make a github issue for this branch
   public final ElevatorSim elevatorSim = new ElevatorSim(
     DCMotor.getNEO(1), 
     ElevatorConstants.GEAR_RATIO, 
@@ -324,9 +325,12 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   }
   @Override
   public void simulationPeriodic() {
+    // applies the motor's input voltage to the simulator
     elevatorSim.setInputVoltage(motor.getAppliedOutput() * 12.0);
+    // 
     elevatorSim.update(0.02);
-
-    elevatorSparkSim.iterate(elevatorSim.getVelocityMetersPerSecond() * 60 /(2*Math.PI*ElevatorConstants.DRUM_RADIUS), 12.0, 0.02);
+    // TODO: figure out how the hell this part works!! i'm probably doing this velocity calc wrong. 
+    double velRPM = elevatorSim.getVelocityMetersPerSecond() / (2*Math.PI*ElevatorConstants.DRUM_RADIUS) * ElevatorConstants.GEAR_RATIO * 60;
+    elevatorSparkSim.iterate(velRPM * 60 * ElevatorConstants.GEAR_RATIO, 12.0, 0.02);
   }
 }

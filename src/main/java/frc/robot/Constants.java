@@ -13,10 +13,10 @@ public class Constants {
 
     public static class ModifierConstants {
         // When true, reduces drive speed by 50%.
-        public static final boolean ROOKIE_MODE = true;
+        public static final boolean ROOKIE_MODE = false;
         // When true, reduces drive speed by 75% and disables auto positioning.
         // Overrides ROOKIE_MODE.
-        public static final boolean DEMO_MODE = true;
+        public static final boolean DEMO_MODE = false;
     }
 
     public static class ControllerConstants {

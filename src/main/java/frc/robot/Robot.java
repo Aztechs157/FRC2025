@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
     finalArray = new Pose3d[] {
         // elevator stage 2
         ModelConstants.ELEVATOR_OFFSET
-            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getStageTwoPosMeters(), new Rotation3d())),
+            .transformBy(new Transform3d(0, 0, carriageZ/2, new Rotation3d())),
 
         // carriage
         ModelConstants.ELEVATOR_OFFSET
