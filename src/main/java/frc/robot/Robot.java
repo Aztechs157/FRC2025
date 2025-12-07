@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -100,6 +101,13 @@ public class Robot extends TimedRobot {
     // new Pose3d(), new Pose3d(), new Pose3d() };
     // zeroedPoses.set(zeroArray);
 
+    double carriageZ;
+    if(RobotBase.isReal()) {
+      carriageZ = m_robotContainer.elevator.getCarriagePosMeters();
+    } else {
+      carriageZ = m_robotContainer.elevator.elevatorSim.getPositionMeters();
+    }
+
     finalArray = new Pose3d[] {
         // elevator stage 2
         ModelConstants.ELEVATOR_OFFSET
@@ -107,7 +115,7 @@ public class Robot extends TimedRobot {
 
         // carriage
         ModelConstants.ELEVATOR_OFFSET
-            .transformBy(new Transform3d(0, 0, m_robotContainer.elevator.getCarriagePosMeters(), new Rotation3d())),
+            .transformBy(new Transform3d(0, 0, carriageZ, new Rotation3d())),
 
         // elbow and arm
         ModelConstants.ELBOW_OFFSET
@@ -249,5 +257,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {
+    m_robotContainer.elevator.simulationPeriodic();
   }
 }

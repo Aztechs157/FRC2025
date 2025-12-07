@@ -9,16 +9,20 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
 import com.ctre.phoenix6.SignalLogger;
+import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.Logged.Strategy;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -36,6 +40,21 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
   private GenericEntry shuffleboardFeedforwardVel;
   private boolean isBeta;
   public boolean isClosedLoopRunning = false;
+
+  public final ElevatorSim elevatorSim = new ElevatorSim(
+    DCMotor.getNEO(1), 
+    ElevatorConstants.GEAR_RATIO, 
+    ElevatorConstants.CARRIAGE_MASS,
+    ElevatorConstants.DRUM_RADIUS,
+    0, 
+    ElevatorConstants.MAX_CARRIAGE_HEIGHT, 
+    true, 
+    0, 
+    0, 0
+  );
+
+  private final SparkMaxSim elevatorSparkSim = new SparkMaxSim(motor, DCMotor.getNEO(1));
+
 
   public boolean isClosedLoopRunning() {
     return isClosedLoopRunning;
@@ -86,6 +105,8 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
 
     Shuffleboard.getTab("test").addDouble("Elevator Output", this::getMotorOutput)
         .withWidget(BuiltInWidgets.kNumberBar);
+ 
+
 
   }
 
@@ -300,5 +321,12 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     // This method will be called once per scheduler run
     SignalLogger.writeDouble("ElevatorPosition", getScaledPos());
 
+  }
+  @Override
+  public void simulationPeriodic() {
+    elevatorSim.setInputVoltage(motor.getAppliedOutput() * 12.0);
+    elevatorSim.update(0.02);
+
+    elevatorSparkSim.iterate(elevatorSim.getVelocityMetersPerSecond() * 60 /(2*Math.PI*ElevatorConstants.DRUM_RADIUS), 12.0, 0.02);
   }
 }

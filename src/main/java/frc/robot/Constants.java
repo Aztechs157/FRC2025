@@ -64,6 +64,15 @@ public class Constants {
         public static final int POT_ID = 0;
         public static final int BOTTOM_LIMIT_ID = 8, TOP_LIMIT_ID = 9;
 
+        // Gear ratio of the elevator's gearbox.
+        public static final double GEAR_RATIO = 15.0;
+        // Mass of the elevator's carriage, in kilograms. Find a better number for this?
+        public static final double CARRIAGE_MASS = 10;
+        // Radius of the elevator's sprocket, in meters. Have someone from mechanical verify this
+        public static final double DRUM_RADIUS = 0.036513/2;
+        // Maxmimum height of the elevator's carriage, in meters.
+        public static final double MAX_CARRIAGE_HEIGHT = 1.3285;
+        
         static final double p = 5, i = 0.0, d = 0.5;
 
         // TODO: find proper values for this. sysid can help, or look here
