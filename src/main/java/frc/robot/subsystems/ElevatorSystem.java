@@ -331,6 +331,6 @@ public class ElevatorSystem extends SubsystemBase implements PosUtils {
     elevatorSim.update(0.02);
     // TODO: figure out how the hell this part works!! i'm probably doing this velocity calc wrong. 
     double velRPM = elevatorSim.getVelocityMetersPerSecond() / (2*Math.PI*ElevatorConstants.DRUM_RADIUS) * ElevatorConstants.GEAR_RATIO * 60;
-    elevatorSparkSim.iterate(velRPM * 60 * ElevatorConstants.GEAR_RATIO, 12.0, 0.02);
+    elevatorSparkSim.iterate(velRPM, 12.0, 0.02);
   }
 }
